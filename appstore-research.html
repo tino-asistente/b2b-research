@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2B App Store Research — Solo Founder Opportunities</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d1117; color: #c9d1d9; line-height: 1.6; padding: 20px; max-width: 1200px; margin: 0 auto; }
+h1 { color: #58a6ff; font-size: 1.8em; margin-bottom: 8px; }
+h2 { color: #58a6ff; font-size: 1.4em; margin: 30px 0 15px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+h3 { color: #79c0ff; font-size: 1.1em; margin: 15px 0 8px; }
+h4 { color: #d2a8ff; font-size: 0.95em; margin-bottom: 5px; }
+p, li { font-size: 0.95em; }
+a { color: #58a6ff; }
+.subtitle { color: #8b949e; font-size: 0.9em; margin-bottom: 20px; }
+.tldr { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin: 20px 0; }
+.tldr-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #21262d; }
+.tldr-item:last-child { border-bottom: none; }
+.tldr-rank { font-size: 1.5em; font-weight: bold; color: #f0883e; min-width: 40px; }
+.tldr-content h3 { margin: 0 0 4px; }
+.tldr-content p { color: #8b949e; font-size: 0.85em; margin: 2px 0; }
+.tldr-score { color: #3fb950; font-weight: bold; font-size: 1.2em; margin-left: auto; white-space: nowrap; }
+
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.85em; }
+th { background: #161b22; color: #58a6ff; cursor: pointer; user-select: none; }
+th:hover { background: #1f2937; }
+th, td { padding: 8px 12px; text-align: left; border: 1px solid #21262d; }
+tr:nth-child(even) { background: #161b22; }
+tr:hover { background: #1c2333; }
+
+.card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; margin: 12px 0; overflow: hidden; }
+.card-header { display: flex; align-items: center; gap: 12px; padding: 14px 18px; cursor: pointer; }
+.card-header:hover { background: #1c2333; }
+.card-rank { font-weight: bold; color: #f0883e; font-size: 1.1em; }
+.card-title { flex: 1; font-weight: 600; color: #e6edf3; }
+.card-score { color: #3fb950; font-weight: bold; }
+.card-toggle { color: #8b949e; transition: transform 0.2s; }
+.card.open .card-toggle { transform: rotate(180deg); }
+.card-body { display: none; padding: 0 18px 18px; }
+.card.open .card-body { display: block; }
+.card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; font-size: 0.9em; }
+.card-section { margin: 12px 0; }
+.card-section p { color: #8b949e; }
+
+.badge-pricing { background: #f8514933; color: #f85149; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; }
+.badge-complexity { background: #d2992233; color: #d29922; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; }
+.badge-feature { background: #3fb95033; color: #3fb950; padding: 2px 8px; border-radius: 12px; font-size: 0.75em; }
+
+.quote { background: #0d1117; border-left: 3px solid #30363d; padding: 8px 12px; margin: 8px 0; font-size: 0.85em; font-style: italic; color: #8b949e; }
+.quote-meta { font-style: normal; font-size: 0.8em; color: #58a6ff; }
+
+.scores-bar { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 15px; padding-top: 15px; border-top: 1px solid #21262d; }
+.score-item { display: flex; align-items: center; gap: 6px; font-size: 0.8em; }
+.score-item span:first-child { min-width: 70px; color: #8b949e; }
+.bar { width: 60px; height: 8px; background: #21262d; border-radius: 4px; overflow: hidden; }
+.fill { height: 100%; background: #3fb950; border-radius: 4px; }
+
+.methodology { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin: 20px 0; font-size: 0.85em; color: #8b949e; }
+
+@media (max-width: 768px) {
+  .card-grid { grid-template-columns: 1fr; }
+  .scores-bar { flex-direction: column; }
+  .card-header { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<h1>🦕 B2B App Store Research</h1>
+<p class="subtitle">Real review data from 20 B2B apps · 3400 total reviews analyzed · 1496 negative reviews categorized · Generated Feb 25, 2026</p>
+
+<h2>🎯 TL;DR — Top 3 for Solo Founder</h2>
+<div class="tldr">
+
+  <div class="tldr-item">
+    <div class="tldr-rank">1</div>
+    <div class="tldr-content">
+      <h3>Simple Receipt/Expense Scanner for Small Business</h3>
+      <p><strong>Apps disrupted:</strong> Expensify, QuickBooks · <strong>WTP:</strong> $5-15/mo</p>
+      <p>A dead-simple app to snap receipts, categorize expenses, and export for tax time. No team admin, no chat, no social features.</p>
+    </div>
+    <div class="tldr-score">31/35</div>
+  </div>
+
+  <div class="tldr-item">
+    <div class="tldr-rank">2</div>
+    <div class="tldr-content">
+      <h3>Simple Scheduling Tool (Calendly Alternative)</h3>
+      <p><strong>Apps disrupted:</strong> Calendly · <strong>WTP:</strong> $3-8/mo or $49 lifetime</p>
+      <p>Basic scheduling link that works. Free tier that doesn't cripple core functionality. Working mobile app. Reliable timezone handling.</p>
+    </div>
+    <div class="tldr-score">30/35</div>
+  </div>
+
+  <div class="tldr-item">
+    <div class="tldr-rank">3</div>
+    <div class="tldr-content">
+      <h3>PagerDuty Lite — On-Call Alerting for Small Dev Teams</h3>
+      <p><strong>Apps disrupted:</strong> PagerDuty · <strong>WTP:</strong> $5-10/user/mo</p>
+      <p>Reliable alert notifications that work on mobile. Escalation policies. Don't need AI ops, event intelligence, or $21+/user/mo pricing.</p>
+    </div>
+    <div class="tldr-score">28/35</div>
+  </div>
+
+</div>
+
+<p style="margin:15px 0; color:#8b949e;">
+<strong style="color:#3fb950;">🏆 #1 Pick: Simple Receipt/Expense Scanner for Small Business</strong> — This scores highest because: extreme pain (Expensify's disastrous redesign), crystal clear buyer (every freelancer/contractor), trivially simple to build (camera + OCR + export), zero network effects needed, and app store distribution is built-in. You could have an MVP in 2-3 months and charge $10/mo.
+</p>
+<p style="margin:15px 0; color:#8b949e;">
+<strong style="color:#58a6ff;">🥈 #2 Pick: Simple Scheduling Tool (Calendly Alternative)</strong> — Calendly's mobile app is objectively terrible and they charge $10+/mo for basic features (multiple event types). Cal.com and TidyCal exist but haven't dominated. A mobile-first scheduling tool at $5/mo with a generous free tier could capture angry Calendly users. Simple to build with Google Calendar API.
+</p>
+<p style="margin:15px 0; color:#8b949e;">
+<strong style="color:#d2a8ff;">🥉 #3 Pick: PagerDuty Lite — On-Call Alerting for Small Dev Teams</strong> — Loom's Atlassian acquisition led to aggressive paywalling. Users want simple screen recording + shareable links. Chrome extension + R2 storage = cheap to run. But many alternatives exist (Tella, Screenpal), so distribution is the challenge.
+</p>
+
+<h2>📊 Scored Opportunities</h2>
+<p style="font-size:0.85em; color:#8b949e; margin-bottom:10px;">Click column headers to sort. Click any row to expand details with real review quotes.</p>
+
+<table id="scoreTable">
+<thead>
+<tr>
+  <th onclick="sortTable(0)">#</th>
+  <th onclick="sortTable(1)">Opportunity</th>
+  <th onclick="sortTable(2)">Type</th>
+  <th onclick="sortTable(3,'num')">Pain</th>
+  <th onclick="sortTable(4,'num')">Budget</th>
+  <th onclick="sortTable(5,'num')">Distrib</th>
+  <th onclick="sortTable(6,'num')">Defensible</th>
+  <th onclick="sortTable(7,'num')">Simple</th>
+  <th onclick="sortTable(8,'num')">Solo Fit</th>
+  <th onclick="sortTable(9,'num')">Speed</th>
+  <th onclick="sortTable(10,'num')">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>1</td>
+  <td>Simple Receipt/Expense Scanner for Small Business</td>
+  <td><span class="badge-complexity">Overkill complexity</span></td>
+  <td>5</td><td>5</td><td>4</td><td>2</td>
+  <td>5</td><td>5</td><td>5</td>
+  <td><strong>31</strong></td>
+</tr><tr>
+  <td>2</td>
+  <td>Simple Scheduling Tool (Calendly Alternative)</td>
+  <td><span class="badge-pricing">Excessive pricing / Overkill complexity</span></td>
+  <td>4</td><td>5</td><td>5</td><td>2</td>
+  <td>4</td><td>5</td><td>5</td>
+  <td><strong>30</strong></td>
+</tr><tr>
+  <td>3</td>
+  <td>PagerDuty Lite — On-Call Alerting for Small Dev Teams</td>
+  <td><span class="badge-pricing">Excessive pricing / Overkill complexity</span></td>
+  <td>5</td><td>5</td><td>3</td><td>3</td>
+  <td>4</td><td>4</td><td>4</td>
+  <td><strong>28</strong></td>
+</tr><tr>
+  <td>4</td>
+  <td>Lightweight Password Manager (No Subscription)</td>
+  <td><span class="badge-pricing">Excessive pricing</span></td>
+  <td>4</td><td>5</td><td>4</td><td>2</td>
+  <td>3</td><td>4</td><td>4</td>
+  <td><strong>26</strong></td>
+</tr><tr>
+  <td>5</td>
+  <td>Loom Alternative — Simple Async Video Without the Price Tag</td>
+  <td><span class="badge-pricing">Excessive pricing</span></td>
+  <td>4</td><td>4</td><td>4</td><td>2</td>
+  <td>4</td><td>4</td><td>4</td>
+  <td><strong>26</strong></td>
+</tr><tr>
+  <td>6</td>
+  <td>Trello-Simple Project Board (No Forced Upsells)</td>
+  <td><span class="badge-pricing">Excessive pricing / Feature gap</span></td>
+  <td>4</td><td>4</td><td>4</td><td>2</td>
+  <td>4</td><td>4</td><td>4</td>
+  <td><strong>26</strong></td>
+</tr><tr>
+  <td>7</td>
+  <td>Zendesk/Freshdesk Lite — Simple Helpdesk for Small Teams</td>
+  <td><span class="badge-pricing">Overkill complexity / Excessive pricing</span></td>
+  <td>5</td><td>4</td><td>3</td><td>3</td>
+  <td>3</td><td>3</td><td>3</td>
+  <td><strong>24</strong></td>
+</tr><tr>
+  <td>8</td>
+  <td>Mobile-First CRM for Small Sales Teams</td>
+  <td><span class="badge-complexity">Overkill complexity</span></td>
+  <td>4</td><td>4</td><td>3</td><td>3</td>
+  <td>3</td><td>3</td><td>3</td>
+  <td><strong>23</strong></td>
+</tr><tr>
+  <td>9</td>
+  <td>Airtable Lite — Spreadsheet-Database for Non-Technical Users</td>
+  <td><span class="badge-complexity">Overkill complexity</span></td>
+  <td>4</td><td>3</td><td>3</td><td>3</td>
+  <td>3</td><td>3</td><td>3</td>
+  <td><strong>22</strong></td>
+</tr><tr>
+  <td>10</td>
+  <td>Slack Alternative for Small Teams — Less Noise, More Focus</td>
+  <td><span class="badge-complexity">Overkill complexity</span></td>
+  <td>3</td><td>3</td><td>2</td><td>1</td>
+  <td>3</td><td>2</td><td>2</td>
+  <td><strong>16</strong></td>
+</tr>
+</tbody>
+</table>
+
+<h2>📋 Detailed Opportunity Cards</h2>
+<p style="font-size:0.85em; color:#8b949e; margin-bottom:10px;">Click to expand. Every quote is from actual app store reviews scraped on Feb 25, 2026.</p>
+
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#1</span>
+      <span class="card-title">Simple Receipt/Expense Scanner for Small Business</span>
+      <span class="card-score">31/35</span>
+      <span class="card-type badge-complexity">Overkill complexity</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Expensify, QuickBooks</div>
+        <div><strong>ICP:</strong> Solo freelancers, contractors, small business owners (1-5 people) doing their own bookkeeping</div>
+        <div><strong>WTP:</strong> $5-15/mo</div>
+        <div><strong>Current workaround:</strong> Spreadsheets, photo folders, shoebox of receipts</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>A dead-simple app to snap receipts, categorize expenses, and export for tax time. No team admin, no chat, no social features.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Expensify pivoted to a 'super app' (chat, travel, etc). QuickBooks bundles expenses into full accounting. Neither will simplify — their revenue depends on upselling.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Mobile-first app: camera → OCR (Google Vision API) → auto-categorize → export CSV/PDF. No team features, no chat. Just receipts.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Crowded space, but incumbents are all overbuilt. Wave, Dext exist but also complex.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Expensify's 2024-2025 'New Expensify' rewrite has infuriated users. QuickBooks prices keep rising. Window of angry users looking for alternatives.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Launch on Product Hunt + Reddit r/smallbusiness. $10/mo × 1000 users. App store distribution. Content marketing on 'Expensify alternatives'.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · Expensify · 2026-02-23</span><br>"Awful. If the &quot;Smartscan&quot; feature fails to complete, then it will just automatically delete the entry (and the picture of your receipt) with no way to recover. The only way to get around this is to re-submit your expenses, meaning you have to keep all of your paper receipts anyway. I'm now in a posi"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Expensify · 2026-02-21</span><br>"never have I see such a poor update in any other app. it used to take me 2 clicks to submit an expense, now I need at least 10 if I need to edit something."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Expensify · 2026-02-18</span><br>"slow to download receipts. takes days. looking for a new product. terrible"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Expensify · 2026-02-16</span><br>"It wouldn't let me pay for my subscription, I then logged out and tried to log back in and there was no code emailed to me so mow I've lost my account and all my receipts!! There's no support only AI chatbot."</div><div class="quote"><span class="quote-meta">1★ · Google Play · QuickBooks · 2026-02-23</span><br>"the app is useless. buffering all the time and you have to wait for minutes even for a single entry."</div><div class="quote"><span class="quote-meta">1★ · Google Play · QuickBooks · 2026-02-21</span><br>"QBO started off pretty great. Was very user friendly. Being able to run a P&amp;L by tags is very helpful for trying to track multiple projects. But the amount of ads that pop up when you are trying to work has made it almost impossible to work. Anytime I go to press something, an ad gets in the way. I "</div><div class="quote"><span class="quote-meta">1★ · Google Play · QuickBooks · 2026-02-20</span><br>"can't print receipts says you can, purchased the printer they said works. nope, they took the option away but left all the info. I can add printer, connect and print test receipt but they literally took away the print receipt button. text or email only. leaving quick books."</div><div class="quote"><span class="quote-meta">2★ · Google Play · QuickBooks · 2026-02-20</span><br>"I've used quickbooks for about a year and a half now and it been really handy in terms of tallying up your totals spent on equipment, materials, etc. but the invoicing side can be extremely painful, I've just put together a detailed invoice adding each material and labour item 10-20 items, I pop off"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#2</span>
+      <span class="card-title">Simple Scheduling Tool (Calendly Alternative)</span>
+      <span class="card-score">30/35</span>
+      <span class="card-type badge-pricing">Excessive pricing / Overkill complexity</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Calendly</div>
+        <div><strong>ICP:</strong> Solopreneurs, coaches, consultants, freelancers who need 2-5 event types and don't want to pay $120+/year</div>
+        <div><strong>WTP:</strong> $3-8/mo or $49 lifetime</div>
+        <div><strong>Current workaround:</strong> Cal.com (open source), TidyCal (lifetime deal), manual email back-and-forth</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>Basic scheduling link that works. Free tier that doesn't cripple core functionality. Working mobile app. Reliable timezone handling.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Calendly's business model depends on upselling to $10-16/seat/mo. Free tier deliberately limited to 1 event type to force upgrades.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Calendar integration + booking page. Google Calendar API + simple web app. Focus on mobile-first (Calendly's app is terrible per reviews).</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Cal.com is open source and free. TidyCal exists at $29 lifetime. Market is competitive.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Calendly's pricing increases + degraded mobile experience creating openings. But TidyCal/Cal.com already filling gap.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>AppSumo lifetime deal for initial users, then $5/mo recurring. SEO on 'Calendly alternative'. Needs 2000 users at $5/mo.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">2★ · Google Play · Calendly · 2026-02-20</span><br>"it glitches alot"</div><div class="quote"><span class="quote-meta">2★ · Google Play · Calendly · 2025-12-12</span><br>"Buggy. &quot;lock_timezone must be a string&quot; 🤦"</div><div class="quote"><span class="quote-meta">2★ · Google Play · Calendly · 2025-12-02</span><br>"the app is pretty good but the time is not accurate for both parties"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Calendly · 2025-11-11</span><br>"About as user friendly as Microsoft DOS"</div><div class="quote"><span class="quote-meta">2★ · Google Play · Calendly · 2025-11-06</span><br>"no landscape and bad support. on my Android tablet it won't go to landscape, the real person I spoke with in support chat said it isn't an app supported feature. also, trying to figure out how to add multiple meeting location option, both the AI and real person didn't include an important step in th"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#3</span>
+      <span class="card-title">PagerDuty Lite — On-Call Alerting for Small Dev Teams</span>
+      <span class="card-score">28/35</span>
+      <span class="card-type badge-pricing">Excessive pricing / Overkill complexity</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> PagerDuty</div>
+        <div><strong>ICP:</strong> Small dev teams (2-10), startups, indie SaaS founders who need on-call rotation</div>
+        <div><strong>WTP:</strong> $5-10/user/mo</div>
+        <div><strong>Current workaround:</strong> OpsGenie (also Atlassian, also expensive), phone call trees, Slack alerts</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>Reliable alert notifications that work on mobile. Escalation policies. Don't need AI ops, event intelligence, or $21+/user/mo pricing.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>PagerDuty is enterprise-focused ($21-49/user/mo). Won't build a cheap tier — would cannibalize revenue.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Webhook receiver → alert routing → push notification + phone call escalation (Twilio). Schedule management UI. That's the core.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Opsgenie, Incident.io, Grafana OnCall (free). Security/reliability expectations high.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>PagerDuty's mobile app reviews terrible. Small teams priced out. Grafana OnCall is free but complex to self-host.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>100 teams × $100/mo average. Dev tool distribution (HN, Dev.to, Reddit). Integration with popular monitoring tools.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · PagerDuty · 2026-02-02</span><br>"Used to work great. Now always getting notification about security and it automatically closes."</div><div class="quote"><span class="quote-meta">1★ · Google Play · PagerDuty · 2026-01-09</span><br>"zero integration with wearables"</div><div class="quote"><span class="quote-meta">1★ · Google Play · PagerDuty · 2025-12-23</span><br>"on samsung phones complains about root, even if not rooted"</div><div class="quote"><span class="quote-meta">1★ · Google Play · PagerDuty · 2025-12-23</span><br>"Recently it started notifying me even when I set Do Not Disturb and don't allow PagerDuty to notify me. It still does! I turn off the volume and try and silence my phone and flip it over so it should be quiet and I still get sounds. It doesn't respect my bed time either waking me up in the middle of"</div><div class="quote"><span class="quote-meta">2★ · Google Play · PagerDuty · 2025-12-09</span><br>"non functioning"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#4</span>
+      <span class="card-title">Lightweight Password Manager (No Subscription)</span>
+      <span class="card-score">26/35</span>
+      <span class="card-type badge-pricing">Excessive pricing</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> 1Password</div>
+        <div><strong>ICP:</strong> Individual users and families who had 1Password 4-7 standalone licenses and refuse to subscribe at $36-60/year</div>
+        <div><strong>WTP:</strong> $20-40 one-time or $1-3/mo</div>
+        <div><strong>Current workaround:</strong> Bitwarden (free tier), KeePass, browser built-in password managers</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>A password manager that works reliably, has biometrics, autofill, and doesn't force a subscription. One-time purchase or cheap annual.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>1Password moved to subscription model deliberately (ARR growth). They literally dropped standalone licenses. Will never go back.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Hard to compete on security credibility as solo founder. Better angle: build a 'password manager migration tool' or 'autofill fix' layer.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Security product = high trust bar. Bitwarden already free. Hard to differentiate.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>1Password v8 transition + subscription backlash ongoing since 2023, still generating angry reviews in 2026.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Honestly risky for solo founder. Better as content/affiliate play (comparison site) than building the actual product.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · 1Password · 2026-02-22</span><br>"Ridiculous scam. The previous app was an honest product at an honest one time price, with Dropbox integration built in. this rip-off is now holding that data hostage trying to force an expensive subscription for next to nothing in functionality. shame on you."</div><div class="quote"><span class="quote-meta">1★ · Google Play · 1Password · 2026-02-20</span><br>"This was my favourite app since I purchased a full version of 1Password 4 in 2015. Was able to use it across all my devices till now, but no longer. They proudly claim that they don't support older versions. Why? To sell monthly subscriptions. Supposedly it is more secure this way. Only problem is t"</div><div class="quote"><span class="quote-meta">1★ · Google Play · 1Password · 2026-02-08</span><br>"used this for years and it was the best until it went to a subscription model. say no to subscriptions."</div><div class="quote"><span class="quote-meta">2★ · Google Play · 1Password · 2026-02-08</span><br>"biometrics unlock has stopped working, autofill hit and miss, expensive subsequent year subscription. no way to contact support in app. seriously considering calling it quits."</div><div class="quote"><span class="quote-meta">1★ · Google Play · 1Password · 2026-02-04</span><br>"based on all the negative reviews, at least lower the damn price!"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#5</span>
+      <span class="card-title">Loom Alternative — Simple Async Video Without the Price Tag</span>
+      <span class="card-score">26/35</span>
+      <span class="card-type badge-pricing">Excessive pricing</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Loom</div>
+        <div><strong>ICP:</strong> Freelancers, educators, small teams who send 5-20 videos/month</div>
+        <div><strong>WTP:</strong> $5-10/mo or lifetime deal</div>
+        <div><strong>Current workaround:</strong> OBS + Google Drive, Tella, Screenpal, free screen recorders with no sharing</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>Record screen + cam, share a link. That's it. Without being charged €24/mo or losing the upload feature behind a paywall.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Loom (acquired by Atlassian) is moving upmarket. Free tier deliberately crippled (5min limit, no uploads). Enterprise focus.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Chrome extension + simple hosting. Screen+cam recording, auto-upload to CDN, shareable link. S3/R2 for storage is cheap.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Many alternatives exist (Tella, Screenpal, Jam). Storage costs scale with usage.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Atlassian acquisition → price hikes. Upload feature removal. Users actively fleeing.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Chrome Web Store distribution. $8/mo × 1250 users. Product Hunt launch. 'Loom alternative' SEO.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · Loom · 2026-02-23</span><br>"horrible app"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Loom · 2026-02-21</span><br>"horrible. i needed to use it for one company who requested me to submit a video through it. the app automatically put me on a 24eur/month payment plan without my consent. when you try to change it to free plan, it does not allow it. good that I did not add payment details. it is very hard to cancel "</div><div class="quote"><span class="quote-meta">1★ · Google Play · Loom · 2026-02-19</span><br>"i have an account and a monthly membership but whenever i try and login on mobile it just says 404 error and doesnt log me in... probably gunna look for alternatives... its just annoying as I actually like the app."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Loom · 2026-02-19</span><br>"After downloading the app is not opening."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Loom · 2026-02-19</span><br>"I click record a loom and it cycles back to the app store. I click to open it in the app store and it asks me to sign in. I sign in and it does the same cycle. I needed this for a school assignment!!!"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#6</span>
+      <span class="card-title">Trello-Simple Project Board (No Forced Upsells)</span>
+      <span class="card-score">26/35</span>
+      <span class="card-type badge-pricing">Excessive pricing / Feature gap</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Trello, Asana, Monday</div>
+        <div><strong>ICP:</strong> Small teams (2-10), freelancers, personal productivity users who outgrew sticky notes</div>
+        <div><strong>WTP:</strong> $3-8/mo per workspace</div>
+        <div><strong>Current workaround:</strong> Notion boards, GitHub Projects, physical whiteboards</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>Kanban boards that save automatically, have a usable widget, don't force UI changes, and don't hide card mirroring behind $10/mo add-ons.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Trello (Atlassian) pushes Power-Ups model. Asana/Monday need $10-24/seat/mo tiers. Free tiers deliberately crippled.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Kanban board with auto-save, drag-and-drop, mobile widget, calendar sync. No Power-Up marketplace complexity.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Extremely crowded. Notion's free tier is generous. Hard to differentiate.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Trello's forced UI updates + deceptive pricing model complaints spiking in 2025-2026.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Tough market. Would need a specific niche (e.g., 'project boards for contractors' or 'kanban for real estate').</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · Trello · 2026-02-16</span><br>"As with a lot of these kind of apps even though you may cancel your subscription they will still try to take the sub from you even though cancelled. There are other, much more honest apps that do what Trello does. What a nightmare."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Trello · 2025-12-05</span><br>"Such a scam, they will auto charge you when you switch the subscription from monthly to annual without noticing anything abt the price or payment term. Recommend not to use this scam tool"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Trello · 2025-09-29</span><br>"the app was great and i enjoyed using it for several years. I was really loved the feature where i can take thing straight from my to-do list into my google calendar. I have recently opened the desktop app again just to see that this feature has been locked behind a 12.50€ per monh paywall. as a bro"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Asana · 2026-01-11</span><br>"I was testing. it says it has a free version and a trial period to see some pay options. after the trial ends it just lock my asana webpage and block my access to my work unless I paid and upgrade my account. I lost my work here. if you have a free version, just remove the paid feature. but block th"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Asana · 2025-09-19</span><br>"The concept is great but the extortionate pricing is disappointing. Only after a trial did I found out that you MUST pay for multiple seats. I'm business owner and operator with no employees yet, why they can't offer a single seat is beyond me. All the hard-work I put it over 2 weeks to learn this p"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Asana · 2025-09-04</span><br>"scams you out of your money. thought it was free but it's not it has a limited trial."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Monday · 2026-02-05</span><br>"wanted me to use telegram and i couldn't pay the sms fee to activate this app"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Monday · 2025-11-10</span><br>"everything is behind a pay wall after the free trial period. and there's no mention that I'll lose my data if I don't pay"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Monday · 2025-08-06</span><br>"if you thought using the desktop version was difficult and not user friendly, make sure to try the app! it's so much worse. Yeah sure if there's issues contact support &amp; submit feedback but guess what they won't fix? their responsiveness and bad ui, this app is great if you're looking to get frustra"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#7</span>
+      <span class="card-title">Zendesk/Freshdesk Lite — Simple Helpdesk for Small Teams</span>
+      <span class="card-score">24/35</span>
+      <span class="card-type badge-pricing">Overkill complexity / Excessive pricing</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Zendesk, Freshdesk, Intercom</div>
+        <div><strong>ICP:</strong> Small SaaS companies, e-commerce stores with 1-5 support agents</div>
+        <div><strong>WTP:</strong> $10-25/agent/mo</div>
+        <div><strong>Current workaround:</strong> Shared Gmail inbox, Crisp, Tidio free tier</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>A helpdesk that actually shows notifications on mobile, doesn't crash when you press back, and doesn't cost $49+/agent/mo for basic features.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Zendesk ($55-115/agent/mo) is moving upmarket to enterprise AI. Freshdesk deprioritizes mobile. Intercom ($39-139/seat/mo) targets mid-market+.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Shared inbox with ticket status, mobile push notifications, basic automation rules. That's 80% of what small teams need.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Crisp, Tidio, HelpScout already serve this niche. Competitive.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Zendesk's support quality decline (ironic for a support tool) + Intercom's aggressive pricing increases.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>50-100 small teams at $100-200/mo. Distribution via 'Zendesk alternative' SEO + integration marketplaces.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · Zendesk · 2026-01-12</span><br>"Initial install would not let me sign In or allow any input. Just first sign in button and back arrow."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Zendesk · 2025-12-19</span><br>"Notification no longer works on Android after recent update."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Zendesk · 2025-12-11</span><br>"if you use the back key of your phone or in a open ticket it closes the app. fix this asap."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Freshdesk · 2026-02-23</span><br>"buggy for months. ticket view always out of date. unreliable for keeping on top of ticket statuses and replies."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Freshdesk · 2026-02-23</span><br>"Android app get progressively worse, every update. I'm guessing it's because of actions to save them money, because the user experience is lacking more than when I first started using this over 8 years ago."</div><div class="quote"><span class="quote-meta">2★ · Google Play · Freshdesk · 2026-01-09</span><br>"In mobile ,In analytics tab, we customised the report , if suppose the report contains any ticket number , then it open the respective ticket and we reply or change anything means it's not working"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Intercom · 2026-02-13</span><br>"very unstable"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Intercom · 2026-02-12</span><br>"Terrible app, the chat keeps resetting the position whenever something new is written, unable to upload pictures and send them to users. Very poor app, constant advertisement from them. DO NOT CHOOSE THEM"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Intercom · 2026-01-13</span><br>"Notifications pop up in 10-15 minutes when phone is disconnected from charger, all restrictions removed for the app, when connected to charger notifications work fine, pop up immediately."</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:100%"></div></div><span>5</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#8</span>
+      <span class="card-title">Mobile-First CRM for Small Sales Teams</span>
+      <span class="card-score">23/35</span>
+      <span class="card-type badge-complexity">Overkill complexity</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> HubSpot, Salesforce</div>
+        <div><strong>ICP:</strong> Field sales reps, real estate agents, small agencies (5-20 people) who live on their phones</div>
+        <div><strong>WTP:</strong> $15-30/user/mo</div>
+        <div><strong>Current workaround:</strong> Spreadsheets, phone contacts with notes, basic CRM apps</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>A CRM that works on mobile. Fast email responses, working notifications, snippet formatting, and doesn't require a CS degree to set up.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>HubSpot/Salesforce are desktop-first enterprise tools. Mobile is an afterthought. Their revenue comes from enterprise seats, not mobile UX.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Mobile-native CRM: contacts, deals pipeline, email integration, push notifications that actually work. Skip marketing automation entirely.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>CRM is incredibly competitive. Requires network effects within teams. Enterprise sales cycle.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>HubSpot mobile app consistently rated poorly. But many competitors already exist (Pipedrive, Close).</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Hard for solo founder due to sales cycle and competition. Score penalized.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · HubSpot · 2026-02-18</span><br>"It does not launch the account list when I try to log in with Google account. Which voids it completely for me."</div><div class="quote"><span class="quote-meta">1★ · Google Play · HubSpot · 2026-02-16</span><br>"This app bugs a lot. It's so frustrating, the developers should do something about it."</div><div class="quote"><span class="quote-meta">1★ · Google Play · HubSpot · 2026-02-06</span><br>"clunky"</div><div class="quote"><span class="quote-meta">1★ · Google Play · HubSpot · 2026-01-26</span><br>"I have been using HubSpot happily on my desktop for years. When I saw there is a HubSpot Scanner for business cards that integrates directly with the HubSpot CRM I thought it would be best to put it on my Android phone. Unbelievably, as noted in the two previous reviews, it is not possible to login "</div><div class="quote"><span class="quote-meta">1★ · Google Play · Salesforce · 2026-02-23</span><br>"always have some issues."</div><div class="quote"><span class="quote-meta">2★ · Google Play · Salesforce · 2026-02-21</span><br>"contractor visit not visible"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Salesforce · 2026-02-21</span><br>"Impossible to login with work account. AI Help agent is rubbish"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Salesforce · 2026-02-20</span><br>"this is app slow"</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#9</span>
+      <span class="card-title">Airtable Lite — Spreadsheet-Database for Non-Technical Users</span>
+      <span class="card-score">22/35</span>
+      <span class="card-type badge-complexity">Overkill complexity</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Airtable, Notion</div>
+        <div><strong>ICP:</strong> Small business ops managers, event planners, non-technical teams tracking inventory/contacts/projects</div>
+        <div><strong>WTP:</strong> $10-20/mo</div>
+        <div><strong>Current workaround:</strong> Google Sheets with add-ons, Excel, Notion databases</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>A spreadsheet that acts like a database but doesn't crash, works offline, and doesn't force you through AI template wizards.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Airtable is going all-in on AI and enterprise. Mobile app is an afterthought. Offline mode has been requested for years.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Simple relational database with spreadsheet UI. Mobile-first. Offline sync. Skip the AI wizards.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Notion databases improving. Google Tables exists. NocoDB is open source.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Airtable's AI-first pivot alienating users who want simplicity. But NocoDB fills this gap already.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Niche it: 'inventory tracker for small retail' or 'client database for agencies'. Vertical &gt; horizontal.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · Airtable · 2026-02-17</span><br>"App keeps crashing"</div><div class="quote"><span class="quote-meta">2★ · Google Play · Airtable · 2026-02-17</span><br>"Not updating the data correctly. I'd add something via an &quot;Add record&quot; - it populates correctly in the web view, but not in the app."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Airtable · 2026-02-12</span><br>"to complicated to use on the fly especially in a busy environment"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Airtable · 2026-02-03</span><br>"after installation just not working at all"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Notion · 2026-02-24</span><br>"Slow, sluggish, shts the bed when pages get even moderately complex. Now with the latest update they had the brilliant idea to remove favorites from the home screen. I'd rather pay for Obsidian sync than keep dealing with this vibecoded nonsense."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Notion · 2026-02-23</span><br>"When I try to open options from three dot menu, the page remain blank.. It's waste of time using notion in phone"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Notion · 2026-02-23</span><br>"Significant problems. I'm always frustrated with Notion. Be it sharing in Android, load times, switching between accounts, copying data, auth, etc. Nothing really works well."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Notion · 2026-02-23</span><br>"Unbelievably expensive, with AI I will make my own app."</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:80%"></div></div><span>4</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" onclick="this.parentElement.classList.toggle('open')">
+      <span class="card-rank">#10</span>
+      <span class="card-title">Slack Alternative for Small Teams — Less Noise, More Focus</span>
+      <span class="card-score">16/35</span>
+      <span class="card-type badge-complexity">Overkill complexity</span>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="card-grid">
+        <div><strong>Apps analyzed:</strong> Slack</div>
+        <div><strong>ICP:</strong> Small teams (3-15) overwhelmed by Slack's complexity</div>
+        <div><strong>WTP:</strong> $3-5/user/mo</div>
+        <div><strong>Current workaround:</strong> Discord, WhatsApp groups, Basecamp</div>
+      </div>
+      <div class="card-section"><h4>💬 What Users Ask For</h4><p>Team chat without hundreds of channels, bot spam, and overwhelming notifications. Something focused.</p></div>
+      <div class="card-section"><h4>🚫 Why The App Won't Fix It</h4><p>Slack's value prop IS channels and integrations. Simplifying would undermine their moat.</p></div>
+      <div class="card-section"><h4>🛠️ How to Build Cheaper/Simpler</h4><p>Minimal team chat with threads, file sharing, and search. No bots, no app marketplace.</p></div>
+      <div class="card-section"><h4>⚠️ Risks</h4><p>Network effects required. Extremely hard to win in messaging. Discord is free.</p></div>
+      <div class="card-section"><h4>⏰ Why Now</h4><p>Slack fatigue is real, but alternatives abound. Not a good solo founder play.</p></div>
+      <div class="card-section"><h4>📈 Path to $10K MRR</h4><p>Very hard. Requires team adoption. Score heavily penalized.</p></div>
+      <div class="card-section"><h4>🗣️ Real Review Quotes</h4><div class="quote"><span class="quote-meta">1★ · Google Play · Slack · 2026-02-20</span><br>"The UI is absurd. The channels are overwhelming and irrelevant. Why am I seeing stuff from hundreds of people a day? This is supposed to streamline the workplace, but it's given me nothing but headaches and wasted hours upon hours of time"</div><div class="quote"><span class="quote-meta">1★ · Google Play · Slack · 2026-02-18</span><br>"why is it so hard to keep the delete message option in a chat app, you manage to lose it almost every other month"</div><div class="quote"><span class="quote-meta">2★ · Google Play · Slack · 2026-02-11</span><br>"Very buggy, slow, overcomplicated and does not work on older android phones."</div><div class="quote"><span class="quote-meta">1★ · Google Play · Slack · 2026-02-10</span><br>"Its confusing when connecting to a store with the multiple loops you jump through just to join a team that's already established."</div></div>
+      <div class="scores-bar">
+        <div class="score-item"><span>Pain</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Budget</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Distribution</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Defensible</span><div class="bar"><div class="fill" style="width:20%"></div></div><span>1</span></div>
+        <div class="score-item"><span>Simplicity</span><div class="bar"><div class="fill" style="width:60%"></div></div><span>3</span></div>
+        <div class="score-item"><span>Solo Fit</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+        <div class="score-item"><span>Speed</span><div class="bar"><div class="fill" style="width:40%"></div></div><span>2</span></div>
+      </div>
+    </div>
+  </div>
+
+<h2>📊 Raw Scrape Data</h2>
+<table>
+<thead><tr><th>App</th><th>Google Play</th><th>App Store</th><th>Total</th><th>Negative (1-2★)</th><th>% Negative</th><th>Complaint Categories</th><th>Status</th></tr></thead>
+<tbody><tr>
+    <td>DocuSign</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>25</td>
+    <td>13%</td>
+    <td>BUGS: 18, COMPLEXITY: 5, MISSING_FEATURE: 4, PRICING: 3, SUPPORT: 2</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Slack</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>87</td>
+    <td>44%</td>
+    <td>BUGS: 65, COMPLEXITY: 13, MISSING_FEATURE: 9, PRICING: 5, SUPPORT: 2</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Jira</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>64</td>
+    <td>43%</td>
+    <td>BUGS: 50, SUPPORT: 10, MISSING_FEATURE: 5, COMPLEXITY: 5, PRICING: 4</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Asana</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>111</td>
+    <td>56%</td>
+    <td>BUGS: 70, MISSING_FEATURE: 28, PRICING: 12, SUPPORT: 12, COMPLEXITY: 7</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Monday</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>62</td>
+    <td>41%</td>
+    <td>BUGS: 47, MISSING_FEATURE: 13, PRICING: 7, COMPLEXITY: 7, SUPPORT: 5</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>QuickBooks</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>80</td>
+    <td>53%</td>
+    <td>BUGS: 55, PRICING: 25, SUPPORT: 15, MISSING_FEATURE: 8, COMPLEXITY: 3</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>HubSpot</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>94</td>
+    <td>47%</td>
+    <td>BUGS: 69, MISSING_FEATURE: 21, SUPPORT: 14, PRICING: 8, COMPLEXITY: 4</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Salesforce</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>53</td>
+    <td>27%</td>
+    <td>BUGS: 38, MISSING_FEATURE: 9, PRICING: 7, SUPPORT: 5, COMPLEXITY: 4</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Zendesk</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>86</td>
+    <td>57%</td>
+    <td>BUGS: 56, SUPPORT: 31, MISSING_FEATURE: 16, PRICING: 4, COMPLEXITY: 2</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Freshdesk</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>38</td>
+    <td>25%</td>
+    <td>BUGS: 24, SUPPORT: 14, MISSING_FEATURE: 7, PRICING: 1, COMPLEXITY: 0</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Notion</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>52</td>
+    <td>26%</td>
+    <td>BUGS: 40, PRICING: 8, MISSING_FEATURE: 8, COMPLEXITY: 8, SUPPORT: 3</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Airtable</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>84</td>
+    <td>42%</td>
+    <td>BUGS: 66, MISSING_FEATURE: 17, COMPLEXITY: 8, SUPPORT: 6, PRICING: 3</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Trello</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>78</td>
+    <td>39%</td>
+    <td>BUGS: 52, MISSING_FEATURE: 16, PRICING: 14, SUPPORT: 10, COMPLEXITY: 6</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Calendly</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>81</td>
+    <td>41%</td>
+    <td>BUGS: 62, SUPPORT: 15, COMPLEXITY: 11, MISSING_FEATURE: 9, PRICING: 8</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Loom</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>72</td>
+    <td>48%</td>
+    <td>BUGS: 62, MISSING_FEATURE: 15, PRICING: 6, SUPPORT: 2, COMPLEXITY: 1</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Expensify</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>133</td>
+    <td>67%</td>
+    <td>BUGS: 101, MISSING_FEATURE: 22, COMPLEXITY: 18, PRICING: 14, SUPPORT: 11</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Zapier</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td>0%</td>
+    <td>PRICING: 0, MISSING_FEATURE: 0, COMPLEXITY: 0, BUGS: 0, SUPPORT: 0</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>PagerDuty</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>82</td>
+    <td>55%</td>
+    <td>BUGS: 69, MISSING_FEATURE: 11, SUPPORT: 6, COMPLEXITY: 2, PRICING: 1</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>1Password</td>
+    <td>150</td>
+    <td>50</td>
+    <td>200</td>
+    <td>109</td>
+    <td>55%</td>
+    <td>BUGS: 74, PRICING: 26, MISSING_FEATURE: 24, SUPPORT: 15, COMPLEXITY: 9</td>
+    <td>✅</td>
+  </tr><tr>
+    <td>Intercom</td>
+    <td>150</td>
+    <td>0</td>
+    <td>150</td>
+    <td>105</td>
+    <td>70%</td>
+    <td>BUGS: 86, MISSING_FEATURE: 15, SUPPORT: 10, PRICING: 7, COMPLEXITY: 3</td>
+    <td>✅</td>
+  </tr></tbody>
+</table>
+
+<h2>📝 Methodology</h2>
+<div class="methodology">
+<p><strong>Data Collection (Feb 25, 2026):</strong></p>
+<ul style="margin: 8px 0 8px 20px;">
+<li>Scraped 20 B2B SaaS apps using <code>google-play-scraper</code> and <code>app-store-scraper</code> npm packages</li>
+<li>Google Play: up to 150 most recent reviews per app, sorted by newest</li>
+<li>App Store: up to 50 most recent reviews per app (US store), sorted by recent</li>
+<li>Filtered for 1-2 star reviews only</li>
+<li>Note: App Store scraper returned 0 results for some apps (Jira, Monday, Zendesk, Freshdesk, Loom, Zapier, PagerDuty, Intercom) — likely API/regional limitations</li>
+<li>Zapier's Google Play app returned 0 reviews (app may be too new or delisted)</li>
+</ul>
+<p><strong>Categorization:</strong> Each negative review was auto-categorized via keyword matching into: PRICING, MISSING_FEATURE, COMPLEXITY, BUGS, SUPPORT. Reviews can match multiple categories. Default category is BUGS if no keywords match.</p>
+<p><strong>Scoring:</strong> Each opportunity scored 1-5 on 7 dimensions (35 max) with a solo-founder lens: penalizing network effects, enterprise sales, and regulatory complexity; rewarding self-serve distribution, simple MVPs, and quick time-to-revenue.</p>
+<p><strong>Limitations:</strong> Keyword-based categorization is imperfect. Review samples are recent but not exhaustive. App Store data was incomplete for several apps. Quotes are real but represent a snapshot in time.</p>
+</div>
+
+<script>
+function sortTable(col, type) {
+  const table = document.getElementById('scoreTable');
+  const tbody = table.querySelector('tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const dir = table.dataset.sortCol == col && table.dataset.sortDir == 'asc' ? 'desc' : 'asc';
+  table.dataset.sortCol = col;
+  table.dataset.sortDir = dir;
+  rows.sort((a, b) => {
+    let va = a.cells[col].textContent.trim();
+    let vb = b.cells[col].textContent.trim();
+    if (type === 'num') { va = parseFloat(va) || 0; vb = parseFloat(vb) || 0; }
+    if (va < vb) return dir === 'asc' ? -1 : 1;
+    if (va > vb) return dir === 'asc' ? 1 : -1;
+    return 0;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+</script>
+</body>
+</html>
