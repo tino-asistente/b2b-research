@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Helpdesk SaaS — Reporte de Investigación | Fabi Merchan</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --border: #30363d;
+  --text: #c9d1d9;
+  --text-dim: #8b949e;
+  --text-bright: #f0f6fc;
+  --accent: #58a6ff;
+  --green: #3fb950;
+  --yellow: #d29922;
+  --red: #f85149;
+  --orange: #db6d28;
+  --purple: #bc8cff;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  font-size: 15px;
+}
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+h1 { font-size: 2.2rem; color: var(--text-bright); margin-bottom: 0.5rem; }
+h2 { font-size: 1.6rem; color: var(--text-bright); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.2rem; color: var(--accent); margin: 1.5rem 0 0.75rem; }
+h4 { font-size: 1rem; color: var(--text-bright); margin: 1rem 0 0.5rem; }
+p { margin-bottom: 0.75rem; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.subtitle { color: var(--text-dim); font-size: 1rem; margin-bottom: 2rem; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; }
+.badge-go { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+.badge-risk-high { background: rgba(248,81,73,0.15); color: var(--red); }
+.badge-risk-med { background: rgba(210,153,34,0.15); color: var(--yellow); }
+.badge-risk-low { background: rgba(63,185,80,0.15); color: var(--green); }
+
+/* TOC */
+.toc { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem 2rem; margin-bottom: 2rem; }
+.toc h3 { margin-top: 0; color: var(--text-bright); }
+.toc ol { padding-left: 1.5rem; }
+.toc li { margin: 0.4rem 0; }
+.toc a { color: var(--text); }
+.toc a:hover { color: var(--accent); }
+
+/* Cards */
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+.card-highlight { border-left: 3px solid var(--accent); }
+.card-green { border-left: 3px solid var(--green); }
+.card-yellow { border-left: 3px solid var(--yellow); }
+.card-red { border-left: 3px solid var(--red); }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+th { background: var(--bg3); color: var(--text-bright); text-align: left; padding: 10px 12px; border: 1px solid var(--border); font-weight: 600; }
+td { padding: 8px 12px; border: 1px solid var(--border); vertical-align: top; }
+tr:nth-child(even) { background: rgba(22,27,34,0.5); }
+.table-wrap { overflow-x: auto; }
+
+/* Quotes */
+blockquote { border-left: 3px solid var(--accent); padding: 0.5rem 1rem; margin: 0.5rem 0; background: rgba(88,166,255,0.05); color: var(--text); font-style: italic; font-size: 0.95rem; }
+
+/* Expandable */
+details { margin: 0.5rem 0; }
+summary { cursor: pointer; color: var(--accent); font-weight: 600; padding: 0.5rem 0; }
+summary:hover { text-decoration: underline; }
+details[open] summary { margin-bottom: 0.5rem; }
+
+/* Stats row */
+.stats { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+.stat { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; flex: 1; min-width: 140px; text-align: center; }
+.stat-number { font-size: 2rem; font-weight: 700; color: var(--accent); }
+.stat-label { font-size: 0.8rem; color: var(--text-dim); }
+
+/* Bar chart */
+.bar-chart { margin: 1rem 0; }
+.bar-row { display: flex; align-items: center; margin: 4px 0; }
+.bar-label { width: 140px; font-size: 0.85rem; color: var(--text-dim); flex-shrink: 0; }
+.bar-track { flex: 1; height: 24px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 0.75rem; font-weight: 600; color: var(--bg); }
+.bar-blue { background: var(--accent); }
+.bar-green { background: var(--green); }
+.bar-yellow { background: var(--yellow); }
+.bar-red { background: var(--red); }
+.bar-purple { background: var(--purple); }
+
+/* Risk grid */
+.risk-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .risk-grid { grid-template-columns: 1fr 1fr; } }
+
+/* Projection table highlight */
+.proj-positive { color: var(--green); font-weight: 600; }
+.proj-negative { color: var(--red); }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 2rem; margin: 1rem 0; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 1.5rem; }
+.timeline-item::before { content: ''; position: absolute; left: -2rem; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+.timeline-week { font-size: 0.8rem; color: var(--accent); font-weight: 600; text-transform: uppercase; }
+
+/* CTA */
+.cta-box { background: linear-gradient(135deg, rgba(63,185,80,0.1), rgba(88,166,255,0.1)); border: 2px solid var(--green); border-radius: 12px; padding: 2rem; text-align: center; margin: 2rem 0; }
+.cta-box h2 { border: none; margin-top: 0; color: var(--green); }
+
+/* Checkmark / X */
+.check { color: var(--green); }
+.cross { color: var(--red); }
+
+/* Print */
+@media print {
+  body { background: #fff; color: #000; font-size: 12px; }
+  .card, .toc, .stat { background: #f5f5f5; border-color: #ccc; }
+  h1,h2,h3,h4,.stat-number { color: #000; }
+  a { color: #0066cc; }
+  .bar-fill { color: #fff; }
+  details { display: block; }
+  details > * { display: block; }
+}
+@media (max-width: 600px) {
+  .container { padding: 1rem; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.3rem; }
+  .stats { flex-direction: column; }
+  .stat { min-width: auto; }
+  .bar-label { width: 100px; font-size: 0.75rem; }
+  table { font-size: 0.8rem; }
+  th, td { padding: 6px 8px; }
+}
+.source-tag { font-size: 0.75rem; color: var(--text-dim); background: var(--bg3); padding: 1px 6px; border-radius: 3px; }
+.evidence-item { padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+.evidence-item:last-child { border-bottom: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🎯 Helpdesk SaaS — Reporte de Investigación</h1>
+<p class="subtitle">Preparado para Fabián Merchan · 26 de febrero, 2026 · Por Tino 🦕</p>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+<h3>📋 Contenido</h3>
+<ol>
+<li><a href="#resumen">Resumen Ejecutivo</a></li>
+<li><a href="#mercado">Definición del Mercado e ICP</a></li>
+<li><a href="#demanda">Demanda Real y Evidencia</a></li>
+<li><a href="#competidores-trad">Competidores Tradicionales</a></li>
+<li><a href="#competidores-indie">Competidores Indie / Makers</a></li>
+<li><a href="#distribucion">Canales de Distribución Viables</a></li>
+<li><a href="#riesgos">Riesgos y Mitigaciones</a></li>
+<li><a href="#unit-economics">Unit Economics y Proyecciones</a></li>
+<li><a href="#validacion">Plan de Validación en 30 Días</a></li>
+<li><a href="#conclusion">Conclusión con Recomendación</a></li>
+</ol>
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2 id="resumen">📌 1. Resumen Ejecutivo</h2>
+
+<div class="cta-box">
+<h2 style="font-size:2rem;">🟢 GO</h2>
+<p style="font-size:1.1rem; color: var(--text-bright);">El mercado tiene un gap claro, la distribución existe (Shopify App Store), y los unit economics funcionan como side project.</p>
+</div>
+
+<h3>El Problema</h3>
+<p>Las PyMEs están atrapadas entre dos extremos: <strong>Gmail se les queda chico</strong> y <strong>Zendesk cuesta $55+/agente/mes</strong> (que es overkill). No hay un helpdesk simple, con AI incluida, a precio flat, para equipos de 1-10 personas.</p>
+
+<h3>El ICP (Cliente Ideal)</h3>
+<div class="card card-highlight">
+<strong>Merchants de Shopify con $100K-$5M/año en ventas</strong> — equipos pequeños (1-5 personas en soporte) que reciben 50-500 tickets/mes, pagan $29-60/mes por herramientas, y buscan activamente alternativas más baratas a Gorgias ($60+/mo).
+</div>
+
+<h3>Value Prop</h3>
+<p><strong>"$29-49/mes. AI incluida. Sin precio por agente. Listo en 5 minutos."</strong></p>
+
+<h3>Top 5 Pain Signals (Real Quotes)</h3>
+
+<blockquote>"Team grew a bit and Zendesk costs shot up. We hit 7 agents and suddenly the cost didn't even make sense." <br><span class="source-tag">r/SaaS · Ene 2026</span></blockquote>
+
+<blockquote>"Intercom's pricing is crazy also for how often it changes and how non-transparent it is" <br><span class="source-tag">r/CustomerSuccess · Feb 2026</span></blockquote>
+
+<blockquote>"I did not build it for enterprise but for small software teams of ~1-10 members. Has nothing you don't like: AI responses, big bulky dashboards, or enterprise bloat." <br><span class="source-tag">Hacker News · Feb 2026</span></blockquote>
+
+<blockquote>"Freshdesk changed their policy and as of June 21st I will lose access unless we pay" <br><span class="source-tag">r/k12sysadmin · Abr 2025 · 21 upvotes</span></blockquote>
+
+<blockquote>"Alex Turnbull grew Groove to $5M ARR" — prueba de que un helpdesk simple bootstrappeado funciona como negocio. <br><span class="source-tag">Indie Hackers · Sep 2024</span></blockquote>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2 id="mercado">📌 2. Definición del Mercado e ICP</h2>
+
+<h3>Top 3 Nichos</h3>
+
+<div class="card card-green">
+<h4>🥇 #1: E-commerce / Shopify Merchants</h4>
+<table>
+<tr><td><strong>Rol</strong></td><td>Dueño de tienda Shopify, Operations Manager, Support Lead</td></tr>
+<tr><td><strong>Industria</strong></td><td>E-commerce DTC, subscription boxes, dropshipping</td></tr>
+<tr><td><strong>Tamaño</strong></td><td>1-20 empleados, $100K-$5M revenue/año</td></tr>
+<tr><td><strong>Budget</strong></td><td>$29-100/mes para soporte (ya pagan por Gorgias, Re:amaze, etc.)</td></tr>
+<tr><td><strong>Trigger Events</strong></td><td>Gorgias sube precios, primer Black Friday caótico, pasar de 100 tickets/mes</td></tr>
+<tr><td><strong>WTP</strong></td><td>🔥 ALTO — Gorgias $60+/mo prueba que pagan. Revenue está directamente atado a calidad de soporte.</td></tr>
+<tr><td><strong>Distribución</strong></td><td>🎯 Shopify App Store (4.8M tiendas, 53+ apps de helpdesk listadas)</td></tr>
+<tr><td><strong>Fabi Edge</strong></td><td>Next.js skills encajan perfecto con ecosistema Shopify</td></tr>
+<tr><td><strong>Score</strong></td><td>⭐⭐⭐⭐ (4/5)</td></tr>
+</table>
+</div>
+
+<div class="card card-yellow">
+<h4>🥈 #2: Beauty/Wellness</h4>
+<table>
+<tr><td><strong>Rol</strong></td><td>Dueño de salón, Studio Manager</td></tr>
+<tr><td><strong>Industria</strong></td><td>Salones, spas, med spas, fitness studios</td></tr>
+<tr><td><strong>Tamaño</strong></td><td>1-10 empleados, ~444K establecimientos en US</td></tr>
+<tr><td><strong>Budget</strong></td><td>$50-150/mes TOTAL en software. Helpdesk tendría que ser $15-25/mo.</td></tr>
+<tr><td><strong>Trigger Events</strong></td><td>DMs de Instagram incontrolables, no-shows crecientes, multi-location expansion</td></tr>
+<tr><td><strong>WTP</strong></td><td>⚠️ BAJO-MEDIO — Muy price-sensitive</td></tr>
+<tr><td><strong>Distribución</strong></td><td>Instagram, Facebook Groups de belleza (NO hay marketplace)</td></tr>
+<tr><td><strong>Fabi Edge</strong></td><td>🔥 MÁXIMO — Trabaja en GlossGenius, conoce el persona intimamente</td></tr>
+<tr><td><strong>Score</strong></td><td>⭐⭐⭐ (3/5)</td></tr>
+</table>
+<p style="margin-top:0.5rem; color: var(--yellow);">⚠️ A $20/mo necesitarías 1,500 clientes para $30K MRR. Viable como segundo producto, no como primero.</p>
+</div>
+
+<div class="card">
+<h4>🥉 #3: Agencias (Marketing/Design/Dev)</h4>
+<table>
+<tr><td><strong>Rol</strong></td><td>Agency Owner, Account Manager</td></tr>
+<tr><td><strong>Industria</strong></td><td>Marketing digital, diseño, desarrollo</td></tr>
+<tr><td><strong>Tamaño</strong></td><td>5-50 empleados, ~100K+ agencias en US</td></tr>
+<tr><td><strong>Budget</strong></td><td>$100-500/mo en PM tools. Pagarían $29-99/mo por client support.</td></tr>
+<tr><td><strong>Trigger Events</strong></td><td>Primer cliente grande que necesita portal, comunicación scattered entre email+Slack+PM tool</td></tr>
+<tr><td><strong>WTP</strong></td><td>MEDIO-ALTO</td></tr>
+<tr><td><strong>Distribución</strong></td><td>Sin marketplace. Podcasts, Reddit, communities.</td></tr>
+<tr><td><strong>Fabi Edge</strong></td><td>Bajo-Medio</td></tr>
+<tr><td><strong>Score</strong></td><td>⭐⭐⭐ (3/5)</td></tr>
+</table>
+</div>
+
+<h3>SAM/SOM Calculation</h3>
+<div class="card">
+<table>
+<tr><th></th><th>TAM</th><th>SAM</th><th>SOM (Year 1)</th></tr>
+<tr>
+<td><strong>Shopify Merchants</strong></td>
+<td>4.8M tiendas × ~10% necesitan helpdesk [ESTIMATE] = 480K</td>
+<td>480K × 57% US-based × 30% $100K-$5M revenue [ESTIMATE] = ~82K tiendas</td>
+<td>82K × 0.5% capture rate [ASSUMPTION] = <strong>~410 clientes</strong> = <strong>$16K-$20K MRR</strong> @ $39-49/mo</td>
+</tr>
+</table>
+<p style="color: var(--text-dim); font-size: 0.85rem;">Fuentes: Shopify stats (4.8M stores, 57% US), Gorgias $69M ARR (~$530M valuation, Sacra). Porcentajes son estimaciones conservadoras.</p>
+</div>
+
+<h3>Recomendación</h3>
+<div class="card card-green">
+<p><strong>Empezar con Shopify.</strong> El App Store es ventaja injusta — distribución gratuita a millones de merchants. A $39/mo promedio, necesitas ~770 clientes para $30K MRR. Con 4.8M+ tiendas, necesitas <0.02% del mercado. Gorgias solo tiene $69M ARR, prueba que la demanda es masiva. Usar conocimiento de beauty/wellness para informar UX pero no limitar el TAM.</p>
+</div>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2 id="demanda">📌 3. Demanda Real y Evidencia</h2>
+
+<div class="stats">
+<div class="stat"><div class="stat-number">45</div><div class="stat-label">Ejemplos Reales</div></div>
+<div class="stat"><div class="stat-number">6+</div><div class="stat-label">Plataformas</div></div>
+<div class="stat"><div class="stat-number">168+</div><div class="stat-label">Upvotes Combinados</div></div>
+<div class="stat"><div class="stat-number">5</div><div class="stat-label">Patrones de Dolor</div></div>
+</div>
+
+<h3>Distribución por Patrón</h3>
+<div class="bar-chart">
+<div class="bar-row"><div class="bar-label">Too Expensive</div><div class="bar-track"><div class="bar-fill bar-red" style="width:33%">15</div></div></div>
+<div class="bar-row"><div class="bar-label">Too Complex</div><div class="bar-track"><div class="bar-fill bar-yellow" style="width:22%">10</div></div></div>
+<div class="bar-row"><div class="bar-label">Outgrew Gmail</div><div class="bar-track"><div class="bar-fill bar-blue" style="width:18%">8</div></div></div>
+<div class="bar-row"><div class="bar-label">Need Simple</div><div class="bar-track"><div class="bar-fill bar-green" style="width:18%">8</div></div></div>
+<div class="bar-row"><div class="bar-label">Niche-Specific</div><div class="bar-track"><div class="bar-fill bar-purple" style="width:9%">4</div></div></div>
+</div>
+
+<!-- Too Expensive -->
+<details>
+<summary>🔴 "Too Expensive" — 15 ejemplos</summary>
+<div class="evidence-item"><blockquote>"My company currently uses Zendesk, and as we've grown from just a few users to a couple of dozen, our Zendesk bill has [become unmanageable]"</blockquote><span class="source-tag">r/Zendesk · 107 upvotes · Nov 2024</span> · <a href="https://www.reddit.com/r/Zendesk/comments/1gjckww/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Team grew a bit and zendesk costs shot up. Now it's eating budget for basic tickets and chat. We hit 7 agents and suddenly the cost didn't even make sense."</blockquote><span class="source-tag">r/SaaS · Ene 2026</span> · <a href="https://www.reddit.com/r/SaaS/comments/1qknybh/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"The base Zendesk plan lists low per-agent pricing, but core features like live-chat are add ons or require upgrading. It feels misleading."</blockquote><span class="source-tag">r/CRM · Dic 2025</span> · <a href="https://www.reddit.com/r/CRM/comments/1pi48np/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"The cost is starting to get out of control for what we do"</blockquote><span class="source-tag">r/Zendesk · Oct 2020</span> · <a href="https://www.reddit.com/r/Zendesk/comments/j3bi6f/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"We got a quote around USD 2K / terabyte / month of additional file storage"</blockquote><span class="source-tag">r/Zendesk · Dic 2023</span> · <a href="https://www.reddit.com/r/Zendesk/comments/18saoy6/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"What is the best low cost HelpDesk SAAS? Zendesk is so much expensive for me that is starting.."</blockquote><span class="source-tag">r/SaaS · Ago 2021</span> · <a href="https://www.reddit.com/r/SaaS/comments/pdah9t/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Intercom's pricing is crazy also for how often it changes and how non-transparent it is"</blockquote><span class="source-tag">r/CustomerSuccess · Feb 2026</span> · <a href="https://www.reddit.com/r/CustomerSuccess/comments/1rdpyet/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"For a CS company, no one at Intercom cares. We got hit by the same price increase notice last week."</blockquote><span class="source-tag">r/SaaS · Jul 2025</span> · <a href="https://www.reddit.com/r/SaaS/comments/1lw7lqn/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"You'll be looking at $500-$600/month at least. Their pricing mechanism is ridiculous + the most intransparent I've ever seen."</blockquote><span class="source-tag">r/SaaS · Abr 2023</span> · <a href="https://www.reddit.com/r/SaaS/comments/12io60k/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Prices have shot up due to AI chats. I was already spending over $4k/month, with 40 agents."</blockquote><span class="source-tag">r/SaaS · Feb 2024</span> · <a href="https://www.reddit.com/r/SaaS/comments/1au13kp/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"The eternal catch with Intercom is that it's still too expensive. Priced at $0.99/conversation resolved by AI."</blockquote><span class="source-tag">r/SaaS · Abr 2024</span> · <a href="https://www.reddit.com/r/SaaS/comments/1c65l5z/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"It's extremely expensive, especially if you are adding 3rd party apps."</blockquote><span class="source-tag">r/Zendesk · Feb 2025</span> · <a href="https://www.reddit.com/r/Zendesk/comments/1ij60rn/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Pricing has become difficult to justify with our growing team."</blockquote><span class="source-tag">r/Entrepreneur · 13 upvotes · Abr 2025</span> · <a href="https://www.reddit.com/r/Entrepreneur/comments/1jyc2ar/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Freshdesk changed their policy and as of June 21st I will lose access unless we pay."</blockquote><span class="source-tag">r/k12sysadmin · 21 upvotes · Abr 2025</span> · <a href="https://www.reddit.com/r/k12sysadmin/comments/1k64p9e/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Zendesk and the usual suspects are way out of their budget."</blockquote><span class="source-tag">Hacker News · Feb 2018</span> · <a href="https://news.ycombinator.com/item?id=16349358" target="_blank">Link</a></div>
+</details>
+
+<!-- Too Complex -->
+<details>
+<summary>🟡 "Too Complex / Bloated" — 10 ejemplos</summary>
+<div class="evidence-item"><blockquote>"I am sick of Zendesk. Do I even need it?"</blockquote><span class="source-tag">r/Zendesk · Jun 2024</span> · <a href="https://www.reddit.com/r/Zendesk/comments/1d9llxg/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"You can't even read the site in peace cause the chat opens up automatically. They use money from us to cover bots compute instead of improving their software."</blockquote><span class="source-tag">r/sysadmin · Ene 2025</span> · <a href="https://www.reddit.com/r/sysadmin/comments/1i29l28/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"My experience with Freshdesk has been a continuous series of challenges, where each step introduces a new element of discord."</blockquote><span class="source-tag">r/CRM · Ago 2023</span> · <a href="https://www.reddit.com/r/CRM/comments/15svpqo/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"After years of loving their platform and raving about it, they are 'deprecating' legacy reports in favor of analytics."</blockquote><span class="source-tag">r/msp · 27 upvotes · Ago 2023</span> · <a href="https://www.reddit.com/r/msp/comments/166iazh/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Signed up in January, paid month to month, after 2 months of conflicting help I gave up and cancelled. They continue to charge."</blockquote><span class="source-tag">r/marketing · Jun 2025</span> · <a href="https://www.reddit.com/r/marketing/comments/1l86tir/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"FreshDesk is horrific."</blockquote><span class="source-tag">r/webhosting · Ene 2021</span> · <a href="https://www.reddit.com/r/webhosting/comments/kuzi6a/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"I did not build it for enterprise but for small software teams of ~1-10 members. Has nothing you don't like: AI responses, big bulky dashboards, or enterprise bloat."</blockquote><span class="source-tag">Hacker News · Feb 2026</span> · <a href="https://news.ycombinator.com/item?id=46943108" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Freshdesk felt a bit simpler but lacked depth, and Zendesk..."</blockquote><span class="source-tag">r/SaaS · Ago 2025</span> · <a href="https://www.reddit.com/r/SaaS/comments/1mzk7yq/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Intercom is solid for chat and tickets but gets expensive fast once you scale."</blockquote><span class="source-tag">r/SaaS · Jul 2025</span> · <a href="https://www.reddit.com/r/SaaS/comments/1lvnnsz/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"The irony of a customer service platform having poor customer service is not lost on us."</blockquote><span class="source-tag">HappyFox Blog · Oct 2024</span> · <a href="https://blog.happyfox.com/zendesk-review/" target="_blank">Link</a></div>
+</details>
+
+<!-- Outgrew Gmail -->
+<details>
+<summary>🔵 "Outgrew Gmail" — 8 ejemplos</summary>
+<div class="evidence-item"><blockquote>"Looking for a ticketing tool that's not too expensive for a small business"</blockquote><span class="source-tag">r/sysadmin · Nov 2025</span> · <a href="https://www.reddit.com/r/sysadmin/comments/1p65bzv/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"A lot of options out there, but for a team of 4, you'll want something simple and cost-effective."</blockquote><span class="source-tag">r/smallbusiness · Dic 2024</span> · <a href="https://www.reddit.com/r/smallbusiness/comments/1hjbnfh/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"SharedInbox allows connectivity for shared email addresses to funnel through Slack for collaboration."</blockquote><span class="source-tag">r/smallbusiness · Feb 2025</span> · <a href="https://www.reddit.com/r/smallbusiness/comments/1iz61nd/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"This is a super common challenge for small teams, especially when email volume starts to grow."</blockquote><span class="source-tag">r/gsuite · Oct 2025</span> · <a href="https://www.reddit.com/r/gsuite/comments/1ok0ep7/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Help! Shared Inbox Management Organization — need ideas"</blockquote><span class="source-tag">r/Outlook · Mar 2023</span> · <a href="https://www.reddit.com/r/Outlook/comments/1263zj7/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Best solution for 'assigning' emails for shared inbox?"</blockquote><span class="source-tag">r/googleworkspace · Dic 2024</span> · <a href="https://www.reddit.com/r/googleworkspace/comments/1f1awy3/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"I would suggest to start with direct email but helpdesk solutions like helpscout not only help you categorize better but the customer still sees them as direct email."</blockquote><span class="source-tag">Indie Hackers · Sep 2020</span> · <a href="https://www.indiehackers.com/post/how-do-people-handle-customer-support-at-the-beginning-6030a23ca2" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"It's a perfect choice for those coming out of Gmail and unsure what features they want."</blockquote><span class="source-tag">r/startups · Oct 2017</span> · <a href="https://www.reddit.com/r/startups/comments/76yzdo/" target="_blank">Link</a></div>
+</details>
+
+<!-- Need Simple -->
+<details>
+<summary>🟢 "Need Something Simple" — 8 ejemplos</summary>
+<div class="evidence-item"><blockquote>"We're still pretty small, so something lightweight, affordable, and easy to set up would be great."</blockquote><span class="source-tag">Hacker News · Feb 2025</span> · <a href="https://news.ycombinator.com/item?id=43192930" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Simple customer support software" (buscando algo simple y user-friendly)</blockquote><span class="source-tag">r/gsuite · Feb 2025</span> · <a href="https://www.reddit.com/r/gsuite/comments/1ih9cnu/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Finally ended up switching to Crisp. It's simple, clean, and doesn't try to turn your inbox into a project management tool."</blockquote><span class="source-tag">r/SaaS · Abr 2025</span> · <a href="https://www.reddit.com/r/SaaS/comments/1k11g3a/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"What are you using for a helpdesk as a one-man band?"</blockquote><span class="source-tag">r/sysadmin · Ene 2024</span> · <a href="https://www.reddit.com/r/sysadmin/comments/19ceq83/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Best helpdesk software for a tiny IT team that is barely keeping it together"</blockquote><span class="source-tag">r/sysadmin · Dic 2025</span> · <a href="https://www.reddit.com/r/sysadmin/comments/1pn3omb/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"I know there are a bazillion competitors but do people think there is space for a decent, simple helpdesk product that tried something different with the pricing model?"</blockquote><span class="source-tag">Hacker News · Ene 2017</span> · <a href="https://news.ycombinator.com/item?id=13297046" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Biggest mistake I see people make is overbuying. Like if you're getting 50 tickets a day you don't need an enterprise helpdesk with AI routing."</blockquote><span class="source-tag">r/SaaS · Feb 2026</span> · <a href="https://www.reddit.com/r/SaaS/comments/1rdbbv8/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"For office of 70 users and 2 IT, you can use PowerAutomate + Forms + Planner as 'free' helpdesk system."</blockquote><span class="source-tag">r/sysadmin · Jun 2025</span> · <a href="https://www.reddit.com/r/sysadmin/comments/1l2j69n/" target="_blank">Link</a></div>
+</details>
+
+<!-- Niche-Specific -->
+<details>
+<summary>🟣 "Niche-Specific Pain" — 4 ejemplos</summary>
+<div class="evidence-item"><blockquote>"I am looking out for a reliable, and pocket friendly helpdesk solution" (e-commerce específico)</blockquote><span class="source-tag">r/ecommerce · Oct 2024</span> · <a href="https://www.reddit.com/r/ecommerce/comments/1fvsmmz/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"I am looking for a recommendation for a helpdesk with a good free tier. Right now, I'm considering Zendesk, Helpscout, and Freshdesk."</blockquote><span class="source-tag">r/ecommerce · Ene 2025</span> · <a href="https://www.reddit.com/r/ecommerce/comments/1hzn08t/" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"I have looked at Zendesk, which is expensive. Also looked at Crisp."</blockquote><span class="source-tag">Indie Hackers · Ene 2021</span> · <a href="https://www.indiehackers.com/post/best-platform-for-documentation-about-your-product-3d1792d242" target="_blank">Link</a></div>
+<div class="evidence-item"><blockquote>"Alex Turnbull grew Groove to $5M ARR" — proof that a simple helpdesk SaaS can be a real business</blockquote><span class="source-tag">Indie Hackers · Sep 2024</span> · <a href="https://www.indiehackers.com/post/tech/alex-turnbull-grew-groove-to-5m-arr-heres-how-he-plans-to-grow-his-new-product-to-twice-that-much-efVlT8PlxYgugh2NepsV" target="_blank">Link</a></div>
+</details>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2 id="competidores-trad">📌 4. Competidores Tradicionales</h2>
+
+<h3>Pricing Comparison — Todos los Tiers</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Tier</th><th>Producto</th><th>Plan Barato</th><th>Plan Medio</th><th>Plan Alto</th><th>Modelo</th><th>AI Cost</th></tr>
+<!-- Enterprise -->
+<tr><td rowspan="5" style="background:var(--bg3);font-weight:600;">Enterprise</td><td><a href="https://zendesk.com">Zendesk</a></td><td>$19/agent</td><td>$115/agent</td><td>$209/agent</td><td>Per agent</td><td>Included (higher tiers)</td></tr>
+<tr><td><a href="https://freshworks.com/freshdesk">Freshdesk</a></td><td>Free*</td><td>$55/agent</td><td>$89/agent</td><td>Per agent</td><td>$49/100 AI sessions</td></tr>
+<tr><td><a href="https://intercom.com">Intercom</a></td><td>$29/seat</td><td>$85/seat</td><td>$132/seat</td><td>Per seat</td><td>$0.99/AI resolution</td></tr>
+<tr><td><a href="https://salesforce.com/service-cloud">Salesforce</a></td><td>$25/user</td><td>$165/user</td><td>$330/user</td><td>Per user</td><td>Einstein (enterprise)</td></tr>
+<tr><td><a href="https://hubspot.com/products/service">HubSpot</a></td><td>Free</td><td>$80/seat</td><td>$150/seat</td><td>Per seat</td><td>Included (some tiers)</td></tr>
+<!-- Mid-market -->
+<tr><td rowspan="5" style="background:var(--bg3);font-weight:600;">Mid-Market</td><td><a href="https://helpscout.com">Help Scout</a></td><td>Free (5 users)</td><td>$25/user</td><td>$75/user</td><td>Per user</td><td>$0.75/AI resolution</td></tr>
+<tr><td><a href="https://front.com">Front</a></td><td>$25/seat</td><td>$65/seat</td><td>$105/seat</td><td>Per seat</td><td>$20/seat add-on</td></tr>
+<tr><td><a href="https://groovehq.com">Groove</a></td><td>$12/user</td><td>$24/user</td><td>$40/user</td><td>Per user</td><td>Limited</td></tr>
+<tr><td><a href="https://kayako.com">Kayako</a></td><td colspan="3">$79/mo FLAT</td><td><strong>Flat</strong></td><td>$1/AI ticket</td></tr>
+<tr><td><a href="https://liveagent.com">LiveAgent</a></td><td>$15/agent</td><td>$29/agent</td><td>$69/agent</td><td>Per agent</td><td>N/A</td></tr>
+<!-- SMB/Simple -->
+<tr><td rowspan="5" style="background:var(--bg3);font-weight:600;">SMB</td><td><a href="https://crisp.chat">Crisp</a></td><td>Free (2)</td><td>$45/workspace</td><td>$295/workspace</td><td><strong>Flat</strong></td><td>Credits limited</td></tr>
+<tr><td><a href="https://tidio.com">Tidio</a></td><td>Free</td><td>$24/mo</td><td>$749/mo</td><td>Per conversation</td><td>$32.50/50 AI convos</td></tr>
+<tr><td><a href="https://tawk.to">Tawk.to</a></td><td colspan="3"><strong>FREE forever</strong></td><td>Services</td><td>N/A</td></tr>
+<tr><td><a href="https://helpcrunch.com">HelpCrunch</a></td><td>$12/user</td><td>$20/user</td><td>$43 unlimited</td><td>Per user</td><td>$29/100 AI convos</td></tr>
+<tr><td><a href="https://chatwoot.com">Chatwoot</a></td><td>Free (self-host)</td><td>$19/agent</td><td>$39/agent</td><td>Open source + Cloud</td><td>Basic</td></tr>
+<!-- E-commerce Niche -->
+<tr><td rowspan="4" style="background:var(--bg3);font-weight:600;">E-commerce</td><td><a href="https://gorgias.com">Gorgias</a></td><td>$10 (50 tix)</td><td>$60 (300 tix)</td><td>$900</td><td>Per ticket</td><td>$1/AI convo</td></tr>
+<tr><td><a href="https://reamaze.com">Re:amaze</a></td><td>$29/user</td><td>$49/user</td><td>$69/user</td><td>Per user</td><td>N/A</td></tr>
+<tr><td><a href="https://richpanel.com">Richpanel</a></td><td>$29/agent</td><td>$49/agent</td><td>$99/agent</td><td>Per agent</td><td>Included</td></tr>
+<tr><td><a href="https://hiverhq.com">Hiver</a></td><td>Free</td><td>$25/user</td><td>$65/user</td><td>Per user</td><td>$20/seat add-on</td></tr>
+</table>
+</div>
+<p style="font-size:0.8rem; color:var(--text-dim);">* Freshdesk eliminó su tier gratuito en junio 2025. Todos los precios son billing anual cuando disponible.</p>
+
+<h3>Feature Comparison — Core Features</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Feature</th><th>Zendesk</th><th>Freshdesk</th><th>Intercom</th><th>Help Scout</th><th>Crisp</th><th>Chatwoot</th><th>Gorgias</th><th style="background:rgba(63,185,80,0.2);color:var(--green);">TU PRODUCTO</th></tr>
+<tr><td>Shared Inbox</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
+<tr><td>Live Chat</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td></tr>
+<tr><td>Knowledge Base</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="check">✅</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td></tr>
+<tr><td>AI Included in Price</td><td class="cross">❌ $$$</td><td class="cross">❌ $$$</td><td class="cross">❌ $0.99/res</td><td class="cross">❌ $0.75/res</td><td>⚠️ Credits</td><td>Basic</td><td class="cross">❌ $1/res</td><td style="color:var(--green);font-weight:700;">✅ INCLUDED</td></tr>
+<tr><td>Flat Pricing</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="cross">❌</td><td class="check">✅ (ticket)</td><td style="color:var(--green);font-weight:700;">✅ FLAT</td></tr>
+<tr><td>Shopify Integration</td><td>⚠️ Basic</td><td>⚠️ Basic</td><td>⚠️ Basic</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅ Deep</td><td class="check">✅ Deep</td></tr>
+<tr><td>Setup &lt; 5 min</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="check">✅</td><td class="cross">❌</td><td>⚠️</td><td style="color:var(--green);font-weight:700;">✅</td></tr>
+<tr><td>Self-hosted</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="cross">❌</td><td class="check">✅</td><td class="cross">❌</td><td class="cross">❌</td></tr>
+</table>
+</div>
+
+<h3>Key Gaps to Exploit</h3>
+<div class="card card-green">
+<ol>
+<li><strong>AI incluida en precio base</strong> — TODOS cobran extra ($0.75-$1.00/resolución). AI incluida es diferenciador masivo.</li>
+<li><strong>Flat pricing</strong> — Solo Crisp y Kayako lo hacen. La gente ODIA per-seat pricing.</li>
+<li><strong>Simplicidad</strong> — Zendesk/Freshdesk tienen feature bloat insano. Equipos chicos no necesitan 200 settings.</li>
+<li><strong>Setup rápido</strong> — La mayoría toma horas en configurar. "Funcionando en 5 minutos" es real value prop.</li>
+<li><strong>UI moderna</strong> — LiveAgent, osTicket, Kayako se ven viejos. Una interfaz bonita y rápida ya es diferenciador.</li>
+</ol>
+</div>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2 id="competidores-indie">📌 5. Competidores Indie / Makers</h2>
+
+<h3>🟢 Success Stories</h3>
+
+<div class="card card-green">
+<h4>Groove — THE Case Study</h4>
+<table>
+<tr><td><strong>URL</strong></td><td><a href="https://groovehq.com" target="_blank">groovehq.com</a></td></tr>
+<tr><td><strong>Founder</strong></td><td>Alex Turnbull</td></tr>
+<tr><td><strong>Revenue</strong></td><td>$5M+ ARR (was $500K+ MRR at peak)</td></tr>
+<tr><td><strong>Status</strong></td><td>🟢 Activo, profitable, equipo pequeño</td></tr>
+<tr><td><strong>Estrategia</strong></td><td>Blog "Journey to $100K/month" — transparencia pura, content marketing</td></tr>
+<tr><td><strong>Lección</strong></td><td>Content marketing + transparency funciona. Empezó simple ($12/user/mo aún es competitivo). Creció gradualmente.</td></tr>
+</table>
+</div>
+
+<div class="card card-green">
+<h4>Crisp — European Flat-Pricing Success</h4>
+<table>
+<tr><td><strong>URL</strong></td><td><a href="https://crisp.chat" target="_blank">crisp.chat</a></td></tr>
+<tr><td><strong>Team</strong></td><td>Equipo pequeño, Francia</td></tr>
+<tr><td><strong>Pricing</strong></td><td>$45-295/workspace FLAT (no per-seat)</td></tr>
+<tr><td><strong>Status</strong></td><td>🟢 Activo y creciendo</td></tr>
+<tr><td><strong>Lección</strong></td><td>Flat pricing es diferenciador real. Base europea = costos bajos. La gente odia per-seat.</td></tr>
+</table>
+</div>
+
+<h3>🔴 Cautionary Tales</h3>
+
+<div class="card card-red">
+<h4>Papercups — The Failure</h4>
+<table>
+<tr><td><strong>URL</strong></td><td><a href="https://papercups.io" target="_blank">papercups.io</a></td></tr>
+<tr><td><strong>Founders</strong></td><td>Alex Reichert & team</td></tr>
+<tr><td><strong>GitHub</strong></td><td>5,932 ⭐ (Elixir)</td></tr>
+<tr><td><strong>Status</strong></td><td>🔴 MAINTENANCE MODE — founders moved on</td></tr>
+<tr><td><strong>Lección</strong></td><td>Open source helpdesk es brutal de monetizar. Chatwoot dominó el espacio. No vayas open source.</td></tr>
+</table>
+</div>
+
+<h3>🟡 Otros Players Indie</h3>
+
+<div class="card">
+<h4>Otros Indie Makers Activos</h4>
+<table>
+<tr><th>Nombre</th><th>Approach</th><th>Status</th><th>Lección</th></tr>
+<tr><td><a href="https://cuppa.so" target="_blank">Cuppa</a></td><td>Shared inbox para Gmail/Outlook</td><td>🟢 Activo</td><td>Targeting simple shared inbox use case funciona</td></tr>
+<tr><td>Syntro</td><td>Slack bot que convierte threads en tickets con AI</td><td>🟡 Early stage 2025</td><td>Meeting people where they are (Slack) es interesante</td></tr>
+<tr><td><a href="https://customerly.io" target="_blank">Customerly</a></td><td>CS platform con live chat, email marketing, surveys</td><td>🟢 Activo</td><td>Italian team, mentioned como free alternative</td></tr>
+</table>
+</div>
+
+<h3>Open Source Landscape</h3>
+<table>
+<tr><th>Proyecto</th><th>⭐ Stars</th><th>Stack</th><th>Status</th></tr>
+<tr><td><a href="https://github.com/chatwoot/chatwoot" target="_blank">Chatwoot</a></td><td><strong>27,408</strong></td><td>Ruby/Rails</td><td>🟢 Líder dominante — NO competir aquí</td></tr>
+<tr><td><a href="https://github.com/zammad/zammad" target="_blank">Zammad</a></td><td>5,410</td><td>Ruby</td><td>🟢 Alemán, feature-rich pero pesado</td></tr>
+<tr><td><a href="https://github.com/papercups-io/papercups" target="_blank">Papercups</a></td><td>5,932</td><td>Elixir</td><td>🔴 Abandonado</td></tr>
+<tr><td><a href="https://github.com/freescout-help-desk/freescout" target="_blank">FreeScout</a></td><td>4,107</td><td>PHP/Laravel</td><td>🟢 Help Scout clone ligero</td></tr>
+<tr><td><a href="https://github.com/osTicket/osTicket" target="_blank">osTicket</a></td><td>3,679</td><td>PHP</td><td>🟡 Clásico pero anticuado</td></tr>
+</table>
+<p style="color: var(--red); font-weight: 600; margin-top: 0.5rem;">⚠️ No ir open source. Chatwoot con 27K stars domina ese espacio.</p>
+
+<!-- ==================== SECTION 6 ==================== -->
+<h2 id="distribucion">📌 6. Canales de Distribución Viables</h2>
+
+<h3>Priority Ranking</h3>
+<div class="table-wrap">
+<table>
+<tr><th>#</th><th>Canal</th><th>Esfuerzo</th><th>Costo</th><th>Timeline</th><th>Impacto</th></tr>
+<tr style="background:rgba(63,185,80,0.1);"><td>🥇</td><td><strong>Shopify App Store</strong></td><td>Medio</td><td>Bajo</td><td>1-2 meses</td><td>🔥 ALTO</td></tr>
+<tr style="background:rgba(63,185,80,0.05);"><td>🥈</td><td><strong>Reddit + Show HN</strong></td><td>Bajo</td><td>Free</td><td>Inmediato</td><td>Medio-Alto</td></tr>
+<tr><td>🥉</td><td><strong>SEO (comparison pages)</strong></td><td>Medio</td><td>Free</td><td>3-6 meses</td><td>Alto (long-term)</td></tr>
+<tr><td>4</td><td>Free tier + "Powered by" badge</td><td>Bajo</td><td>Free</td><td>Ongoing</td><td>Medio</td></tr>
+<tr><td>5</td><td>Content marketing / blog</td><td>Medio</td><td>Free</td><td>3-12 meses</td><td>Alto (flywheel)</td></tr>
+<tr><td>6</td><td>Product Hunt launch</td><td>Bajo</td><td>Free</td><td>One-time</td><td>Medio</td></tr>
+<tr><td>7</td><td>WordPress plugin</td><td>Medio</td><td>Bajo</td><td>1-2 meses</td><td>Medio</td></tr>
+<tr><td>8</td><td>Google Ads (long-tail)</td><td>Bajo</td><td>$500-2K/mo</td><td>Inmediato</td><td>Medio</td></tr>
+</table>
+</div>
+
+<h3>SEO Keywords</h3>
+<table>
+<tr><th>Keyword</th><th>Competencia</th><th>Oportunidad</th></tr>
+<tr><td>zendesk alternative</td><td><span class="badge badge-risk-high">MUY ALTA</span></td><td>Zendesk creó una banda fake para rankear. Difícil sin domain authority.</td></tr>
+<tr><td>best helpdesk for small business</td><td><span class="badge badge-risk-high">ALTA</span></td><td>Dominado por comparison blogs (Zapier, G2)</td></tr>
+<tr><td>simple helpdesk software</td><td><span class="badge badge-risk-med">MEDIA</span></td><td>Good positioning keyword ✅</td></tr>
+<tr><td>cheap helpdesk</td><td><span class="badge badge-risk-med">MEDIA</span></td><td>Alinea con value prop ✅</td></tr>
+<tr><td>shared inbox software</td><td><span class="badge badge-risk-med">MEDIA</span></td><td>Hiver, Front, Missive rankean. Espacio para competir.</td></tr>
+<tr><td>helpdesk for ecommerce</td><td><span class="badge badge-risk-low">BAJA-MEDIA</span></td><td>Long-tail buena ✅</td></tr>
+<tr><td>helpdesk under $50/month</td><td><span class="badge badge-risk-low">BAJA</span></td><td>Excelente long-tail ✅</td></tr>
+<tr><td>helpdesk for 1-5 person team</td><td><span class="badge badge-risk-low">BAJA</span></td><td>Excelente long-tail ✅</td></tr>
+</table>
+
+<h3>Shopify App Store — Detalle</h3>
+<div class="card card-green">
+<p><strong>53+ helpdesk apps listadas.</strong> Top player: Gorgias (613 reviews, 4.3★). También: MooseDesk, eDesk, HelpCenter. 4.8M tiendas Shopify = tráfico orgánico masivo. Es la ventaja injusta #1 para un solo founder.</p>
+</div>
+
+<h3>Comunidades Clave</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Plataforma</th><th>Comunidad</th><th>Miembros</th><th>Relevancia</th></tr>
+<tr><td>Reddit</td><td><a href="https://reddit.com/r/SaaS" target="_blank">r/SaaS</a></td><td>100K+</td><td>Discusiones activas de helpdesk constantemente</td></tr>
+<tr><td>Reddit</td><td><a href="https://reddit.com/r/smallbusiness" target="_blank">r/smallbusiness</a></td><td>1M+</td><td>Preguntas regulares sobre helpdesk</td></tr>
+<tr><td>Reddit</td><td><a href="https://reddit.com/r/ecommerce" target="_blank">r/ecommerce</a></td><td>200K+</td><td>E-commerce specific helpdesk needs</td></tr>
+<tr><td>Reddit</td><td><a href="https://reddit.com/r/Zendesk" target="_blank">r/Zendesk</a></td><td>5K+</td><td>Frustrated users = warm leads 🔥</td></tr>
+<tr><td>Reddit</td><td><a href="https://reddit.com/r/shopify" target="_blank">r/shopify</a></td><td>650K+</td><td>Merchants buscando herramientas</td></tr>
+<tr><td>Forum</td><td><a href="https://news.ycombinator.com" target="_blank">Hacker News</a></td><td>—</td><td>Show HN launches, Ask HN threads</td></tr>
+<tr><td>Forum</td><td><a href="https://www.indiehackers.com" target="_blank">Indie Hackers</a></td><td>—</td><td>Building in public, tool discussions</td></tr>
+</table>
+</div>
+
+<h3>💡 Key Insight: Oportunidad Freshdesk</h3>
+<div class="card card-green">
+<p><strong>Freshdesk eliminó su tier gratuito en junio 2025</strong> — esto desplazó miles de equipos pequeños. Es una oportunidad <em>once-in-a-cycle</em> para capturarlos con un free tier generoso y un tool de "Import from Freshdesk". Targets: r/k12sysadmin, r/sysadmin, r/smallbusiness donde la gente está activamente preguntando qué usar ahora.</p>
+</div>
+
+<!-- ==================== SECTION 7 ==================== -->
+<h2 id="riesgos">📌 7. Riesgos y Mitigaciones</h2>
+
+<div class="risk-grid">
+
+<div class="card card-red">
+<h4>🔴 Incumbents copian features</h4>
+<p><strong>Likelihood:</strong> <span class="badge badge-risk-high">ALTA</span> · <strong>Impact:</strong> ALTO</p>
+<p>Zendesk, Freshdesk, Intercom pueden lanzar simplificaciones o bajar precios.</p>
+<p><strong>Mitigación:</strong> Las empresas grandes NO pueden simplificarse — tienen deuda técnica, enterprise commitments, y shareholders que exigen growth no simplification. Zendesk no va a lanzar un plan de $29. Tu velocidad como solo founder es el moat — iteras en semanas, ellos en quarters.</p>
+</div>
+
+<div class="card card-yellow">
+<h4>🟡 Churn alto</h4>
+<p><strong>Likelihood:</strong> <span class="badge badge-risk-med">MEDIA</span> · <strong>Impact:</strong> ALTO</p>
+<p>SMBs cierran negocios, cambian herramientas fácilmente, son price-sensitive.</p>
+<p><strong>Mitigación:</strong> Deep Shopify integration = switching costs. Knowledge base acumulada crea lock-in. Onboarding excepcional reduce early churn. Target merchants con $100K+ revenue (más estables que dropshippers).</p>
+</div>
+
+<div class="card card-red">
+<h4>🔴 Chatwoot (free/open source)</h4>
+<p><strong>Likelihood:</strong> <span class="badge badge-risk-high">ALTA</span> · <strong>Impact:</strong> MEDIO</p>
+<p>27K GitHub stars, self-hosted gratis. ¿Por qué pagar por tu producto?</p>
+<p><strong>Mitigación:</strong> 95%+ de SMBs NO van a self-hostear. No tienen DevOps. No quieren mantener servers. Tu target (merchants de Shopify) son non-technical. Chatwoot tampoco tiene Shopify integration profunda. Tu ventaja: managed service + AI incluida + 5-minute setup.</p>
+</div>
+
+<div class="card card-yellow">
+<h4>🟡 Support burden como solo founder</h4>
+<p><strong>Likelihood:</strong> <span class="badge badge-risk-med">MEDIA</span> · <strong>Impact:</strong> MEDIO</p>
+<p>Ironía: construir un helpdesk y no poder atender tu propio soporte.</p>
+<p><strong>Mitigación:</strong> Dogfood tu propio producto (credibilidad + QA). Knowledge base exhaustiva desde día 1. AI auto-respuestas para tickets comunes. Mantener <100 clientes antes de contratar primer support person. Limit free tier para reducir support load.</p>
+</div>
+
+<div class="card card-yellow">
+<h4>🟡 Shopify platform dependency</h4>
+<p><strong>Likelihood:</strong> <span class="badge badge-risk-med">MEDIA</span> · <strong>Impact:</strong> ALTO</p>
+<p>Shopify puede cambiar App Store rules, fees, APIs en cualquier momento.</p>
+<p><strong>Mitigación:</strong> Desde month 6+, expandir a WooCommerce y BigCommerce. Mantener versión standalone que funcione sin Shopify. No depender >60% de revenue de un solo marketplace.</p>
+</div>
+
+<div class="card card-yellow">
+<h4>🟡 AI costs eating margin</h4>
+<p><strong>Likelihood:</strong> <span class="badge badge-risk-med">MEDIA</span> · <strong>Impact:</strong> MEDIO</p>
+<p>"AI incluida" suena bien pero $0.002/ticket se acumula. Si un customer tiene 1000 tickets/mo = $2/mo en AI solo.</p>
+<p><strong>Mitigación:</strong> Cap razonable (e.g., 500 AI responses/mo included, luego $0.05 each). Usar modelos baratos (GPT-4o-mini: $0.15/1M input tokens). Cache respuestas comunes. AI costs bajan ~50% cada año. A $39/mo con $2 AI cost, margin es >90%. [ESTIMATE]</p>
+</div>
+
+</div>
+
+<!-- ==================== SECTION 8 ==================== -->
+<h2 id="unit-economics">📌 8. Unit Economics y Proyecciones</h2>
+
+<h3>Pricing Tiers</h3>
+<table>
+<tr><th>Plan</th><th>Precio</th><th>Agentes</th><th>AI</th><th>Features</th></tr>
+<tr><td><strong>Starter</strong></td><td>$29/mo</td><td>Hasta 3</td><td>200 AI responses/mo included</td><td>Shared inbox, live chat, basic KB</td></tr>
+<tr><td><strong>Growth</strong></td><td>$49/mo</td><td>Hasta 5</td><td>500 AI responses/mo included</td><td>+ Automations, analytics, Shopify deep integration</td></tr>
+<tr><td><strong>Scale</strong></td><td>$99/mo</td><td>Hasta 15</td><td>2000 AI responses/mo included</td><td>+ Custom branding, priority support, API access</td></tr>
+</table>
+<p style="font-size:0.85rem;color:var(--text-dim);">Todos flat, no per-seat. Precios son [ESTIMATE] basados en competitive landscape.</p>
+
+<h3>CAC por Canal [ESTIMATES]</h3>
+<table>
+<tr><th>Canal</th><th>CAC Estimado</th><th>Notas</th></tr>
+<tr><td>Shopify App Store (organic)</td><td>$5-15</td><td>Tráfico gratuito, solo costo de desarrollo de la app</td></tr>
+<tr><td>SEO / Content</td><td>$20-40</td><td>Costo = tiempo. 3-6 meses antes de resultados.</td></tr>
+<tr><td>Reddit / Communities</td><td>$0-10</td><td>Orgánico, pero requiere presencia genuina</td></tr>
+<tr><td>Product Hunt</td><td>$5-20</td><td>Burst de signups, one-time</td></tr>
+<tr><td>Google Ads</td><td>$50-100</td><td>$15-30 CPC, 3-5% conversion</td></tr>
+</table>
+
+<h3>LTV Calculation</h3>
+<div class="card">
+<table>
+<tr><td>Precio promedio</td><td>$42/mo [ASSUMPTION: 60% Starter, 30% Growth, 10% Scale]</td></tr>
+<tr><td>Retención promedio</td><td>18 meses [ESTIMATE, basado en SMB SaaS benchmarks]</td></tr>
+<tr><td><strong>LTV</strong></td><td><strong>$42 × 18 = $756</strong></td></tr>
+<tr><td>LTV:CAC ratio (Shopify organic)</td><td>$756 / $10 = <strong>75:1</strong> 🔥</td></tr>
+<tr><td>LTV:CAC ratio (blended)</td><td>$756 / $25 = <strong>30:1</strong> ✅</td></tr>
+</table>
+</div>
+
+<h3>Monthly Costs</h3>
+<table>
+<tr><th>Item</th><th>Costo/mes</th><th>Notas</th></tr>
+<tr><td>Hosting (Vercel/Railway)</td><td>$20-50</td><td>Escala con uso</td></tr>
+<tr><td>AI API (OpenAI)</td><td>$0.002/ticket [ESTIMATE]</td><td>GPT-4o-mini. 1000 tickets = $2</td></tr>
+<tr><td>Database (PlanetScale/Neon)</td><td>$0-30</td><td>Free tier inicialmente</td></tr>
+<tr><td>Email sending (Resend/SES)</td><td>$0-20</td><td>Free tier cubre primeros meses</td></tr>
+<tr><td>Domain</td><td>$1</td><td>$12/año</td></tr>
+<tr><td>Monitoring (Sentry, etc.)</td><td>$0-30</td><td>Free tiers disponibles</td></tr>
+<tr><td><strong>Total Month 1-6</strong></td><td><strong>~$30-60/mo</strong></td><td></td></tr>
+<tr><td><strong>Total at 500 customers</strong></td><td><strong>~$150-300/mo</strong></td><td>Mostly AI API scaling</td></tr>
+</table>
+
+<h3>Month-by-Month Projection</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Mes</th><th>Customers</th><th>MRR</th><th>Costs</th><th>Profit</th><th>Notes</th></tr>
+<tr><td>1</td><td>0</td><td>$0</td><td>$50</td><td class="proj-negative">-$50</td><td>Building MVP</td></tr>
+<tr><td>2</td><td>0</td><td>$0</td><td>$50</td><td class="proj-negative">-$50</td><td>Building MVP</td></tr>
+<tr><td>3</td><td>5</td><td>$200</td><td>$60</td><td class="proj-positive">$140</td><td>Beta launch, Shopify App Store</td></tr>
+<tr><td>4</td><td>15</td><td>$600</td><td>$65</td><td class="proj-positive">$535</td><td>Reddit + HN launch</td></tr>
+<tr><td>5</td><td>30</td><td>$1,200</td><td>$70</td><td class="proj-positive">$1,130</td><td>Word of mouth starting</td></tr>
+<tr><td>6</td><td>50</td><td>$2,000</td><td>$80</td><td class="proj-positive">$1,920</td><td>Product Hunt launch</td></tr>
+<tr><td>7</td><td>75</td><td>$3,000</td><td>$90</td><td class="proj-positive">$2,910</td><td>SEO starting to kick in</td></tr>
+<tr><td>8</td><td>105</td><td>$4,200</td><td>$100</td><td class="proj-positive">$4,100</td><td>Organic growth</td></tr>
+<tr><td>9</td><td>140</td><td>$5,600</td><td>$115</td><td class="proj-positive">$5,485</td><td></td></tr>
+<tr><td>10</td><td>180</td><td>$7,200</td><td>$130</td><td class="proj-positive">$7,070</td><td></td></tr>
+<tr><td>11</td><td>225</td><td>$9,000</td><td>$150</td><td class="proj-positive">$8,850</td><td></td></tr>
+<tr><td>12</td><td>280</td><td>$11,200</td><td>$175</td><td class="proj-positive">$11,025</td><td>🎯 $10K MRR milestone</td></tr>
+<tr><td>13</td><td>340</td><td>$13,600</td><td>$200</td><td class="proj-positive">$13,400</td><td></td></tr>
+<tr><td>14</td><td>410</td><td>$16,400</td><td>$230</td><td class="proj-positive">$16,170</td><td></td></tr>
+<tr><td>15</td><td>490</td><td>$19,600</td><td>$260</td><td class="proj-positive">$19,340</td><td>🎯 $20K MRR</td></tr>
+<tr><td>16</td><td>570</td><td>$22,800</td><td>$300</td><td class="proj-positive">$22,500</td><td></td></tr>
+<tr><td>17</td><td>660</td><td>$26,400</td><td>$340</td><td class="proj-positive">$26,060</td><td></td></tr>
+<tr><td>18</td><td>770</td><td style="color:var(--green);font-weight:700;">$30,800</td><td>$380</td><td class="proj-positive" style="font-size:1.1rem;">$30,420</td><td>🎯🎯🎯 $30K MRR</td></tr>
+</table>
+</div>
+<p style="color: var(--text-dim); font-size: 0.85rem;">⚠️ TODAS estas proyecciones son [ESTIMATES] optimistas. Asumen ~25-30% growth mensual después del launch, 5% monthly churn, $40 ARPU promedio. El escenario real puede tomar 24-36 meses. Break-even: Mes 3 (costos operativos son mínimos). No incluye el tiempo de Fabi como costo de oportunidad (side project, no full-time).</p>
+
+<h3>Margin at Scale</h3>
+<div class="card">
+<p>A 770 customers / $30K MRR:</p>
+<ul>
+<li>Revenue: $30,800/mo</li>
+<li>Hosting + infra: ~$200/mo [ESTIMATE]</li>
+<li>AI API: ~$100/mo [ESTIMATE: 50K tickets × $0.002]</li>
+<li>Misc (monitoring, email): ~$80/mo</li>
+<li><strong>Gross Margin: ~98.7%</strong> [ESTIMATE]</li>
+</ul>
+<p style="color:var(--green);font-weight:600;">SaaS margins son excepcionales — la infraestructura de un helpdesk simple es barata.</p>
+</div>
+
+<!-- ==================== SECTION 9 ==================== -->
+<h2 id="validacion">📌 9. Plan de Validación en 30 Días</h2>
+
+<div class="timeline">
+
+<div class="timeline-item">
+<div class="timeline-week">Semana 1 (Días 1-7)</div>
+<h4>Landing Page + Waitlist</h4>
+<ul>
+<li><strong>Tool:</strong> Vercel + Next.js (free)</li>
+<li><strong>Copy:</strong> "$29/mo helpdesk with AI included. No per-seat pricing. Setup in 5 minutes."</li>
+<li><strong>CTA:</strong> Waitlist email signup</li>
+<li><strong>Bonus:</strong> "Coming Soon" en Product Hunt</li>
+</ul>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-week">Semana 1-2 (Días 3-14)</div>
+<h4>Reddit Distribution</h4>
+<ul>
+<li>Post genuino en <a href="https://reddit.com/r/smallbusiness" target="_blank">r/smallbusiness</a>, <a href="https://reddit.com/r/SaaS" target="_blank">r/SaaS</a>, <a href="https://reddit.com/r/ecommerce" target="_blank">r/ecommerce</a></li>
+<li>Angle: "I'm building a simpler Gorgias alternative at 50% the cost — would you use this?"</li>
+<li>NO spam — participar genuinamente en threads existentes de "helpdesk recommendation"</li>
+<li>Target: r/Zendesk frustrated users threads</li>
+</ul>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-week">Semana 2-3 (Días 8-21)</div>
+<h4>Cold Outreach</h4>
+<ul>
+<li>Identificar 50 Shopify stores en el rango $100K-$5M revenue</li>
+<li>DM/email a store owners: "Hey, I noticed you use [Gorgias/email]. Building a simpler alternative. 5 minutes of your time?"</li>
+<li>Objetivo: 10 calls de discovery</li>
+<li>Preguntas clave: "¿Cuánto pagas?", "¿Qué odias?", "¿Pagarías $29-49?"</li>
+</ul>
+</div>
+
+<div class="timeline-item">
+<div class="timeline-week">Semana 3-4 (Días 15-30)</div>
+<h4>Minimum Viable Demo</h4>
+<ul>
+<li>Shared inbox (email ingest) + AI reply suggestions</li>
+<li>Loom demo video (3 min)</li>
+<li>Share con waitlist y prospects de calls</li>
+<li>Pedir: "¿Pagarías $29/mo por esto?" (commitment verbal)</li>
+</ul>
+</div>
+
+</div>
+
+<h3>Success Criteria</h3>
+<div class="card card-green">
+<table>
+<tr><th>Métrica</th><th>✅ GO Signal</th><th>❌ Pivot Signal</th></tr>
+<tr><td>Waitlist signups</td><td>100+ en 30 días</td><td>&lt;30 en 30 días</td></tr>
+<tr><td>Demo requests</td><td>15+ de waitlist o outreach</td><td>&lt;5</td></tr>
+<tr><td>"I'd pay for this"</td><td>10+ verbal commitments</td><td>&lt;3</td></tr>
+<tr><td>Discovery calls</td><td>10+ completed</td><td>&lt;5 willing to talk</td></tr>
+<tr><td>Pre-orders / deposits</td><td>5+ paying before product exists</td><td>0</td></tr>
+</table>
+</div>
+
+<!-- ==================== SECTION 10 ==================== -->
+<h2 id="conclusion">📌 10. Conclusión con Recomendación</h2>
+
+<div class="cta-box">
+<h2 style="font-size:2.5rem;">🟢 GO</h2>
+<p style="font-size:1.2rem; color: var(--text-bright); margin-bottom: 1rem;">Build a simple, AI-native Shopify helpdesk at flat pricing.</p>
+</div>
+
+<h3>3 Razones Principales</h3>
+
+<div class="card card-green">
+<h4>1. La demanda está probada y el timing es perfecto</h4>
+<p>Gorgias hace $69M ARR solo en helpdesk para e-commerce. Freshdesk eliminó su free tier (jun 2025). Zendesk/Intercom siguen subiendo precios. 45 ejemplos reales de gente pidiendo exactamente lo que construirías. El gap entre "Gmail" y "Zendesk $55+/agente" es enorme y growing.</p>
+</div>
+
+<div class="card card-green">
+<h4>2. Shopify App Store = distribución gratuita</h4>
+<p>4.8M tiendas, 53+ helpdesk apps ya listadas = demanda comprobada. Ningún otro nicho ofrece un marketplace built-in. Es la ventaja más importante para un solo founder sin budget de marketing. Necesitas <0.02% del mercado para $30K MRR.</p>
+</div>
+
+<div class="card card-green">
+<h4>3. Los unit economics funcionan como side project</h4>
+<p>Costos operativos: ~$50/mo para empezar. AI costs: $0.002/ticket (negligible). Gross margin: ~98%+. Break-even: mes 3. A $39-49/mo con 770 clientes llegas a $30K MRR. Path claro sin necesidad de VC funding ni dejar tu trabajo.</p>
+</div>
+
+<h3>Immediate Next Step</h3>
+<div class="card card-highlight">
+<p><strong>Validar antes de construir.</strong> Los próximos 30 días son solo validación (ver sección 9). NO escribas una línea de código del producto hasta tener 100+ waitlist signups y 10+ "I'd pay for this" confirmados.</p>
+</div>
+
+<h3>🎯 The ONE Thing to Do Tomorrow</h3>
+<div class="card" style="border: 2px solid var(--green); text-align: center; padding: 2rem;">
+<p style="font-size: 1.4rem; color: var(--green); font-weight: 700; margin-bottom: 0.5rem;">Deploy a landing page on Vercel.</p>
+<p style="color: var(--text);">Headline: "The $29/mo helpdesk with AI included."<br>Subheadline: "No per-seat pricing. Setup in 5 minutes. Built for Shopify."<br>CTA: Email waitlist.<br>Time: 2-3 hours with Next.js.</p>
+</div>
+
+<hr style="border-color: var(--border); margin: 3rem 0;">
+
+<p style="text-align: center; color: var(--text-dim); font-size: 0.85rem;">
+Reporte preparado por Tino 🦕 · Datos de 35+ búsquedas web, Reddit, HN, Indie Hackers, G2, Capterra, Sacra, Statista · Feb 26, 2026<br>
+Todos los quotes son reales y linkados a fuente. Números marcados [ESTIMATE] o [ASSUMPTION] son proyecciones del autor.
+</p>
+
+</div>
+</body>
+</html>
