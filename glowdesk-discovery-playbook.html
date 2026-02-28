@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎫 GlowDesk — Customer Discovery Playbook</title>
+<style>
+  :root { --bg: #0f0f0f; --surface: #1a1a1a; --border: #2a2a2a; --text: #e5e5e5; --muted: #999; --orange: #f59e0b; --green: #22c55e; --red: #ef4444; --green-bg: #052e16; --red-bg: #2d0a0a; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height: 1.7; padding: 2rem 1rem; max-width: 860px; margin: 0 auto; }
+  h1 { font-size: 2rem; color: var(--orange); margin-bottom: .25rem; }
+  h1 + p { color: var(--muted); margin-bottom: 2rem; }
+  h2 { font-size: 1.4rem; color: var(--orange); margin: 2.5rem 0 1rem; padding-bottom: .4rem; border-bottom: 2px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 .5rem; }
+  p, li { color: var(--text); }
+  a { color: var(--orange); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  nav { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem .8rem; }
+  nav li { font-size: .9rem; }
+  nav li::before { content: '→ '; color: var(--muted); }
+  .objetivo { background: var(--surface); border-left: 4px solid var(--orange); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 1rem; }
+  ol.questions { padding-left: 1.25rem; }
+  ol.questions li { margin-bottom: 1rem; }
+  ol.questions strong { color: var(--orange); }
+  ol.questions li > p { color: var(--muted); font-size: .9rem; margin-top: .2rem; }
+  .thread-list { list-style: none; padding: 0; }
+  .thread-list li { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; margin-bottom: .5rem; display: flex; align-items: baseline; gap: .5rem; }
+  .thread-list .num { color: var(--orange); font-weight: 700; min-width: 1.5rem; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; }
+  .card h3 { margin-top: 0; color: var(--orange); }
+  .card blockquote { border-left: 3px solid var(--orange); padding: .75rem 1rem; background: rgba(245,158,11,.05); border-radius: 0 6px 6px 0; margin: .75rem 0 0; color: var(--text); font-style: italic; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: .5rem; }
+  th { background: var(--orange); color: #000; text-align: left; padding: .6rem .5rem; font-weight: 600; white-space: nowrap; }
+  td { padding: .5rem; border-bottom: 1px solid var(--border); }
+  tr:nth-child(even) td { background: var(--surface); }
+  .criteria-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width:600px){ .criteria-grid { grid-template-columns: 1fr; } }
+  .go-box, .nogo-box { border-radius: 10px; padding: 1.25rem; }
+  .go-box { background: var(--green-bg); border: 1px solid var(--green); }
+  .go-box h3 { color: var(--green); margin: 0 0 .75rem; }
+  .nogo-box { background: var(--red-bg); border: 1px solid var(--red); }
+  .nogo-box h3 { color: var(--red); margin: 0 0 .75rem; }
+  .go-box li, .nogo-box li { margin-bottom: .4rem; }
+  .timeline { list-style: none; padding-left: 1.5rem; border-left: 3px solid var(--orange); }
+  .timeline li { position: relative; padding: .75rem 0 .75rem 1.25rem; }
+  .timeline li::before { content: ''; position: absolute; left: -1.85rem; top: 1.1rem; width: 12px; height: 12px; background: var(--orange); border-radius: 50%; border: 3px solid var(--bg); }
+  .timeline strong { color: var(--orange); }
+  .table-wrap { overflow-x: auto; }
+  .tag { display: inline-block; background: rgba(245,158,11,.15); color: var(--orange); font-size: .75rem; padding: .1rem .5rem; border-radius: 4px; margin-left: .5rem; }
+</style>
+</head>
+<body>
+
+<h1>🎫 GlowDesk — Customer Discovery Playbook</h1>
+<p>Target: 10 conversations in 2 weeks</p>
+
+<nav>
+  <ul>
+    <li><a href="#objetivo">Objetivo</a></li>
+    <li><a href="#preguntas">5 Preguntas Clave</a></li>
+    <li><a href="#threads">10 Reddit Threads</a></li>
+    <li><a href="#outreach">Mensajes de Outreach</a></li>
+    <li><a href="#linkedin">LinkedIn</a></li>
+    <li><a href="#tracking">Tracking</a></li>
+    <li><a href="#gonogo">GO / NO-GO</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+  </ul>
+</nav>
+
+<h2 id="objetivo">🎯 Objetivo</h2>
+<div class="objetivo">
+  Validar que gente frustrada con Zendesk / Help Scout / Freshdesk / Intercom pagaría <strong>$49–59/mo</strong> por algo más simple con AI incluido. <strong>NO vender. Escuchar.</strong>
+</div>
+
+<h2 id="preguntas">🧠 Las 5 Preguntas Clave</h2>
+<ol class="questions">
+  <li><strong>"¿Qué herramienta de soporte usan hoy y cuánto pagan?"</strong><p>Dato duro: tool + precio + # agentes</p></li>
+  <li><strong>"¿Qué es lo que más les frustra de su herramienta actual?"</strong><p>Pain real, en sus palabras</p></li>
+  <li><strong>"¿Qué features realmente usan del día a día?"</strong><p>Separar "nice to have" de "must have". Esperamos: inbox, asignar tickets, canned responses, maybe knowledge base</p></li>
+  <li><strong>"Si existiera algo más simple, con AI para auto-responder incluido a $49/mo — ¿lo evaluarían?"</strong><p>Willingness to pay. No "¿les gustaría?", sino "¿lo evaluarían?"</p></li>
+  <li><strong>"¿Qué haría que NO se cambiaran aunque odiaran su herramienta actual?"</strong><p>Barreras de switching. Esto define tu onboarding.</p></li>
+</ol>
+
+<h2 id="threads">🔥 10 Reddit Threads Activos</h2>
+
+<h3>Zendesk frustrados</h3>
+<ul class="thread-list">
+  <li><span class="num">1</span><a href="https://www.reddit.com/r/SaaS/comments/1qknybh/zendesk_pricing_jumped_again_what_alternatives/">r/SaaS: "Zendesk pricing jumped again"</a><span class="tag">Jan 2026</span></li>
+  <li><span class="num">2</span><a href="https://www.reddit.com/r/Zendesk/comments/1gjckww/zendesk_is_becoming_too_expensive_for_our_company/">r/Zendesk: "Becoming too expensive" (107 ⬆)</a><span class="tag">Nov 2024</span></li>
+  <li><span class="num">3</span><a href="https://www.reddit.com/r/CRM/comments/1qirjr2/best_zendesk_alternatives_for_b2b_saas_teams/">r/CRM: "Zendesk overkill for 2-person team"</a><span class="tag">Jan 2026</span></li>
+  <li><span class="num">4</span><a href="https://www.reddit.com/r/SaaS/comments/1n8dt8k/zendesk_alternatives/">r/SaaS: "Zendesk Alternatives"</a><span class="tag">Sep 2025</span></li>
+  <li><span class="num">5</span><a href="https://www.reddit.com/r/Entrepreneur/comments/1jyc2ar/zendesk_alternative_with_automation_and/">r/Entrepreneur: "Zendesk alternative with automation"</a><span class="tag">Apr 2025</span></li>
+</ul>
+
+<h3>Help Scout frustrados</h3>
+<ul class="thread-list">
+  <li><span class="num">6</span><a href="https://www.reddit.com/r/SaaS/comments/1jzznjb/helpscout_is_significantly_raising_its_prices_out/">r/SaaS: "HelpScout significantly raising prices"</a><span class="tag">Apr 2025</span></li>
+</ul>
+
+<h3>Freshdesk / Intercom frustrados</h3>
+<ul class="thread-list">
+  <li><span class="num">7</span><a href="https://www.reddit.com/r/selfhosted/comments/1jw3zpp/selfhosted_alternatives_to_freshdesk/">r/selfhosted: "Self-hosted alternatives to Freshdesk"</a><span class="tag">Apr 2025</span></li>
+  <li><span class="num">8</span><a href="https://www.reddit.com/r/SaaS/comments/1npigv8/best_intercom_alternative_2025/">r/SaaS: "Best Intercom Alternative 2025?"</a><span class="tag">Sep 2025</span></li>
+  <li><span class="num">9</span><a href="https://www.reddit.com/r/CustomerSuccess/comments/1msfnay/customerly_intercom_freshdeskwhich_support/">r/CustomerSuccess: "Which support tools working in 2025?"</a><span class="tag">Aug 2025</span></li>
+  <li><span class="num">10</span><a href="https://www.reddit.com/r/CustomerSuccess/comments/1mj14mr/help_need_recommendations_for_a_simple_ticketing/">r/CustomerSuccess: "Simple ticketing system"</a><span class="tag">Aug 2025</span></li>
+</ul>
+
+<h2 id="outreach">✉️ Mensajes de Outreach</h2>
+
+<div class="card">
+  <h3>Opción A — DM a posters de threads</h3>
+  <p>Mejor tasa de respuesta</p>
+  <blockquote>
+    Hey [name], I saw your post about [Zendesk/Help Scout/etc.] — really resonated.<br><br>
+    I'm researching whether there's room for a simpler helpdesk focused on small teams (2-10 agents) with AI built-in from day one, not as a $50/agent add-on.<br><br>
+    Would you be open to a quick 10-min chat? Not selling anything — just trying to understand what actually matters vs. what's bloat. Happy to share what I find with you too.<br><br>
+    Either way, curious: what did you end up switching to?
+  </blockquote>
+</div>
+
+<div class="card">
+  <h3>Opción B — Comentario público en threads activos</h3>
+  <p>Más volumen</p>
+  <blockquote>
+    We're building a helpdesk specifically for this gap — small teams getting crushed by Zendesk pricing. The idea is: shared inbox, ticket assignment, canned responses, and AI auto-reply included at $49/mo flat. No per-agent pricing games.<br><br>
+    Genuinely curious from anyone here: what features do you <em>actually</em> use daily? Trying to figure out the minimum that makes people switch vs. the 80% of features nobody touches.
+  </blockquote>
+</div>
+
+<div class="card">
+  <h3>Opción C — Indie Hackers post</h3>
+  <p>Community loves this format</p>
+  <blockquote>
+    <strong>"I scraped 113K app reviews to find the best solo-founder B2B opportunity — here's what I found"</strong><br><br>
+    TL;DR: After analyzing 113K app reviews, 80+ B2B apps, and dozens of Reddit threads, the #1 opportunity for a solo founder targeting $30K MRR is a <strong>simple helpdesk for SMBs</strong>.<br><br>
+    Zendesk charges $115/agent for basic automation. Help Scout just hiked prices. Freshdesk's "free" tier has hidden AI costs.<br><br>
+    Before I build anything: if you're on a small support team (2-10 people), I'd love to hear:<br>
+    • What helpdesk do you use and what do you pay?<br>
+    • What would make you switch?<br><br>
+    Happy to share the full research with anyone interested.
+  </blockquote>
+</div>
+
+<h2 id="linkedin">💼 LinkedIn Outreach</h2>
+<div class="card">
+  <h3>Target titles</h3>
+  <p>"Head of Support" at companies 10–50 employees · "Customer Support Manager" at startups · "Customer Success" at SaaS companies</p>
+  <blockquote>
+    Hi [name] — I'm researching helpdesk tools for small support teams. Noticed you're at [company] and probably deal with this daily.<br><br>
+    Quick question: are you happy with your current helpdesk, or is it one of those "we hate it but switching is painful" situations? Trying to understand what actually matters for teams your size.<br><br>
+    No pitch — genuinely doing research before building anything.
+  </blockquote>
+</div>
+
+<h2 id="tracking">📊 Tracking Table</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr><th>#</th><th>Nombre</th><th>Tool actual</th><th>$/mo</th><th># Agentes</th><th>Pain principal</th><th>¿Pagaría $49?</th><th>Barrera de switch</th><th>Canal</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>7</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>8</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>9</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>10</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="gonogo">⚖️ GO / NO-GO Criteria</h2>
+<div class="criteria-grid">
+  <div class="go-box">
+    <h3>✅ GO si:</h3>
+    <ul>
+      <li>7+ de 10 dicen que evaluarían alternativa</li>
+      <li>Pricing actual promedio > $40/agente/mo</li>
+      <li>Top 3 features pedidos son buildable en 4–6 semanas</li>
+      <li>Barrera de switching es "data migration" (solucionable con import tool)</li>
+    </ul>
+  </div>
+  <div class="nogo-box">
+    <h3>❌ NO-GO si:</h3>
+    <ul>
+      <li>Gente está contenta con Freshdesk free tier</li>
+      <li>El pain real es features avanzados que toman meses (reporting, HIPAA, etc.)</li>
+      <li>La barrera de switch es "mi empresa lo eligió, yo no decido" (enterprise lock-in)</li>
+      <li>&lt; 5 de 10 evaluarían</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="timeline">📅 Timeline</h2>
+<ul class="timeline">
+  <li><strong>Semana 1</strong> — Posts en Reddit (Opción B) + DMs a 15–20 posters (Opción A) + IH post (Opción C)</li>
+  <li><strong>Semana 2</strong> — Follow-ups + LinkedIn outreach + completar 10 conversaciones</li>
+  <li><strong>Semana 3</strong> — GO/NO-GO decision → si GO, empezar MVP</li>
+</ul>
+<p style="color:var(--muted); margin-top:1rem; font-style:italic;">En paralelo: empezar la landing page con Lovable para tener algo que mostrar en las conversaciones.</p>
+
+</body>
+</html>
