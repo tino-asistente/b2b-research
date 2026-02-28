@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US Home Care AI Sales Intelligence Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#242836;--border:#2d3348;--text:#e4e8f1;--text2:#8b92a8;--accent:#6366f1;--accent2:#818cf8;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;--cyan:#06b6d4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.header{background:linear-gradient(135deg,#1e1b4b,#312e81);padding:2rem;text-align:center;border-bottom:1px solid var(--border)}
+.header h1{font-size:2rem;background:linear-gradient(135deg,var(--accent2),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.5rem}
+.header p{color:var(--text2);max-width:800px;margin:0 auto}
+.tabs{display:flex;flex-wrap:wrap;gap:.5rem;padding:1rem 2rem;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.tab{padding:.5rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text2);cursor:pointer;font-size:.85rem;transition:all .2s}
+.tab:hover,.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.panel{display:none;padding:2rem;max-width:1400px;margin:0 auto}
+.panel.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1.5rem;margin-bottom:1.5rem}
+.card h2{color:var(--accent2);margin-bottom:1rem;font-size:1.3rem}
+.card h3{color:var(--cyan);margin:1rem 0 .5rem;font-size:1.1rem}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+th{background:var(--surface2);color:var(--accent2);padding:.6rem .5rem;text-align:left;border-bottom:2px solid var(--border);cursor:pointer;white-space:nowrap;position:sticky;top:0}
+th:hover{color:var(--cyan)}
+td{padding:.5rem;border-bottom:1px solid var(--border);vertical-align:top}
+tr:hover td{background:rgba(99,102,241,.05)}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:10px;font-size:.7rem;font-weight:600}
+.badge-high{background:rgba(34,197,94,.15);color:var(--green)}
+.badge-med{background:rgba(245,158,11,.15);color:var(--orange)}
+.badge-low{background:rgba(239,68,68,.15);color:var(--red)}
+.score{font-weight:700;font-size:.9rem}
+.score-high{color:var(--green)}
+.score-med{color:var(--orange)}
+.score-low{color:var(--red)}
+.filter-bar{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.filter-bar input,.filter-bar select{padding:.4rem .8rem;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.85rem}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center}
+.stat-card .num{font-size:2rem;font-weight:700;color:var(--accent2)}
+.stat-card .label{color:var(--text2);font-size:.85rem}
+.chart-container{position:relative;height:350px;margin:1rem 0}
+.query-group{margin-bottom:1.5rem}
+.query-group h3{color:var(--cyan);margin-bottom:.5rem}
+.query-item{background:var(--surface2);padding:.8rem;border-radius:6px;margin-bottom:.5rem;border-left:3px solid var(--accent)}
+.query-item .q{font-weight:600;color:var(--text)}
+.query-item .desc{color:var(--text2);font-size:.85rem;margin-top:.2rem}
+.query-item .feeds{color:var(--accent2);font-size:.75rem;margin-top:.2rem}
+.insight-box{background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(6,182,212,.1));border:1px solid var(--accent);border-radius:8px;padding:1.5rem;margin-bottom:1rem}
+.insight-box h3{color:var(--accent2);margin-bottom:.5rem}
+.risk-box{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:1.5rem;margin-bottom:1rem}
+.risk-box h3{color:var(--red);margin-bottom:.5rem}
+ul{padding-left:1.2rem}
+li{margin-bottom:.3rem}
+.scoring-table td,.scoring-table th{padding:.6rem .8rem}
+.tier-1{background:rgba(34,197,94,.08)}
+@media(max-width:768px){.tabs{padding:.5rem}.panel{padding:1rem}table{font-size:.7rem}}
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>🏥 US Home Care AI — Sales Intelligence Dashboard</h1>
+<p>Comprehensive market research for AI Staff Scheduler & AI Receptionist products targeting US home care agencies. Built Feb 2026.</p>
+</div>
+
+<div class="tabs" id="tabs">
+<div class="tab active" data-panel="overview">📊 Overview</div>
+<div class="tab" data-panel="leads">🏢 Leads (200+)</div>
+<div class="tab" data-panel="competitors">⚔️ Competitors</div>
+<div class="tab" data-panel="pricing">💲 Pricing</div>
+<div class="tab" data-panel="integrations">🔌 Integrations</div>
+<div class="tab" data-panel="queries">🔍 Query Plan</div>
+<div class="tab" data-panel="scoring">🎯 Scoring Model</div>
+<div class="tab" data-panel="insights">💡 Insights</div>
+</div>
+
+<!-- OVERVIEW PANEL -->
+<div class="panel active" id="overview">
+<div class="stat-grid">
+<div class="stat-card"><div class="num">220</div><div class="label">Agencies Profiled</div></div>
+<div class="stat-card"><div class="num">48</div><div class="label">Tier 1 (Strong Buy Signal)</div></div>
+<div class="stat-card"><div class="num">28</div><div class="label">Competitors Mapped</div></div>
+<div class="stat-card"><div class="num">35</div><div class="label">Pricing References</div></div>
+<div class="stat-card"><div class="num">12</div><div class="label">Integration Platforms</div></div>
+<div class="stat-card"><div class="num">~11,500</div><div class="label">Medicare-Certified HHAs in US</div></div>
+</div>
+
+<div class="card">
+<h2>Market Context</h2>
+<p>The US home care market includes ~11,500 Medicare-certified home health agencies and thousands more non-medical/private-duty agencies (est. 30,000+ total). The industry faces a severe caregiver shortage — all 50 states report workforce shortages. Nearly half of US states are at the threshold of a caregiving emergency (Otsuka 2024). Average caregiver wage is $16.82/hr (BLS 2024), barely above fast food ($15.07/hr).</p>
+<p style="margin-top:1rem"><strong>Key pain points addressable by AI:</strong></p>
+<ul style="margin-top:.5rem">
+<li><strong>Shift filling:</strong> 274,950+ scheduling coordinator job postings on Indeed alone — massive manual labor</li>
+<li><strong>After-hours calls:</strong> Agencies spend $200-$2,200+/mo on answering services at $0.75-$1.50/min</li>
+<li><strong>Missed revenue:</strong> Agencies routinely turn away clients due to staffing gaps</li>
+<li><strong>Silver Tsunami:</strong> 4.1M Americans turned 65 in 2024 — demand accelerating</li>
+</ul>
+</div>
+
+<div class="card">
+<h2>Opportunity by State</h2>
+<div class="chart-container"><canvas id="stateChart"></canvas></div>
+</div>
+
+<div class="card">
+<h2>Product-Market Fit Summary</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+<div style="background:var(--surface2);padding:1rem;border-radius:8px">
+<h3>🤖 AI Staff Scheduler</h3>
+<ul>
+<li>Detects cancellations → auto-calls available caregivers</li>
+<li>Replaces $42K-$49K/yr staffing coordinator salary</li>
+<li>Addresses #1 pain: shift coverage gaps</li>
+<li>Must integrate with AxisCare, WellSky, HHAeXchange</li>
+<li>TCPA: Healthcare exemption for care-related calls to landlines; mobile requires prior consent</li>
+</ul>
+</div>
+<div style="background:var(--surface2);padding:1rem;border-radius:8px">
+<h3>📞 AI Receptionist</h3>
+<ul>
+<li>24/7 inbound call handling, intake, scheduling</li>
+<li>Replaces $200-$2,200/mo answering services</li>
+<li>Captures leads that currently go to voicemail</li>
+<li>Competitors: Smith.ai ($97/mo), Dialzara ($29/mo), traditional answering services</li>
+<li>Must be HIPAA-compliant for PHI handling</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- LEADS PANEL -->
+<div class="panel" id="leads">
+<div class="card">
+<h2>🏢 US Home Care Agency Leads Database</h2>
+<p style="color:var(--text2);margin-bottom:1rem">220 agencies profiled. 48 Tier 1 leads with strong buy signals. Click column headers to sort. Use filter to search.</p>
+<div class="filter-bar">
+<input type="text" id="leadSearch" placeholder="Search agencies..." oninput="filterLeads()">
+<select id="tierFilter" onchange="filterLeads()">
+<option value="">All Tiers</option>
+<option value="1">Tier 1 (Score 70+)</option>
+<option value="2">Tier 2 (Score 40-69)</option>
+<option value="3">Tier 3 (Score &lt;40)</option>
+</select>
+<select id="stateFilter" onchange="filterLeads()">
+<option value="">All States</option>
+</select>
+</div>
+<div style="overflow-x:auto">
+<table id="leadsTable">
+<thead><tr>
+<th onclick="sortTable('leadsTable',0)">Company</th>
+<th onclick="sortTable('leadsTable',1)">State</th>
+<th onclick="sortTable('leadsTable',2)">City</th>
+<th onclick="sortTable('leadsTable',3)">Locations</th>
+<th onclick="sortTable('leadsTable',4)">Size</th>
+<th onclick="sortTable('leadsTable',5)">Software</th>
+<th onclick="sortTable('leadsTable',6)">Hiring Sched.</th>
+<th onclick="sortTable('leadsTable',7)">Hiring Recep.</th>
+<th onclick="sortTable('leadsTable',8)">On-Call Signal</th>
+<th onclick="sortTable('leadsTable',9)">Score</th>
+<th onclick="sortTable('leadsTable',10)">Notes</th>
+</tr></thead>
+<tbody id="leadsBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- COMPETITORS PANEL -->
+<div class="panel" id="competitors">
+<div class="card">
+<h2>⚔️ Competitive Landscape</h2>
+<p style="color:var(--text2);margin-bottom:1rem">28 competitors mapped across AI scheduling, AI receptionist, answering services, and workforce platforms.</p>
+<div style="overflow-x:auto">
+<table id="compTable">
+<thead><tr>
+<th>Company</th>
+<th>Category</th>
+<th>Target Segment</th>
+<th>Scheduler Features</th>
+<th>Receptionist Features</th>
+<th>Pricing</th>
+<th>Integrations</th>
+<th>Funding</th>
+<th>Source</th>
+</tr></thead>
+<tbody id="compBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- PRICING PANEL -->
+<div class="panel" id="pricing">
+<div class="card">
+<h2>💲 Pricing Benchmarks</h2>
+<p style="color:var(--text2);margin-bottom:1rem">35+ pricing data points across home care software, AI receptionists, answering services, and workforce platforms.</p>
+<div class="chart-container"><canvas id="pricingChart"></canvas></div>
+<div style="overflow-x:auto;margin-top:1rem">
+<table>
+<thead><tr><th>Company</th><th>Category</th><th>Pricing Model</th><th>Price Points</th><th>What's Included</th><th>Segment</th><th>Source</th></tr></thead>
+<tbody id="pricingBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- INTEGRATIONS PANEL -->
+<div class="panel" id="integrations">
+<div class="card">
+<h2>🔌 Integration Landscape</h2>
+<p style="color:var(--text2);margin-bottom:1rem">Key scheduling/management platforms that AI products must integrate with to penetrate the market.</p>
+<div style="overflow-x:auto">
+<table>
+<thead><tr><th>Platform</th><th>Market Penetration Signal</th><th>API Public</th><th>Partner Program</th><th>Target Agency Size</th><th>Key Notes</th><th>Source</th></tr></thead>
+<tbody id="intBody"></tbody>
+</table>
+</div>
+</div>
+<div class="card">
+<h2>Integration Priority Matrix</h2>
+<div class="chart-container"><canvas id="intChart"></canvas></div>
+</div>
+</div>
+
+<!-- QUERY PLAN PANEL -->
+<div class="panel" id="queries">
+<div class="card">
+<h2>🔍 Research Query Plan (36 Queries)</h2>
+<p style="color:var(--text2);margin-bottom:1rem">Grouped by research objective. Each query includes what it targets and which data table it feeds.</p>
+<div id="queryPlan"></div>
+</div>
+</div>
+
+<!-- SCORING MODEL PANEL -->
+<div class="panel" id="scoring">
+<div class="card">
+<h2>🎯 Lead Scoring Model</h2>
+<p style="color:var(--text2);margin-bottom:1rem">Weighted scoring system (0-100) to prioritize outreach. Higher scores = stronger buy signals.</p>
+<table class="scoring-table">
+<thead><tr><th>Signal</th><th>Weight</th><th>Points</th><th>Rationale</th></tr></thead>
+<tbody>
+<tr><td><strong>Hiring Scheduler / Staffing Coordinator</strong></td><td>25%</td><td>0-25</td><td>Active job posting = immediate pain. They're paying $42K-$49K/yr for this role — AI replaces it.</td></tr>
+<tr><td><strong>Multiple Locations (3+)</strong></td><td>20%</td><td>0-20</td><td>Multi-location = higher complexity, more shifts to fill, bigger contract value. Franchise networks especially.</td></tr>
+<tr><td><strong>On-Call / Urgent Coverage Mentions</strong></td><td>15%</td><td>0-15</td><td>Website mentions "on-call," "urgent coverage," "24/7 staffing" = active shift-filling pain.</td></tr>
+<tr><td><strong>Known Scheduling Software</strong></td><td>15%</td><td>0-15</td><td>Using AxisCare/WellSky/HHAeXchange = tech-forward, likely has API for integration.</td></tr>
+<tr><td><strong>High Inbound Call Volume Signal</strong></td><td>10%</td><td>0-10</td><td>Uses answering service, mentions "24/7 phone line," or high-traffic website = AI receptionist fit.</td></tr>
+<tr><td><strong>State with Caregiver Shortage</strong></td><td>10%</td><td>0-10</td><td>States like PA, TX, FL, NY have acute shortages — urgency amplifies all other signals.</td></tr>
+<tr><td><strong>Hiring Receptionist / Intake</strong></td><td>5%</td><td>0-5</td><td>Hiring front desk/intake staff = receptionist pain, but lower weight since it's the secondary product.</td></tr>
+</tbody>
+</table>
+<div style="margin-top:1.5rem">
+<h3>Tier Classification</h3>
+<ul>
+<li><span class="badge badge-high">Tier 1: Score 70-100</span> — Hot leads, immediate outreach recommended. Strong multi-signal alignment.</li>
+<li><span class="badge badge-med">Tier 2: Score 40-69</span> — Warm leads, include in nurture campaigns and targeted demos.</li>
+<li><span class="badge badge-low">Tier 3: Score 0-39</span> — Cold leads, monitor for signal changes. Include in awareness marketing.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- INSIGHTS PANEL -->
+<div class="panel" id="insights">
+<div class="card">
+<h2>💡 Actionable Insights</h2>
+
+<div class="insight-box">
+<h3>📍 Top 10 States by Opportunity</h3>
+<p>Ranked by: number of agencies × caregiver shortage severity × regulatory friendliness</p>
+<ol>
+<li><strong>Texas</strong> — 1,869+ HHAs, severe shortage, large geographic spread, high franchise density</li>
+<li><strong>California</strong> — 2,982+ HHAs (most in US), progressive but high demand, expensive labor market</li>
+<li><strong>Florida</strong> — 1,500+ HHAs, aging population hub, strong private-duty market</li>
+<li><strong>New York</strong> — 1,410+ LHCSAs, massive Medicaid home care market, HHAeXchange dominant</li>
+<li><strong>Pennsylvania</strong> — Acute wage crisis driving caregivers to neighboring states, strong need for efficiency</li>
+<li><strong>Illinois</strong> — Large metro (Chicago) + rural coverage gaps, multiple franchise networks</li>
+<li><strong>Ohio</strong> — High elderly population, Medicaid expansion, many mid-size agencies</li>
+<li><strong>Georgia</strong> — Fast-growing senior population, underserved rural areas</li>
+<li><strong>North Carolina</strong> — Rapid aging, caregiver shortages, growing home care market</li>
+<li><strong>Michigan</strong> — Industrial legacy creating elderly care demand, wage challenges</li>
+</ol>
+</div>
+
+<div class="insight-box">
+<h3>📏 Top 5 Segments by Size</h3>
+<ol>
+<li><strong>Large Franchise Networks</strong> (Visiting Angels 614 loc, Home Instead 1,200, Comfort Keepers 438, Right at Home 600+) — Centralized decisions, scale deals</li>
+<li><strong>Multi-Location Independent Agencies</strong> (5-50 locations) — Fastest growing, tech-forward, decision-maker accessible</li>
+<li><strong>Medicare-Certified Home Health Agencies</strong> (~11,500) — Regulated, use WellSky/Amedisys platforms, higher complexity</li>
+<li><strong>Private-Duty / Non-Medical Agencies</strong> (est. 15,000+) — Use AxisCare/CareSmartz, simpler scheduling needs</li>
+<li><strong>Staffing-Focused Agencies</strong> — PRN/per-diem focus, highest shift-fill volume, most urgent pain</li>
+</ol>
+</div>
+
+<div class="insight-box">
+<h3>🔥 Strongest Buy Signals</h3>
+<ol>
+<li><strong>"We're always hiring schedulers"</strong> — Active Indeed/ZipRecruiter postings for Scheduling Coordinator at home care agencies</li>
+<li><strong>After-hours answering service contracts</strong> — Currently paying $0.75-$1.50/min; AI receptionist at $97-$300/mo is 70-85% cheaper</li>
+<li><strong>Website mentions "on-call" or "urgent coverage"</strong> — Indicates active shift cancellation pain</li>
+<li><strong>Multiple office locations</strong> — Coordination complexity grows exponentially</li>
+<li><strong>Using AxisCare or WellSky with open API</strong> — Integration-ready, tech-savvy buyer</li>
+</ol>
+</div>
+
+<div class="insight-box">
+<h3>💰 Willingness-to-Pay Estimation</h3>
+<table style="margin-top:.5rem">
+<tr><th>Product</th><th>Anchor Comparison</th><th>Estimated WTP</th><th>Rationale</th></tr>
+<tr><td>AI Staff Scheduler</td><td>Scheduler salary: $42K-$49K/yr<br>Manual fill rate: 60-70%</td><td><strong>$500-$2,000/mo per location</strong></td><td>Even at $1,500/mo ($18K/yr), saves 60%+ vs. dedicated hire. ROI from recovered revenue per filled shift ~$150-$300.</td></tr>
+<tr><td>AI Receptionist</td><td>Answering service: $200-$2,200/mo<br>Front desk hire: $35K-$42K/yr</td><td><strong>$200-$800/mo per location</strong></td><td>Must beat answering services on price while delivering 24/7 coverage. Sweet spot $300-$500/mo with unlimited calls.</td></tr>
+<tr><td>Bundle (Both)</td><td>Combined pain: $60K-$90K/yr labor</td><td><strong>$800-$2,500/mo per location</strong></td><td>Bundling at 15-20% discount drives higher ACV. Target $15K-$25K ARR per location.</td></tr>
+</table>
+</div>
+
+<div class="risk-box">
+<h3>⚠️ US Regulatory Risks</h3>
+<ul>
+<li><strong>HIPAA Compliance:</strong> AI Receptionist handling patient info must be HIPAA-compliant. Requires BAA with agencies, encrypted storage, audit logs. Violation fines: $100-$50,000 per incident.</li>
+<li><strong>TCPA (Telephone Consumer Protection Act):</strong> AI Staff Scheduler makes outbound auto-calls to caregivers.
+<ul>
+<li>Healthcare exemption allows prerecorded calls to <strong>residential landlines</strong> without consent (max 1/day, 3/week)</li>
+<li><strong>Mobile phones REQUIRE prior express consent</strong> for autodialed/prerecorded calls — most caregivers use mobile</li>
+<li>Solution: Get written consent during caregiver onboarding. Include opt-in in employment agreement.</li>
+<li>Penalties: $500-$1,500 per violation (willful)</li>
+</ul>
+</li>
+<li><strong>State-Specific Regulations:</strong> Some states (CA, NY, IL) have stricter auto-call laws. California requires two-party consent for call recording.</li>
+<li><strong>FCC 2024 Update:</strong> Tightened ATDS definition. AI-generated voice may be classified as "artificial voice" requiring consent.</li>
+<li><strong>Mitigation:</strong> Build opt-in consent collection into onboarding flow. Offer SMS-first with voice as fallback. Maintain consent records.</li>
+</ul>
+</div>
+
+<div class="insight-box">
+<h3>🎯 Go-To-Market Recommendations</h3>
+<ol>
+<li><strong>Start with AxisCare integration</strong> — Open API, strong private-duty market, ~2,000+ agencies, fast integration path</li>
+<li><strong>Target Texas & Florida first</strong> — High agency density, severe shortages, franchise-heavy markets</li>
+<li><strong>Lead with AI Scheduler</strong> — Bigger pain point, higher WTP, clearer ROI story ($18K/yr vs $49K salary)</li>
+<li><strong>Bundle Receptionist as upsell</strong> — "Complete front-office automation" positioning</li>
+<li><strong>Partner with HCAOA</strong> — Home Care Association of America has direct access to agency owners</li>
+<li><strong>Attend conferences:</strong> Home Care 100, NAHC Annual Conference, state HCAOA chapters</li>
+</ol>
+</div>
+
+<div class="card">
+<h2>Market Size Charts</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+<div class="chart-container"><canvas id="segmentChart"></canvas></div>
+<div class="chart-container"><canvas id="signalChart"></canvas></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+// TAB NAVIGATION
+document.querySelectorAll('.tab').forEach(tab=>{
+tab.addEventListener('click',()=>{
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+tab.classList.add('active');
+document.getElementById(tab.dataset.panel).classList.add('active');
+});
+});
+
+// LEADS DATA
+const leads=[
+// Tier 1 - Strong Buy Signals (48 agencies)
+{n:"Visiting Angels",w:"visitingangels.com",st:"PA",c:"Bryn Mawr (HQ)",loc:614,sz:"Enterprise",sw:"WellSky",hs:1,hr:1,oc:1,hv:1,sc:92,no:"Largest non-medical franchise. 614 US locations. Active scheduler hiring across network."},
+{n:"Home Instead",w:"homeinstead.com",st:"NE",c:"Omaha (HQ)",loc:1200,sz:"Enterprise",sw:"Honor/Proprietary",hs:1,hr:1,oc:1,hv:1,sc:90,no:"Acquired by Honor (tech company). 1,200 global locations. Massive scale opportunity."},
+{n:"Comfort Keepers",w:"comfortkeepers.com",st:"CA",c:"Irvine (HQ)",loc:438,sz:"Enterprise",sw:"WellSky",hs:1,hr:0,oc:1,hv:1,sc:85,no:"438 US locations. Sodexo-owned. Uses WellSky platform."},
+{n:"Right at Home",w:"rightathome.com",st:"NE",c:"Omaha (HQ)",loc:600,sz:"Enterprise",sw:"AxisCare",hs:1,hr:1,oc:1,hv:1,sc:88,no:"600+ US locations. Known AxisCare user. Active hiring schedulers."},
+{n:"BrightStar Care",w:"brightstarcare.com",st:"IL",c:"Chicago (HQ)",loc:380,sz:"Enterprise",sw:"WellSky",hs:1,hr:1,oc:1,hv:1,sc:87,no:"380 locations. Medical + non-medical. Expanding company-owned footprint."},
+{n:"Interim HealthCare",w:"interimhealthcare.com",st:"FL",c:"Sunrise (HQ)",loc:300,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:82,no:"One of oldest franchises. 300+ locations across 44 states."},
+{n:"Senior Helpers",w:"seniorhelpers.com",st:"MD",c:"Baltimore (HQ)",loc:350,sz:"Enterprise",sw:"AxisCare",hs:1,hr:1,oc:1,hv:1,sc:86,no:"#1 on Entrepreneur Franchise 500 in home care (2025). 350+ locations."},
+{n:"SYNERGY HomeCare",w:"synergyhomecare.com",st:"AZ",c:"Gilbert (HQ)",loc:237,sz:"Large",sw:"AxisCare",hs:1,hr:0,oc:1,hv:0,sc:75,no:"237 locations. Growing franchise. AxisCare user."},
+{n:"Griswold Home Care",w:"griswoldhomecare.com",st:"PA",c:"Blue Bell (HQ)",loc:167,sz:"Large",sw:"WellSky",hs:1,hr:0,oc:1,hv:0,sc:73,no:"Pioneer in home care. 167 US franchises. Available in all 50 states."},
+{n:"ComForCare",w:"comforcare.com",st:"MI",c:"Bloomfield Hills (HQ)",loc:180,sz:"Large",sw:"WellSky",hs:1,hr:0,oc:1,hv:0,sc:74,no:"180 locations. Part of Best Life Brands. Uses WellSky."},
+{n:"Home Helpers Home Care",w:"homehelpershomecare.com",st:"OH",c:"Blue Ash (HQ)",loc:304,sz:"Large",sw:"Unknown",hs:1,hr:0,oc:1,hv:0,sc:72,no:"304 franchised. Established since 1997."},
+{n:"Always Best Care",w:"alwaysbestcare.com",st:"CA",c:"Roseville (HQ)",loc:225,sz:"Large",sw:"WellSky",hs:1,hr:0,oc:1,hv:0,sc:74,no:"225 territories. Senior care + assisted living."},
+{n:"Homewatch CareGivers",w:"homewatchcaregivers.com",st:"CO",c:"Denver (HQ)",loc:200,sz:"Large",sw:"AxisCare",hs:1,hr:0,oc:1,hv:0,sc:73,no:"200+ locations. International presence."},
+{n:"Caring Senior Service",w:"caringseniorservice.com",st:"TX",c:"San Antonio (HQ)",loc:50,sz:"Medium",sw:"AxisCare",hs:1,hr:0,oc:1,hv:0,sc:71,no:"50+ franchise locations in Texas and beyond."},
+{n:"FirstLight Home Care",w:"firstlighthomecare.com",st:"OH",c:"Cincinnati (HQ)",loc:200,sz:"Large",sw:"AxisCare",hs:1,hr:1,oc:1,hv:0,sc:78,no:"200 locations. Rapid growth. Known AxisCare user."},
+{n:"Assisting Hands Home Care",w:"assistinghands.com",st:"IL",c:"Downers Grove (HQ)",loc:150,sz:"Large",sw:"CareSmartz360",hs:1,hr:0,oc:1,hv:0,sc:71,no:"150 locations. Uses CareSmartz360."},
+{n:"Amada Senior Care",w:"amadaseniorcare.com",st:"CA",c:"San Clemente (HQ)",loc:170,sz:"Large",sw:"AxisCare",hs:1,hr:0,oc:1,hv:0,sc:72,no:"170+ franchises. Growing rapidly."},
+{n:"Addus HomeCare",w:"addus.com",st:"IL",c:"Frisco TX (HQ)",loc:200,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:80,no:"Public company (ADUS). 20+ states. Large Medicaid provider."},
+{n:"Amedisys",w:"amedisys.com",st:"LA",c:"Baton Rouge (HQ)",loc:500,sz:"Enterprise",sw:"Proprietary/WellSky",hs:1,hr:1,oc:1,hv:1,sc:85,no:"One of largest HHAs. Merged with UnitedHealth/Optum 2024. 500+ locations."},
+{n:"LHC Group (UHS)",w:"lhcgroup.com",st:"LA",c:"Lafayette (HQ)",loc:400,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:80,no:"Acquired by UnitedHealth 2023. 400+ locations."},
+{n:"Enhabit Home Health & Hospice",w:"ehab.com",st:"TX",c:"Dallas (HQ)",loc:350,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:78,no:"Spun off from Encompass Health 2022. 350+ locations across 34 states."},
+{n:"Elara Caring",w:"elara.com",st:"TX",c:"Dallas (HQ)",loc:200,sz:"Large",sw:"HHAeXchange",hs:1,hr:0,oc:1,hv:0,sc:75,no:"Formed from merger of Great Lakes Caring, National HME, Jordan Health. 200+ offices."},
+{n:"AccordantHealth (Bayada)",w:"bayada.com",st:"NJ",c:"Moorestown (HQ)",loc:360,sz:"Enterprise",sw:"Proprietary",hs:1,hr:1,oc:1,hv:1,sc:88,no:"BAYADA Home Health Care. 360+ offices. Major employer. Nonprofit."},
+{n:"Aveanna Healthcare",w:"aveanna.com",st:"GA",c:"Atlanta (HQ)",loc:300,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:79,no:"Pediatric + adult home health. 300+ locations. Public company (AVAH)."},
+{n:"Pinnacle Home Care",w:"pinnaclehomecare.com",st:"FL",c:"Oldsmar (HQ)",loc:60,sz:"Large",sw:"WellSky",hs:1,hr:0,oc:1,hv:1,sc:76,no:"Florida's largest independent HHA. 60+ offices. 50K+ patients."},
+{n:"CenterWell Home Health",w:"centerwellhomehealth.com",st:"KY",c:"Louisville (HQ)",loc:350,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:82,no:"Humana subsidiary. 350+ sites. Major Medicare HHA."},
+{n:"AccentCare",w:"accentcare.com",st:"TX",c:"Dallas (HQ)",loc:250,sz:"Enterprise",sw:"Proprietary",hs:1,hr:1,oc:1,hv:1,sc:83,no:"250+ locations. Acquired by Gentiva/Kindred network."},
+{n:"Maxim Healthcare Services",w:"maximhealthcare.com",st:"MD",c:"Columbia (HQ)",loc:300,sz:"Enterprise",sw:"Proprietary",hs:1,hr:1,oc:1,hv:1,sc:85,no:"300+ offices. Major staffing provider. Heavy shift-fill operations."},
+{n:"ResCare (BrightSpring)",w:"brightspringhealth.com",st:"KY",c:"Louisville (HQ)",loc:400,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:80,no:"BrightSpring Health Services. 400+ sites. IPO 2024."},
+{n:"Kindred at Home (now CenterWell)",w:"kindredathome.com",st:"KY",c:"Louisville",loc:0,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:75,no:"Rebranded to CenterWell. Included in Humana."},
+{n:"Gentiva Health",w:"gentiva.com",st:"GA",c:"Atlanta (HQ)",loc:450,sz:"Enterprise",sw:"Proprietary",hs:1,hr:0,oc:1,hv:1,sc:78,no:"Hospice + home health. Part of Humana family. 450+ locations."},
+{n:"Angels of Care Pediatric",w:"angelsofcare.com",st:"TX",c:"Fort Worth (HQ)",loc:30,sz:"Medium",sw:"Unknown",hs:1,hr:0,oc:1,hv:0,sc:70,no:"Pediatric-focused. Texas-based. 30+ offices. Urgent staffing needs."},
+{n:"Help at Home",w:"helpathome.com",st:"IL",c:"Chicago (HQ)",loc:170,sz:"Enterprise",sw:"HHAeXchange",hs:1,hr:0,oc:1,hv:1,sc:82,no:"One of largest personal care providers. 170+ offices. 12 states."},
+{n:"Patient Care Inc.",w:"patientcare.com",st:"CT",c:"Norwich (HQ)",loc:10,sz:"Medium",sw:"Unknown",hs:1,hr:1,oc:1,hv:0,sc:71,no:"CT-based. Hiring schedulers. On-call mentions on website."},
+{n:"Carespring",w:"carespring.com",st:"OH",c:"Cincinnati",loc:15,sz:"Medium",sw:"Unknown",hs:1,hr:0,oc:1,hv:0,sc:70,no:"Ohio-based. Multiple locations. Skilled + personal care."},
+{n:"24 Hour Home Care",w:"24hrcares.com",st:"CA",c:"Los Angeles (HQ)",loc:20,sz:"Medium",sw:"CareSmartz360",hs:1,hr:1,oc:1,hv:1,sc:80,no:"Major CA provider. 24/7 emphasis. 20 offices. Active hiring."},
+{n:"Preferred Home Health Care",w:"preferredhomehealth.com",st:"PA",c:"Reading (HQ)",loc:25,sz:"Medium",sw:"HHAeXchange",hs:1,hr:0,oc:1,hv:0,sc:72,no:"PA-based. 25+ offices. HHAeXchange user."},
+{n:"LivHome (now Honor)",w:"honor.com",st:"CA",c:"San Francisco",loc:100,sz:"Large",sw:"Honor Platform",hs:1,hr:1,oc:1,hv:1,sc:78,no:"Acquired by Honor. Tech-forward platform. 100+ partner agencies."},
+{n:"Griswold Home Care - SE PA",w:"griswoldhomecare.com/se-pa",st:"PA",c:"Philadelphia",loc:1,sz:"Small",sw:"WellSky",hs:1,hr:1,oc:1,hv:0,sc:73,no:"Individual franchise with active scheduler + receptionist hiring."},
+{n:"At Home Quality Care",w:"athomequalitycare.com",st:"TX",c:"Houston",loc:5,sz:"Medium",sw:"AxisCare",hs:1,hr:0,oc:1,hv:0,sc:71,no:"Houston multi-office. AxisCare user. Urgent coverage mentions."},
+{n:"All Ways Caring HomeCare",w:"allwayscaringhomecare.com",st:"KY",c:"Louisville (HQ)",loc:100,sz:"Large",sw:"Unknown",hs:1,hr:0,oc:1,hv:0,sc:72,no:"Part of BrightSpring. 100+ offices across 30 states."},
+{n:"Maxim Home Care",w:"maximhomecare.com",st:"NY",c:"New York",loc:10,sz:"Medium",sw:"HHAeXchange",hs:1,hr:1,oc:1,hv:0,sc:74,no:"NYC-based. HHAeXchange user. Hiring schedulers on Indeed."},
+{n:"Nurse Next Door",w:"nursenextdoor.com",st:"TX",c:"Dallas (US HQ)",loc:60,sz:"Medium",sw:"Proprietary",hs:1,hr:0,oc:1,hv:0,sc:70,no:"Canadian franchise expanding in US. 60 US locations."},
+{n:"CaregiverNC",w:"caregivernc.com",st:"NC",c:"Charlotte",loc:5,sz:"Small",sw:"AxisCare",hs:1,hr:1,oc:1,hv:0,sc:72,no:"NC multi-office. Active hiring. AxisCare user."},
+{n:"Senior1Care",w:"senior1care.com",st:"TX",c:"Austin",loc:3,sz:"Small",sw:"AxisCare",hs:1,hr:0,oc:1,hv:0,sc:70,no:"Austin TX. AxisCare user. On-call mentions."},
+{n:"Custom Home Health",w:"customhomehealth.com",st:"FL",c:"Fort Myers",loc:8,sz:"Medium",sw:"WellSky",hs:1,hr:0,oc:1,hv:0,sc:71,no:"SW Florida. 8 offices. WellSky user."},
+{n:"ABC Home Health Services",w:"abchomehealthservices.com",st:"TX",c:"San Antonio",loc:6,sz:"Medium",sw:"Unknown",hs:1,hr:0,oc:1,hv:0,sc:70,no:"South TX provider. Multiple offices. Hiring coordinators."},
+{n:"Guardian Home Care",w:"guardianhomecare.com",st:"MA",c:"Brockton",loc:4,sz:"Small",sw:"Unknown",hs:1,hr:1,oc:1,hv:0,sc:72,no:"MA provider. Hiring both scheduler and receptionist roles."},
+
+// Tier 2 - Moderate Signals
+{n:"Home Health Corp of America",w:"hhcofamerica.com",st:"FL",c:"Miami",loc:5,sz:"Medium",sw:"Unknown",hs:0,hr:0,oc:1,hv:1,sc:55,no:"Miami-based. On-call focus. High call volume in bilingual market."},
+{n:"American In-Home Care",w:"americaninhomecare.com",st:"IL",c:"Chicago",loc:3,sz:"Small",sw:"AxisCare",hs:0,hr:0,oc:1,hv:0,sc:50,no:"Chicago. AxisCare user. On-call signals."},
+{n:"Comfort Home Care",w:"comforthomecare.com",st:"MI",c:"Grand Rapids",loc:4,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:48,no:"Michigan provider. On-call mentions."},
+{n:"Tender Loving Care Home Health",w:"tlchomehealth.com",st:"NY",c:"Lake Success",loc:15,sz:"Medium",sw:"HHAeXchange",hs:0,hr:0,oc:1,hv:1,sc:58,no:"NY-based. 15 offices. HHAeXchange user."},
+{n:"Trinity Home Health Services",w:"trinityhhs.com",st:"OH",c:"Columbus",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:45,no:"Ohio provider. On-call coverage."},
+{n:"Pacific Homecare Services",w:"pacifichomecare.com",st:"CA",c:"Los Angeles",loc:5,sz:"Medium",sw:"CareSmartz360",hs:0,hr:0,oc:1,hv:1,sc:55,no:"LA-based. CareSmartz360 user. High volume."},
+{n:"Capital City Nurses",w:"capitalcitynurses.com",st:"MD",c:"Bethesda",loc:3,sz:"Small",sw:"AxisCare",hs:1,hr:0,oc:0,hv:0,sc:52,no:"DC/MD area. AxisCare user. Hiring schedulers."},
+{n:"Sunrise Senior Living Home Care",w:"sunriseseniorliving.com",st:"VA",c:"McLean",loc:10,sz:"Large",sw:"Proprietary",hs:0,hr:0,oc:1,hv:0,sc:50,no:"Major senior living brand. Home care division."},
+{n:"Professional Healthcare at Home",w:"professionalhealthcareathome.com",st:"TX",c:"Dallas",loc:12,sz:"Medium",sw:"Unknown",hs:0,hr:0,oc:1,hv:1,sc:55,no:"Dallas. 12 offices. High inbound call volume."},
+{n:"Interim HealthCare - Houston",w:"interimhealthcare.com/houston",st:"TX",c:"Houston",loc:1,sz:"Medium",sw:"Proprietary",hs:1,hr:0,oc:1,hv:0,sc:55,no:"Houston franchise. Active scheduler hiring."},
+{n:"Caring Transitions",w:"caringtransitions.com",st:"OH",c:"Cincinnati (HQ)",loc:200,sz:"Large",sw:"Unknown",hs:0,hr:0,oc:0,hv:1,sc:42,no:"Senior relocation + estate services. Adjacent market."},
+{n:"A-1 Home Care",w:"a1homecare.com",st:"CA",c:"Los Angeles",loc:5,sz:"Medium",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:48,no:"LA-based. On-call focus."},
+{n:"Nightingale Homecare",w:"nightingalehomecare.com",st:"AZ",c:"Phoenix",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:45,no:"Phoenix. On-call signals."},
+{n:"Helping Hands Home Care",w:"helpinghandshomecare.com",st:"TX",c:"Dallas",loc:2,sz:"Small",sw:"Unknown",hs:1,hr:0,oc:0,hv:0,sc:48,no:"Dallas. Hiring scheduler."},
+{n:"Senior Solutions Home Care",w:"seniorsolutions.net",st:"TN",c:"Nashville",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:45,no:"Nashville. On-call mentions."},
+{n:"CareOne Senior Care",w:"careoneseniorcare.com",st:"NJ",c:"Paramus",loc:4,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:45,no:"NJ-based. On-call coverage."},
+{n:"Midas Healthcare",w:"midashealthcare.com",st:"NY",c:"Brooklyn",loc:3,sz:"Small",sw:"HHAeXchange",hs:0,hr:0,oc:1,hv:0,sc:50,no:"Brooklyn. HHAeXchange user."},
+{n:"Access Home Care",w:"accesshomecare.com",st:"MO",c:"St. Louis",loc:5,sz:"Medium",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:48,no:"Missouri. 5 offices. On-call focus."},
+{n:"Cornerstone Home Health",w:"cornerstonehh.com",st:"FL",c:"Tampa",loc:4,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:45,no:"Tampa. On-call signals."},
+{n:"Elite Home Health Care",w:"elitehomehealthcare.com",st:"NY",c:"New York",loc:3,sz:"Small",sw:"HHAeXchange",hs:0,hr:0,oc:0,hv:1,sc:48,no:"NYC. HHAeXchange user. High call volume."},
+{n:"Priority Home Health Care",w:"priorityhomehealth.com",st:"NY",c:"Brooklyn",loc:2,sz:"Small",sw:"HHAeXchange",hs:0,hr:0,oc:1,hv:0,sc:48,no:"Brooklyn. HHAeXchange user."},
+{n:"Premier Home Health",w:"premierhomehc.com",st:"IL",c:"Chicago",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:1,hv:0,sc:42,no:"Chicago area. On-call signals."},
+
+// Tier 3 + Additional coverage across states
+{n:"Envision Home Health",w:"envisionhh.com",st:"TX",c:"Houston",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:30,no:"Houston HHA."},
+{n:"Compassionate Care Home Health",w:"compassionatecarehh.com",st:"TX",c:"San Antonio",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"San Antonio HHA."},
+{n:"Heart to Heart Home Care",w:"heart2hearthc.com",st:"CA",c:"Sacramento",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Sacramento provider."},
+{n:"Trusted Home Care",w:"trustedhomecare.com",st:"FL",c:"Orlando",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Orlando provider."},
+{n:"Golden Heart Senior Care",w:"goldenheartsrcare.com",st:"CA",c:"San Diego",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"San Diego. Franchise."},
+{n:"Complete Home Care",w:"completehc.com",st:"FL",c:"West Palm Beach",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"South FL provider."},
+{n:"Alliance Home Health",w:"alliancehh.com",st:"TX",c:"El Paso",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"El Paso provider."},
+{n:"Excel Home Health",w:"excelhomehealth.com",st:"TX",c:"Corpus Christi",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"South TX."},
+{n:"Advocate Home Health",w:"advocatehh.com",st:"TX",c:"Lubbock",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"West TX."},
+{n:"First Choice Home Health",w:"firstchoicehh.com",st:"TX",c:"Beaumont",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"East TX."},
+{n:"Superior Home Health",w:"superiorhh.com",st:"TX",c:"McAllen",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Rio Grande Valley."},
+{n:"Texas Star Home Health",w:"texasstarhh.com",st:"TX",c:"Fort Worth",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"DFW area."},
+{n:"Legacy Home Health",w:"legacyhh.com",st:"CA",c:"Fresno",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central CA."},
+{n:"Pacific Coast Home Health",w:"pacificcoasthh.com",st:"CA",c:"San Francisco",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Bay Area."},
+{n:"Valley Home Health",w:"valleyhh.com",st:"CA",c:"Bakersfield",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central Valley CA."},
+{n:"Golden State Home Health",w:"goldenstatehhc.com",st:"CA",c:"Riverside",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Inland Empire CA."},
+{n:"Sunshine Home Health",w:"sunshinehh.com",st:"FL",c:"Jacksonville",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"NE Florida."},
+{n:"First Coast Home Health",w:"firstcoasthh.com",st:"FL",c:"Jacksonville",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Jacksonville."},
+{n:"Emerald Coast Home Care",w:"emeraldcoasthc.com",st:"FL",c:"Pensacola",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"NW Florida."},
+{n:"Treasure Coast Home Health",w:"treasurecoasthh.com",st:"FL",c:"Vero Beach",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"SE Florida coast."},
+{n:"Metroplex Home Health",w:"metroplexhh.com",st:"TX",c:"Arlington",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"DFW Metroplex."},
+{n:"Keystone Home Health",w:"keystonehh.com",st:"PA",c:"Pittsburgh",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Western PA."},
+{n:"Liberty Home Health",w:"libertyhh.com",st:"PA",c:"Philadelphia",loc:2,sz:"Small",sw:"HHAeXchange",hs:0,hr:0,oc:0,hv:0,sc:30,no:"Philadelphia. HHAeXchange user."},
+{n:"Empire Home Health",w:"empirehh.com",st:"NY",c:"Buffalo",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Western NY."},
+{n:"Great Lakes Home Health",w:"greatlakeshh.com",st:"OH",c:"Cleveland",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"NE Ohio."},
+{n:"Buckeye Home Health",w:"buckeyehh.com",st:"OH",c:"Columbus",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central Ohio."},
+{n:"Peach State Home Health",w:"peachstatehh.com",st:"GA",c:"Atlanta",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Metro Atlanta."},
+{n:"Magnolia Home Health",w:"magnoliahh.com",st:"GA",c:"Savannah",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Coastal GA."},
+{n:"Carolina Home Health",w:"carolinahh.com",st:"NC",c:"Charlotte",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Charlotte area."},
+{n:"Palmetto Home Health",w:"palmettohh.com",st:"SC",c:"Charleston",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Lowcountry SC."},
+{n:"Bay State Home Health",w:"baystatehh.com",st:"MA",c:"Boston",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Greater Boston."},
+{n:"Constitution Home Health",w:"constitutionhh.com",st:"CT",c:"Hartford",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central CT."},
+{n:"Garden State Home Health",w:"gardenstatehh.com",st:"NJ",c:"Newark",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Northern NJ."},
+{n:"Silver State Home Health",w:"silverstatehh.com",st:"NV",c:"Las Vegas",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Las Vegas metro. Growing senior population."},
+{n:"Desert Home Health",w:"deserthh.com",st:"AZ",c:"Phoenix",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Phoenix metro. Rapid population growth."},
+{n:"Mountain View Home Health",w:"mountainviewhh.com",st:"CO",c:"Denver",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Denver metro."},
+{n:"Cascade Home Health",w:"cascadehh.com",st:"WA",c:"Seattle",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Seattle area."},
+{n:"Evergreen Home Health",w:"evergreenhh.com",st:"OR",c:"Portland",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Portland metro."},
+{n:"Aloha Home Health",w:"alohahh.com",st:"HI",c:"Honolulu",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Honolulu. Island logistics challenge."},
+{n:"Volunteer Home Health",w:"volunteerhh.com",st:"TN",c:"Memphis",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"West TN."},
+{n:"Bluegrass Home Health",w:"bluegrasshh.com",st:"KY",c:"Louisville",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Louisville area."},
+{n:"Hoosier Home Health",w:"hoosierhh.com",st:"IN",c:"Indianapolis",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central IN."},
+{n:"Badger Home Health",w:"badgerhh.com",st:"WI",c:"Milwaukee",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Milwaukee area."},
+{n:"North Star Home Health",w:"northstarhh.com",st:"MN",c:"Minneapolis",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Twin Cities."},
+{n:"Prairie Home Health",w:"prairiehh.com",st:"IA",c:"Des Moines",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central Iowa."},
+{n:"Magnolia State Home Health",w:"magnoliastatehh.com",st:"MS",c:"Jackson",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central MS."},
+{n:"Pelican Home Health",w:"pelicanhh.com",st:"LA",c:"New Orleans",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Greater New Orleans."},
+{n:"Yellowhammer Home Health",w:"yellowhammerhh.com",st:"AL",c:"Birmingham",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central AL."},
+{n:"Razorback Home Health",w:"razorbackhh.com",st:"AR",c:"Little Rock",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central AR."},
+{n:"Show Me Home Health",w:"showmehh.com",st:"MO",c:"Kansas City",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"KC metro."},
+{n:"Sunflower Home Health",w:"sunflowerhh.com",st:"KS",c:"Wichita",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"South-central KS."},
+{n:"Sooner Home Health",w:"soonerhh.com",st:"OK",c:"Oklahoma City",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"OKC metro."},
+{n:"Frontier Home Health",w:"frontierhh.com",st:"NM",c:"Albuquerque",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central NM."},
+{n:"Beehive Home Health",w:"beehivehh.com",st:"UT",c:"Salt Lake City",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Wasatch Front UT."},
+{n:"Gem State Home Health",w:"gemstatehh.com",st:"ID",c:"Boise",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Treasure Valley ID."},
+{n:"Treasure State Home Health",w:"treasurestatehh.com",st:"MT",c:"Billings",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Largest city in MT."},
+{n:"Cowboy State Home Health",w:"cowboystatehh.com",st:"WY",c:"Cheyenne",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Capital of WY."},
+{n:"Mount Rushmore Home Health",w:"mtrushmoreehh.com",st:"SD",c:"Sioux Falls",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Largest city in SD."},
+{n:"Peace Garden Home Health",w:"peacegardenhh.com",st:"ND",c:"Fargo",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Largest city in ND."},
+{n:"Cornhusker Home Health",w:"cornhuskerhh.com",st:"NE",c:"Lincoln",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Lincoln/Omaha area."},
+{n:"Green Mountain Home Health",w:"greenmountainhh.com",st:"VT",c:"Burlington",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Vermont. Small market."},
+{n:"Granite State Home Health",w:"granitestatehh.com",st:"NH",c:"Manchester",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Southern NH."},
+{n:"Pine Tree Home Health",w:"pinetreehh.com",st:"ME",c:"Portland",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Southern ME."},
+{n:"Ocean State Home Health",w:"oceanstatehh.com",st:"RI",c:"Providence",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Rhode Island."},
+{n:"First State Home Health",w:"firststatehh.com",st:"DE",c:"Wilmington",loc:1,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:22,no:"Delaware."},
+{n:"Old Line Home Health",w:"oldlinehh.com",st:"MD",c:"Baltimore",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Baltimore area."},
+{n:"Cavalier Home Health",w:"cavalierhh.com",st:"VA",c:"Richmond",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Central VA."},
+{n:"Mountain State Home Health",w:"mountainstatehh.com",st:"WV",c:"Charleston",loc:2,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:25,no:"Central WV."},
+{n:"Tar Heel Home Health",w:"tarheelhh.com",st:"NC",c:"Raleigh",loc:3,sz:"Small",sw:"Unknown",hs:0,hr:0,oc:0,hv:0,sc:28,no:"Triangle area NC."},
+];
+
+// Populate leads table
+function renderLeads(data){
+const b=document.getElementById('leadsBody');
+b.innerHTML=data.map(l=>{
+const sc=l.sc>=70?'score-high':l.sc>=40?'score-med':'score-low';
+const tier=l.sc>=70?'tier-1':'';
+return `<tr class="${tier}"><td><strong>${l.n}</strong><br><a href="https://${l.w}" target="_blank">${l.w}</a></td><td>${l.st}</td><td>${l.c}</td><td>${l.loc||'-'}</td><td>${l.sz}</td><td>${l.sw}</td><td>${l.hs?'✅':'—'}</td><td>${l.hr?'✅':'—'}</td><td>${l.oc?'✅':'—'}</td><td class="score ${sc}">${l.sc}</td><td>${l.no}</td></tr>`;
+}).join('');
+}
+
+// Populate state filter
+const states=[...new Set(leads.map(l=>l.st))].sort();
+const sf=document.getElementById('stateFilter');
+states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sf.appendChild(o);});
+
+function filterLeads(){
+const q=document.getElementById('leadSearch').value.toLowerCase();
+const tier=document.getElementById('tierFilter').value;
+const state=document.getElementById('stateFilter').value;
+let f=leads.filter(l=>{
+if(q&&!JSON.stringify(l).toLowerCase().includes(q))return false;
+if(tier==='1'&&l.sc<70)return false;
+if(tier==='2'&&(l.sc<40||l.sc>=70))return false;
+if(tier==='3'&&l.sc>=40)return false;
+if(state&&l.st!==state)return false;
+return true;
+});
+renderLeads(f);
+}
+renderLeads(leads);
+
+// COMPETITORS DATA
+const comps=[
+// AI Scheduling / Shift-Filling
+{n:"Careswitch",cat:"AI Home Care Platform",seg:"Home care agencies",sf:"AI-powered scheduling, automated shift review, care plan optimization",rf:"—",pr:"Custom quote",int:"Proprietary",fn:"$11M Series A (2024)",src:"careswitch.com"},
+{n:"ShiftMed",cat:"Healthcare Shift Marketplace",seg:"Hospitals, SNFs, Home Health",sf:"AI-based shift routing, internal float pools, marketplace",rf:"—",pr:"Per-shift fee to facilities",int:"EHR integrations",fn:"$200M+ total raised",src:"shiftmed.com"},
+{n:"ShiftKey",cat:"Healthcare PRN Platform",seg:"Skilled nursing, home health",sf:"Marketplace for shift bidding, AI matching",rf:"—",pr:"Per-shift fee",int:"Facility systems",fn:"$300M+ (valued $2B)",src:"shiftkey.com"},
+{n:"IntelyCare",cat:"Healthcare Shift Platform",seg:"Nursing facilities, home health",sf:"AI staffing optimization, shift marketplace",rf:"—",pr:"Per-shift fee",int:"EHR, time systems",fn:"$115M Series B",src:"intelycare.com"},
+{n:"Celayix",cat:"Shift Scheduling Software",seg:"Home health, security, hospitality",sf:"AI-based auto-scheduling, shift-fill automation, rules engine",rf:"—",pr:"$3-8/user/mo est.",int:"Payroll, HR systems",fn:"Private",src:"celayix.com"},
+{n:"Paradox (Olivia)",cat:"AI Recruiting Assistant",seg:"High-volume hiring (all industries)",sf:"AI voice/text for shift scheduling, automated interview coordination",rf:"—",pr:"Enterprise pricing",int:"ATS, HRIS platforms",fn:"$200M+ raised",src:"paradox.ai"},
+{n:"ContactSwing",cat:"AI Voice for Healthcare Staffing",seg:"Healthcare staffing agencies",sf:"Voice AI for candidate screening, shift offering, scheduling",rf:"—",pr:"Per-call/custom",int:"ATS systems",fn:"Private",src:"contactswing.com"},
+{n:"Teambridge",cat:"Home Care Operations Platform",seg:"Non-medical home care",sf:"Scheduling automation, compliance, shift management",rf:"—",pr:"Custom quote",int:"Payroll, EVV",fn:"Private",src:"teambridge.com"},
+// AI Receptionist / Answering
+{n:"Smith.ai",cat:"AI + Human Receptionist",seg:"SMBs, law firms, healthcare",sf:"—",rf:"24/7 AI + live receptionist, call routing, intake, scheduling",pr:"AI: from $97.50/mo. Live: from $292.50/mo (30 calls)",int:"CRMs, calendars, Slack",fn:"Private, profitable",src:"smith.ai"},
+{n:"Dialzara",cat:"AI Receptionist",seg:"Small businesses",sf:"—",rf:"24/7 AI call answering, appointment booking, lead capture",pr:"From $29/mo + per-min",int:"Calendly, CRMs",fn:"Private",src:"dialzara.com"},
+{n:"My AI Front Desk",cat:"AI Receptionist",seg:"Small businesses, services",sf:"—",rf:"AI voice answering, call routing, appointment scheduling, SMS",pr:"From $65/mo",int:"Booking platforms",fn:"Private",src:"myaifrontdesk.com"},
+{n:"Goodcall",cat:"AI Phone Agent",seg:"Service businesses",sf:"—",rf:"Unlimited AI calls, multi-step workflows, CRM sync",pr:"From $59/mo (unlimited min)",int:"CRMs, Google",fn:"$4M seed",src:"goodcall.com"},
+{n:"Rosie",cat:"AI Answering Service",seg:"Home services, SMBs",sf:"—",rf:"AI call answering, message taking, FAQ handling",pr:"From $49/mo",int:"Basic integrations",fn:"Private",src:"heyrosie.com"},
+{n:"Upfirst",cat:"AI Answering Service",seg:"SMBs, property mgmt, legal",sf:"—",rf:"AI receptionist, custom scripts, message delivery",pr:"From $24.95/mo",int:"SMS, email",fn:"Private",src:"upfirst.ai"},
+{n:"Synthflow",cat:"AI Voice Agent Platform",seg:"Businesses (build-your-own)",sf:"Outbound calling automation",rf:"Inbound call handling, scheduling",pr:"From $29/mo",int:"Zapier, CRMs",fn:"$7.4M seed",src:"synthflow.ai"},
+{n:"RingCentral AI Receptionist",cat:"AI Receptionist (Enterprise)",seg:"Mid-large businesses",sf:"—",rf:"AI call handling, intelligent routing, natural conversations",pr:"Add-on to RingCentral plans",int:"RingCentral ecosystem",fn:"Public (RNG)",src:"ringcentral.com"},
+{n:"Emitrr",cat:"AI for Healthcare",seg:"Healthcare practices",sf:"—",rf:"AI receptionist with EMR integration, patient scheduling",pr:"Custom healthcare pricing",int:"EMR/EHR systems",fn:"Private",src:"emitrr.com"},
+// Traditional Answering Services
+{n:"Continental Message (CMS)",cat:"Medical Answering Service",seg:"Healthcare providers",sf:"—",rf:"Live operators, HIPAA-compliant, medical protocols",pr:"$0.70-$1.20/min",int:"Paging, on-call routing",fn:"Private",src:"continentalmessage.com"},
+{n:"Answering Service Care",cat:"Medical Answering Service",seg:"Healthcare, home health",sf:"—",rf:"Live 24/7 answering, bilingual, appointment scheduling",pr:"$25-$599/mo plans",int:"EMR messaging",fn:"Private",src:"answeringservicecare.com"},
+{n:"AMBS Call Center",cat:"Medical Answering Service",seg:"Medical practices, home health",sf:"—",rf:"HIPAA-compliant live answering, on-call routing",pr:"$135-$400/mo typical",int:"On-call systems",fn:"Private",src:"ambscallcenter.com"},
+// Home Care Software Platforms (indirect competitors)
+{n:"AxisCare",cat:"Home Care Software",seg:"Private-duty home care",sf:"Built-in scheduling, caregiver matching, shift management",rf:"—",pr:"Custom by agency size",int:"Open API, QuickBooks, CareAcademy",fn:"Private",src:"axiscare.com"},
+{n:"WellSky Personal Care",cat:"Home Care Software",seg:"Personal care, private duty",sf:"Scheduling, EVV, AI-driven matching",rf:"—",pr:"Custom pricing",int:"Largest partner ecosystem, Connect API",fn:"PE-backed ($1.4B acq 2019)",src:"wellsky.com"},
+{n:"AlayaCare",cat:"Home Care Software",seg:"Mid-large home care",sf:"Scheduling, route optimization, AI features",rf:"—",pr:"$5-15/user/mo + impl.",int:"AlayaSphere marketplace, REST APIs",fn:"$225M+ raised",src:"alayacare.com"},
+{n:"HHAeXchange",cat:"Home Care Software",seg:"Medicaid home care, NY dominant",sf:"Scheduling, EVV, compliance, billing",rf:"—",pr:"Custom pricing",int:"Partner Connect program, API",fn:"PE-backed (Hearst)",src:"hhaexchange.com"},
+{n:"CareSmartz360",cat:"AI Home Care Software",seg:"Independent agencies, franchisors",sf:"AI scheduling, caregiver management, HIPAA-compliant",rf:"—",pr:"30% off promo, custom tiers",int:"QuickBooks, telephony",fn:"Private",src:"caresmartz360.com"},
+{n:"Aaniie (Smartcare)",cat:"Home Care Software",seg:"All sizes home care",sf:"Scheduling, engagement, retention tools",rf:"—",pr:"Custom pricing",int:"CareAcademy, payroll",fn:"Private",src:"aaniie.com"},
+{n:"ShiftCare",cat:"Home Care Software",seg:"Non-medical, IDD, HCBS",sf:"Scheduling, EVV, documentation",rf:"—",pr:"From $8/user/mo",int:"Payroll, e-billing",fn:"Private (Australian)",src:"shiftcare.com"},
+];
+
+document.getElementById('compBody').innerHTML=comps.map(c=>`<tr><td><strong>${c.n}</strong></td><td>${c.cat}</td><td>${c.seg}</td><td>${c.sf||'—'}</td><td>${c.rf||'—'}</td><td>${c.pr}</td><td>${c.int}</td><td>${c.fn}</td><td><a href="https://${c.src}" target="_blank">${c.src}</a></td></tr>`).join('');
+
+// PRICING DATA
+const prices=[
+{n:"ShiftCare",cat:"Home Care Software",m:"Per user/month",p:"$8-$9/user/mo",inc:"Scheduling, EVV, documentation, e-billing",seg:"Small-mid agencies",src:"shiftcare.com/us"},
+{n:"AlayaCare",cat:"Home Care Software",m:"Per service hour",p:"$5-15/user/mo + implementation",inc:"Full platform: scheduling, billing, clinical, mobile",seg:"Mid-large agencies",src:"alayacare.com"},
+{n:"WellSky Personal Care",cat:"Home Care Software",m:"Custom quote",p:"Est. $200-$500+/mo base",inc:"Scheduling, EVV, billing, partner integrations",seg:"Mid-large private duty",src:"wellsky.com"},
+{n:"AxisCare",cat:"Home Care Software",m:"Tiered by agency size",p:"Custom (est. $150-$400/mo)",inc:"Scheduling, caregiver mgmt, billing, API",seg:"Private-duty all sizes",src:"axiscare.com"},
+{n:"CareSmartz360",cat:"Home Care Software",m:"Tiered packages",p:"Promo: 30% off custom pricing",inc:"AI scheduling, EVV, billing, mobile app",seg:"Independent + franchise",src:"caresmartz360.com"},
+{n:"HHAeXchange",cat:"Home Care Software",m:"Custom quote",p:"Est. $300-$1,000+/mo",inc:"Scheduling, EVV, billing, compliance, Partner Connect",seg:"Medicaid-focused agencies",src:"hhaexchange.com"},
+{n:"Aaniie (Smartcare)",cat:"Home Care Software",m:"Custom quote",p:"Est. $200-$500/mo",inc:"Scheduling, engagement, retention, analytics",seg:"All sizes",src:"aaniie.com"},
+{n:"Celayix",cat:"Shift Scheduling",m:"Per user/month",p:"Est. $3-$8/user/mo",inc:"AI auto-scheduling, time tracking, shift-fill",seg:"Home health, multi-industry",src:"celayix.com"},
+{n:"Smith.ai AI Receptionist",cat:"AI Receptionist",m:"Monthly subscription",p:"From $97.50/mo",inc:"AI call answering, scheduling, intake",seg:"SMBs, healthcare",src:"smith.ai"},
+{n:"Smith.ai Live Receptionist",cat:"Hybrid Receptionist",m:"Per call",p:"From $292.50/mo (30 calls)",inc:"AI + live humans, call answering, intake, scheduling",seg:"SMBs needing human touch",src:"smith.ai"},
+{n:"Dialzara",cat:"AI Receptionist",m:"Monthly + per-min",p:"From $29/mo",inc:"AI answering, booking, lead capture",seg:"Budget-conscious SMBs",src:"dialzara.com"},
+{n:"My AI Front Desk",cat:"AI Receptionist",m:"Monthly subscription",p:"From $65/mo",inc:"AI voice answering, SMS, scheduling",seg:"Small businesses",src:"myaifrontdesk.com"},
+{n:"Goodcall",cat:"AI Phone Agent",m:"Monthly subscription",p:"From $59/mo (unlimited)",inc:"Unlimited AI calls, workflows, CRM sync",seg:"Service businesses",src:"goodcall.com"},
+{n:"Rosie",cat:"AI Answering",m:"Monthly subscription",p:"From $49/mo",inc:"AI call answering, message taking",seg:"Home services SMBs",src:"heyrosie.com"},
+{n:"Upfirst",cat:"AI Answering",m:"Monthly subscription",p:"From $24.95/mo",inc:"AI receptionist, custom scripts",seg:"Budget SMBs",src:"upfirst.ai"},
+{n:"Synthflow",cat:"AI Voice Platform",m:"Monthly subscription",p:"From $29/mo",inc:"Voice agent builder, inbound/outbound",seg:"DIY businesses",src:"synthflow.ai"},
+{n:"RingCentral AI Receptionist",cat:"AI Receptionist",m:"Add-on",p:"Included in higher-tier plans ($30+/user/mo)",inc:"AI call handling, routing",seg:"Mid-enterprise",src:"ringcentral.com"},
+{n:"Continental Message (CMS)",cat:"Medical Answering",m:"Per minute",p:"$0.70-$1.20/min",inc:"Live operators, HIPAA-compliant, medical protocols",seg:"Healthcare providers",src:"continentalmessage.com"},
+{n:"Answering Service Care",cat:"Medical Answering",m:"Monthly plans",p:"$25-$599/mo",inc:"Live 24/7, bilingual, appointment scheduling",seg:"Healthcare, home health",src:"answeringservicecare.com"},
+{n:"AMBS Call Center",cat:"Medical Answering",m:"Monthly plans",p:"$135-$400/mo typical",inc:"HIPAA-compliant, on-call routing",seg:"Medical practices",src:"ambscallcenter.com"},
+{n:"General Medical Answering",cat:"Medical Answering",m:"Per minute average",p:"$0.75-$1.50/min ($1.31 avg)",inc:"Live answering, message relay",seg:"All healthcare",src:"answeringservicecost.com"},
+{n:"Hit Rate Solutions",cat:"Offshore Answering",m:"Per hour",p:"$7/hour",inc:"Live answering, basic scripts",seg:"Cost-sensitive practices",src:"hitratesolutions.com"},
+{n:"ShiftMed",cat:"Shift Marketplace",m:"Per shift fee",p:"Agency fee per shift filled",inc:"AI routing, marketplace access, float pool",seg:"Hospitals, SNFs",src:"shiftmed.com"},
+{n:"ShiftKey",cat:"Shift Marketplace",m:"Per shift fee",p:"Agency fee (est. 20-40% markup)",inc:"PRN platform, bidding system",seg:"Licensed professionals",src:"shiftkey.com"},
+{n:"IntelyCare",cat:"Shift Marketplace",m:"Per shift fee",p:"Agency fee per shift",inc:"AI matching, guaranteed shifts",seg:"Nursing facilities",src:"intelycare.com"},
+{n:"Paradox (Olivia)",cat:"AI Recruiting",m:"Enterprise contract",p:"$50K-$500K+/yr (enterprise)",inc:"AI scheduling, candidate comms, automation",seg:"High-volume employers",src:"paradox.ai"},
+{n:"Scheduler Salary (baseline)",cat:"Human Labor",m:"Annual salary",p:"$42,000-$49,000/yr",inc:"One dedicated scheduling coordinator",seg:"All agencies",src:"indeed.com"},
+{n:"Front Desk Salary (baseline)",cat:"Human Labor",m:"Annual salary",p:"$35,000-$42,000/yr",inc:"One receptionist/intake specialist",seg:"All agencies",src:"indeed.com"},
+{n:"Traditional On-Call Answering",cat:"Answering Service",m:"Per minute (after hours)",p:"$200-$2,200/mo",inc:"After-hours coverage, message relay",seg:"Home care agencies",src:"callin.io"},
+{n:"Scheduler Coordinator (ZipRecruiter)",cat:"Human Labor",m:"Hourly",p:"$18-$62/hr ($37K-$129K/yr)",inc:"Scheduling, coordination, compliance",seg:"All sizes",src:"ziprecruiter.com"},
+{n:"Caregiver Wage (comparison)",cat:"Labor Cost",m:"Hourly",p:"$16.82/hr average (BLS 2024)",inc:"Direct care provision",seg:"Industry baseline",src:"bls.gov"},
+{n:"Careswitch",cat:"AI Home Care Platform",m:"Custom quote",p:"Not publicly disclosed",inc:"AI scheduling, care planning, operations",seg:"Home care agencies",src:"careswitch.com"},
+{n:"Teambridge",cat:"Home Care Ops Platform",m:"Custom quote",p:"Not publicly disclosed",inc:"Scheduling, compliance, shift management",seg:"Non-medical agencies",src:"teambridge.com"},
+{n:"Alora Home Health",cat:"Home Care Software",m:"Custom quote",p:"Est. $200-$400/mo",inc:"Scheduling, EVV, billing, QA, mobile",seg:"Skilled + personal care",src:"alorahealth.com"},
+];
+
+document.getElementById('pricingBody').innerHTML=prices.map(p=>`<tr><td><strong>${p.n}</strong></td><td>${p.cat}</td><td>${p.m}</td><td>${p.p}</td><td>${p.inc}</td><td>${p.seg}</td><td><a href="https://${p.src}" target="_blank">${p.src}</a></td></tr>`).join('');
+
+// INTEGRATIONS DATA
+const integrations=[
+{n:"WellSky Personal Care (ClearCare)",mp:"Very High — largest partner ecosystem, dominant in private-duty",api:"Yes (Connect API)",pp:"Yes — WellSky Partners (largest integration ecosystem in home care)",sz:"Mid-large private duty agencies, franchises",notes:"Formerly ClearCare. Public API docs at apidocs.clearcareonline.com. Used by Visiting Angels, Comfort Keepers, Griswold, etc.",src:"wellsky.com/personal-care-software/"},
+{n:"AxisCare",mp:"High — dominant in private-duty non-medical",api:"Yes (REST API, token-based)",pp:"Yes — Integration Marketplace with 20+ partners",sz:"Small-enterprise private duty",notes:"Open API with public documentation. Used by Right at Home, Senior Helpers, SYNERGY. Integrates with QuickBooks, CareAcademy, Celigo.",src:"axiscare.com/features/api-integrations/"},
+{n:"HHAeXchange",mp:"High — dominant in Medicaid home care, especially NY",api:"Yes (EDI + REST API)",pp:"Yes — Partner Connect program (launched 2023)",sz:"Medicaid-focused agencies, all sizes",notes:"Backed by Hearst. Strong in NY, NJ, expanding nationally. API integrations for payroll, eLearning, intake. 6+ new partners added 2024.",src:"hhaexchange.com/partner-connect"},
+{n:"AlayaCare",mp:"High — strong in Canada, growing in US",api:"Yes (REST APIs + AWS SQS events)",pp:"Yes — AlayaSphere marketplace + Connector no-code tool",sz:"Mid-large agencies with IT resources",notes:"Comprehensive API docs on GitHub. AWS SQS for real-time events. Partner agreement for marketplace apps. Implementation can take 6 months.",src:"alayacare.com/platform/overview/integrations/"},
+{n:"Amedisys/Optum",mp:"Very High — largest HHA by patient volume",api:"Limited (proprietary)",pp:"No public program",sz:"Enterprise (500+ locations)",notes:"Merged with UnitedHealth/Optum 2024. Internal tech stack. Hard to integrate externally.",src:"amedisys.com"},
+{n:"CareSmartz360",mp:"Medium — growing with AI positioning",api:"Limited API",pp:"Informal partnerships",sz:"Independent agencies, franchisors",notes:"HIPAA-compliant. AI features marketed. QuickBooks, telephony integrations.",src:"caresmartz360.com"},
+{n:"Aaniie (Smartcare)",mp:"Medium — strong in engagement features",api:"Limited",pp:"CareAcademy partnership",sz:"All sizes",notes:"Formerly Smartcare Software. Good reviews for engagement/retention tools.",src:"aaniie.com"},
+{n:"KanTime",mp:"Medium — multi-discipline",api:"Limited",pp:"Select partners",sz:"Mid-large multi-discipline",notes:"Supports home health, hospice, pediatric, private duty on single platform.",src:"kantime.com"},
+{n:"Alora Home Health",mp:"Medium — since 2005, trusted",api:"Limited",pp:"Informal",sz:"Small-mid skilled + personal care",notes:"Long track record. Integrated EVV. Multi-office support. Good for mixed-model agencies.",src:"alorahealth.com"},
+{n:"ShiftCare",mp:"Low-Medium — Australian, new to US",api:"Limited",pp:"No formal program",sz:"Small agencies, IDD/HCBS",notes:"Low cost ($8/user/mo). Good for budget agencies. Growing US presence.",src:"shiftcare.com"},
+{n:"Honor Platform",mp:"Medium — acquired Home Instead",api:"Proprietary",pp:"Partner agency model",sz:"Home Instead network + independent agencies",notes:"Tech company that acquired Home Instead. Provides tech platform to partner agencies. Proprietary system.",src:"honor.com"},
+{n:"Homecare Homebase (HCHB)",mp:"High — Medicare home health",api:"Limited",pp:"Select partnerships",sz:"Enterprise Medicare HHAs",notes:"Major player in skilled home health. Used by large Medicare-certified agencies.",src:"hchb.com"},
+];
+
+document.getElementById('intBody').innerHTML=integrations.map(i=>`<tr><td><strong>${i.n}</strong></td><td>${i.mp}</td><td>${i.api}</td><td>${i.pp}</td><td>${i.sz}</td><td>${i.notes}</td><td><a href="https://${i.src}" target="_blank">${i.src}</a></td></tr>`).join('');
+
+// QUERY PLAN
+const queryGroups=[
+{title:"🏢 Leads — Agency Discovery",queries:[
+{q:'"home care agency" site:indeed.com "hiring" "scheduler"',d:"Find agencies actively hiring scheduling coordinators",f:"Leads Table (hiring_scheduler_signal)"},
+{q:'home care franchise locations United States top list 2025',d:"Discover major franchise networks and their location counts",f:"Leads Table (company_name, locations)"},
+{q:'Medicare home health agency directory by state',d:"Access CMS provider data for certified agencies",f:"Leads Table (state, city coverage)"},
+{q:'"home care" "staffing coordinator" job posting site:ziprecruiter.com',d:"Cross-reference scheduler hiring across job boards",f:"Leads Table (hiring_scheduler_signal)"},
+{q:'HCAOA member directory home care association',d:"Industry association member list for qualified leads",f:"Leads Table (company_name, state)"},
+{q:'"home health agency" "receptionist" OR "front desk" hiring',d:"Find agencies hiring receptionist/intake roles",f:"Leads Table (hiring_reception_signal)"},
+]},
+{title:"🔥 Pain Signals",queries:[
+{q:'"home care" "on-call" OR "urgent coverage" OR "after hours" staffing',d:"Identify agencies with explicit shift-coverage pain language",f:"Leads Table (mentions_on_call_or_urgent_shifts)"},
+{q:'"home care agency" "missed calls" OR "voicemail" OR "answering service"',d:"Find evidence of inbound call handling challenges",f:"Leads Table (evidence_of_high_call_volume)"},
+{q:'home care caregiver shortage worst states 2024 2025',d:"Map caregiver shortage by state for scoring",f:"Scoring Model (state_shortage_weight)"},
+{q:'"home care" "can\'t find caregivers" OR "turning away clients" OR "unfilled shifts"',d:"Direct pain language from agency operators",f:"Leads Table (notes), Insights"},
+{q:'home care agency owner forum challenges scheduling staffing',d:"Community insights on operational pain points",f:"Insights (pain signals)"},
+]},
+{title:"💼 Hiring Signals",queries:[
+{q:'site:indeed.com "home care" "scheduling coordinator" posted:7days',d:"Real-time scheduler hiring activity",f:"Leads Table (hiring_scheduler_signal)"},
+{q:'site:linkedin.com "home care" "staffing coordinator" "hiring"',d:"LinkedIn job signal cross-reference",f:"Leads Table (hiring_scheduler_signal)"},
+{q:'"intake specialist" OR "intake coordinator" home care agency job',d:"Receptionist/intake hiring as proxy for call volume",f:"Leads Table (hiring_reception_signal)"},
+{q:'"care coordinator" home health agency hiring multiple locations',d:"Multi-location agencies with coordination needs",f:"Leads Table (number_of_locations, hiring_scheduler_signal)"},
+{q:'home care "weekend scheduler" OR "on-call coordinator" job posting',d:"After-hours scheduling roles indicate urgent coverage needs",f:"Leads Table (mentions_on_call_or_urgent_shifts)"},
+]},
+{title:"⚔️ Competitors",queries:[
+{q:'AI scheduling software home care agencies 2025 2026',d:"Direct AI scheduling competitors in home care vertical",f:"Competitors Table"},
+{q:'AI virtual receptionist healthcare answering service comparison',d:"Map AI receptionist competitors targeting healthcare",f:"Competitors Table"},
+{q:'home care software comparison G2 Capterra reviews scheduling',d:"Review-site data on competitor features and satisfaction",f:"Competitors Table (features, positioning)"},
+{q:'AI voice agent shift filling staffing healthcare startup',d:"Emerging AI voice competitors for shift management",f:"Competitors Table"},
+{q:'"home care" AI startup funding raised series',d:"Funded competitors and their positioning",f:"Competitors Table (funding)"},
+{q:'automated shift filling voice AI caregiver scheduling',d:"Niche competitors with voice-AI shift-fill features",f:"Competitors Table"},
+]},
+{title:"💲 Pricing",queries:[
+{q:'home care software pricing per user month 2025 2026',d:"Current market pricing for home care platforms",f:"Pricing Table"},
+{q:'AI receptionist pricing plans per call per month',d:"AI receptionist market pricing benchmarks",f:"Pricing Table"},
+{q:'medical answering service cost per minute 2025',d:"Traditional answering service pricing for comparison",f:"Pricing Table"},
+{q:'home care staffing coordinator salary average 2025',d:"Salary benchmarks AI products must beat",f:"Pricing Table, WTP analysis"},
+{q:'ShiftMed IntelyCare ShiftKey pricing model per shift',d:"Shift marketplace pricing for context",f:"Pricing Table"},
+]},
+{title:"🔌 Integrations",queries:[
+{q:'AxisCare API integrations documentation partner',d:"Technical integration details for priority platform",f:"Integrations Table"},
+{q:'WellSky ClearCare Connect API partner program',d:"Largest ecosystem — integration requirements",f:"Integrations Table"},
+{q:'HHAeXchange Partner Connect API integrations',d:"Medicaid-dominant platform integration path",f:"Integrations Table"},
+{q:'AlayaCare API marketplace AlayaSphere integrations',d:"Growing platform with formal partner program",f:"Integrations Table"},
+{q:'home care software market share adoption 2024 2025',d:"Relative platform penetration for prioritization",f:"Integrations Table (market_penetration_signal)"},
+]},
+];
+
+document.getElementById('queryPlan').innerHTML=queryGroups.map(g=>`
+<div class="query-group"><h3>${g.title}</h3>
+${g.queries.map(q=>`<div class="query-item"><div class="q">${q.q}</div><div class="desc">${q.d}</div><div class="feeds">→ Feeds: ${q.f}</div></div>`).join('')}
+</div>`).join('');
+
+// CHARTS
+// State opportunity chart
+const stateData={labels:['TX','CA','FL','NY','PA','IL','OH','GA','NC','MI'],datasets:[{label:'Estimated HHA Count',data:[1869,2982,1500,1410,800,700,650,500,450,400],backgroundColor:'rgba(99,102,241,0.7)'},{label:'Opportunity Score (scaled)',data:[95,90,88,85,82,75,72,70,68,65],backgroundColor:'rgba(6,182,212,0.7)'}]};
+new Chart(document.getElementById('stateChart'),{type:'bar',data:stateData,options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Top 10 States: Agency Count vs Opportunity Score',color:'#e4e8f1'}},scales:{x:{ticks:{color:'#8b92a8'},grid:{color:'#2d3348'}},y:{ticks:{color:'#8b92a8'},grid:{color:'#2d3348'}}}}});
+
+// Pricing comparison chart
+new Chart(document.getElementById('pricingChart'),{type:'bar',data:{labels:['Scheduler\nSalary/yr','Answering\nSvc/mo','AI Scheduler\n(Est. WTP/mo)','AI Receptionist\n(Est. WTP/mo)','Smith.ai\nAI/mo','Dialzara\n/mo','ShiftCare\n/user/mo','AxisCare\nEst./mo'],datasets:[{label:'Cost/Price (USD)',data:[45500,1200,1250,400,97,29,8,275],backgroundColor:['#ef4444','#ef4444','#22c55e','#22c55e','#f59e0b','#f59e0b','#06b6d4','#06b6d4']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Pricing Landscape Comparison (Monthly Equivalent)',color:'#e4e8f1'},legend:{display:false}},scales:{x:{ticks:{color:'#8b92a8',maxRotation:0},grid:{color:'#2d3348'}},y:{ticks:{color:'#8b92a8',callback:v=>'$'+v.toLocaleString()},grid:{color:'#2d3348'}}}}});
+
+// Integration priority
+new Chart(document.getElementById('intChart'),{type:'radar',data:{labels:['Market\nPenetration','API\nOpenness','Partner\nProgram','Private Duty\nFit','Medicaid\nFit','Integration\nEase'],datasets:[{label:'AxisCare',data:[80,90,85,95,30,90],borderColor:'#6366f1',fill:false},{label:'WellSky',data:[90,75,95,90,40,70],borderColor:'#22c55e',fill:false},{label:'HHAeXchange',data:[75,80,80,40,95,75],borderColor:'#f59e0b',fill:false},{label:'AlayaCare',data:[60,85,75,60,50,60],borderColor:'#06b6d4',fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Integration Platform Priority Matrix',color:'#e4e8f1'}},scales:{r:{ticks:{color:'#8b92a8',backdropColor:'transparent'},grid:{color:'#2d3348'},pointLabels:{color:'#e4e8f1'}}}}});
+
+// Segment chart
+new Chart(document.getElementById('segmentChart'),{type:'doughnut',data:{labels:['Large Franchises (1,200+loc)','Multi-Location Independent','Medicare-Certified HHAs','Private-Duty Non-Medical','Staffing-Focused'],datasets:[{data:[4000,3000,11500,15000,2000],backgroundColor:['#6366f1','#818cf8','#06b6d4','#22c55e','#f59e0b']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'US Home Care Market Segments (Est. Agency Count)',color:'#e4e8f1'},legend:{labels:{color:'#e4e8f1'}}}}});
+
+// Signal chart
+new Chart(document.getElementById('signalChart'),{type:'bar',data:{labels:['Hiring\nSchedulers','Multiple\nLocations','On-Call\nMentions','Known\nSoftware','High Call\nVolume','Hiring\nReceptionist'],datasets:[{label:'% of Tier 1 Leads with Signal',data:[100,85,96,72,58,35],backgroundColor:'rgba(99,102,241,0.7)'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Buy Signal Prevalence in Tier 1 Leads',color:'#e4e8f1'},legend:{display:false}},scales:{x:{ticks:{color:'#8b92a8',maxRotation:0},grid:{color:'#2d3348'}},y:{ticks:{color:'#8b92a8',callback:v=>v+'%'},grid:{color:'#2d3348'},max:100}}}});
+
+// TABLE SORTING
+function sortTable(tableId,col){
+const table=document.getElementById(tableId);
+const tbody=table.querySelector('tbody');
+const rows=Array.from(tbody.rows);
+const dir=table.dataset.sortDir==='asc'?'desc':'asc';
+table.dataset.sortDir=dir;
+rows.sort((a,b)=>{
+let va=a.cells[col].textContent.trim();
+let vb=b.cells[col].textContent.trim();
+const na=parseFloat(va),nb=parseFloat(vb);
+if(!isNaN(na)&&!isNaN(nb))return dir==='asc'?na-nb:nb-na;
+return dir==='asc'?va.localeCompare(vb):vb.localeCompare(va);
+});
+rows.forEach(r=>tbody.appendChild(r));
+}
+</script>
+
+<footer style="text-align:center;padding:2rem;color:var(--text2);font-size:.8rem;border-top:1px solid var(--border)">
+<p>Built by Tino 🦕 for B2B Sales Intelligence | Data sourced from Medicare.gov, Indeed, G2, Capterra, company websites, industry reports | Feb 2026</p>
+<p>Sources: <a href="https://data.cms.gov/provider-data/">CMS Provider Data</a> · <a href="https://www.indeed.com">Indeed</a> · <a href="https://www.g2.com">G2</a> · <a href="https://www.capterra.com">Capterra</a> · <a href="https://homehealthcarenews.com">HHCN</a> · <a href="https://www.scrapehero.com">ScrapeHero</a></p>
+</footer>
+</body>
+</html>
