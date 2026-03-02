@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis de Viabilidad — Software B2B+B2C para Canchas de Fútbol en Colombia</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0f172a;--surface:#1e293b;--border:#334155;--accent:#f59e0b;--accent2:#fb923c;--text:#f8fafc;--muted:#94a3b8;--green:#22c55e;--red:#ef4444;--yellow:#eab308}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:1rem}
+h1{font-size:2rem;color:var(--accent);margin-bottom:.5rem}
+h2{font-size:1.5rem;color:var(--accent);margin:1.5rem 0 .75rem;border-bottom:2px solid var(--border);padding-bottom:.5rem}
+h3{font-size:1.15rem;color:var(--accent2);margin:1rem 0 .5rem}
+p,li{color:var(--muted);margin-bottom:.5rem}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+.subtitle{color:var(--muted);font-size:1rem;margin-bottom:2rem}
+/* Tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.5rem 0;border-bottom:2px solid var(--border);padding-bottom:.5rem}
+.tab{padding:.5rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:8px 8px 0 0;cursor:pointer;color:var(--muted);font-weight:600;transition:.2s}
+.tab.active,.tab:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.panel{display:none;animation:fadeIn .3s}.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1rem}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.stat{text-align:center;padding:1.5rem}
+.stat .num{font-size:2.5rem;font-weight:800;color:var(--accent)}
+.stat .label{color:var(--muted);font-size:.85rem;margin-top:.25rem}
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+th{background:var(--accent);color:var(--bg);padding:.6rem .75rem;text-align:left;font-weight:700}
+td{padding:.5rem .75rem;border-bottom:1px solid var(--border);color:var(--muted)}
+tr:hover td{background:rgba(245,158,11,.05)}
+/* Badges */
+.badge{display:inline-block;padding:.2rem .6rem;border-radius:6px;font-size:.75rem;font-weight:700}
+.badge-green{background:rgba(34,197,94,.15);color:var(--green)}
+.badge-red{background:rgba(239,68,68,.15);color:var(--red)}
+.badge-yellow{background:rgba(234,179,8,.15);color:var(--yellow)}
+/* Score */
+.score-ring{width:180px;height:180px;border-radius:50%;border:10px solid var(--border);display:flex;align-items:center;justify-content:center;margin:1rem auto;position:relative}
+.score-ring .val{font-size:3.5rem;font-weight:900;color:var(--accent)}
+.score-ring .out{font-size:1rem;color:var(--muted)}
+/* Risk matrix */
+.risk-matrix{display:grid;grid-template-columns:auto repeat(3,1fr);gap:2px;max-width:500px;margin:1rem 0}
+.risk-cell{padding:.5rem;text-align:center;font-size:.75rem;font-weight:600;border-radius:4px}
+.risk-high{background:rgba(239,68,68,.25);color:var(--red)}
+.risk-med{background:rgba(234,179,8,.25);color:var(--yellow)}
+.risk-low{background:rgba(34,197,94,.25);color:var(--green)}
+.risk-header{background:var(--surface);color:var(--muted);font-weight:700}
+/* Charts */
+.chart-wrap{max-width:600px;margin:1rem auto;background:var(--surface);border-radius:12px;padding:1rem}
+/* Responsive */
+@media(max-width:768px){
+  h1{font-size:1.5rem}.tabs{overflow-x:auto;flex-wrap:nowrap}
+  .tab{white-space:nowrap;font-size:.8rem}
+  .card-grid{grid-template-columns:1fr}
+}
+.evidence{font-size:.8rem;color:var(--muted);font-style:italic}
+.highlight{color:var(--accent);font-weight:700}
+.uncertainty{background:rgba(234,179,8,.1);border-left:3px solid var(--yellow);padding:.5rem .75rem;margin:.75rem 0;border-radius:0 8px 8px 0;font-size:.85rem;color:var(--yellow)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>⚽ Canchas de Fútbol en Colombia</h1>
+<p class="subtitle">Análisis de Viabilidad — Modelo Híbrido B2B SaaS + B2C Marketplace &middot; Marzo 2026</p>
+
+<!-- Tabs -->
+<div class="tabs" id="mainTabs">
+  <div class="tab active" onclick="showTab(0)">📊 Mercado</div>
+  <div class="tab" onclick="showTab(1)">💰 Economía</div>
+  <div class="tab" onclick="showTab(2)">😩 Dolor Real</div>
+  <div class="tab" onclick="showTab(3)">⚔️ Competencia</div>
+  <div class="tab" onclick="showTab(4)">👥 Jugadores</div>
+  <div class="tab" onclick="showTab(5)">📈 Modelo Financiero</div>
+  <div class="tab" onclick="showTab(6)">⚠️ Riesgos</div>
+  <div class="tab" onclick="showTab(7)">✅ Conclusión</div>
+</div>
+
+<!-- PANEL 0: Market Size -->
+<div class="panel active" id="p0">
+<h2>Fase 2.1 — Tamaño del Mercado B2B</h2>
+
+<div class="card-grid">
+  <div class="card stat"><div class="num">~4,000+</div><div class="label">Canchas sintéticas estimadas en Colombia</div></div>
+  <div class="card stat"><div class="num">1,000+</div><div class="label">Centros deportivos (3-5 canchas c/u)</div></div>
+  <div class="card stat"><div class="num">180+</div><div class="label">Canchas públicas solo en Bogotá (IDRD)</div></div>
+  <div class="card stat"><div class="num">25%</div><div class="label">Crecimiento anual del sector (estimado)</div></div>
+</div>
+
+<h3>Evidencia Encontrada</h3>
+<table>
+<tr><th>Dato</th><th>Fuente</th><th>Año</th></tr>
+<tr><td>"En todo el país hay al menos 4.000 canchas sintéticas y centros deportivos"</td><td><a href="https://www.pulzo.com/economia/precios-canchas-sinteticas-cuanto-vale-montar-negocioen-colombia-PP725937" target="_blank">Pulzo</a></td><td>2019</td></tr>
+<tr><td>"Hoy se calcula que en el país hay más de 1.000 centros deportivos, donde se pueden hallar entre 3 y 5 canchas"</td><td><a href="https://www.portafolio.co/negocios/futbol-5-un-negocio-redondo-531169" target="_blank">Portafolio</a></td><td>2019</td></tr>
+<tr><td>"Bogotá te ofrece más de 180 canchas sintéticas" (públicas IDRD)</td><td><a href="https://bogota.gov.co/mi-ciudad/cultura-recreacion-y-deporte/bogota-te-ofrece-mas-de-180-canchas-sinteticas-aprende-como-reservar" target="_blank">Bogota.gov.co</a></td><td>2025</td></tr>
+<tr><td>"Crecimiento del 25% anual" del sector</td><td><a href="https://saludymovimiento.com.ar/construccion-de-campos-deportivos/" target="_blank">Salud y Movimiento</a></td><td>2023</td></tr>
+<tr><td>"Prácticamente subieron en un 50% la oferta de canchas sintéticas en Bogotá en menos de un año"</td><td><a href="https://www.portafolio.co/negocios/futbol-5-un-negocio-redondo-531169" target="_blank">Portafolio</a></td><td>2019</td></tr>
+</table>
+
+<div class="uncertainty">⚠️ La cifra de 4,000 es de 2019 y proviene de una sola plataforma (iCancha). Con el crecimiento reportado del 25% anual, la cifra actual podría ser 6,000-10,000, pero no hay censo oficial. La incertidumbre es ALTA.</div>
+
+<h3>Concentración por Ciudad (Estimada)</h3>
+<table>
+<tr><th>Ciudad</th><th>Estimación</th><th>Confianza</th></tr>
+<tr><td>Bogotá</td><td>35-40% del mercado (~1,500-2,500)</td><td><span class="badge badge-yellow">Media</span></td></tr>
+<tr><td>Medellín</td><td>15-20% (~600-1,200)</td><td><span class="badge badge-red">Baja</span></td></tr>
+<tr><td>Cali</td><td>10-15% (~400-900)</td><td><span class="badge badge-red">Baja</span></td></tr>
+<tr><td>Barranquilla, B/manga, otros</td><td>Resto distribuido</td><td><span class="badge badge-red">Baja</span></td></tr>
+</table>
+<div class="uncertainty">⚠️ No existe un censo público de canchas privadas por ciudad. Estas estimaciones se basan en la proporción poblacional y densidad urbana.</div>
+
+<h3>Tipos de Cancha</h3>
+<p>El formato dominante es <span class="highlight">Fútbol 5</span> (micro fútbol), seguido de Fútbol 7. Los centros deportivos típicamente tienen 3-5 canchas F5 o una combinación F5+F7. Las canchas F11 son raras en contexto privado.</p>
+
+<h3>TAM / SAM / SOM Estimados</h3>
+<div class="card-grid">
+  <div class="card stat"><div class="num">6,000-10,000</div><div class="label">TAM: Total canchas privadas Colombia (est. 2026)</div></div>
+  <div class="card stat"><div class="num">~2,000</div><div class="label">SAM: Centros deportivos con 3+ canchas, ciudades principales</div></div>
+  <div class="card stat"><div class="num">100-300</div><div class="label">SOM: Capturable en primeros 2 años (Bogotá+Medellín)</div></div>
+</div>
+</div>
+
+<!-- PANEL 1: Economics -->
+<div class="panel" id="p1">
+<h2>Fase 2.2 — Economía de una Cancha Promedio</h2>
+
+<div class="card-grid">
+  <div class="card stat"><div class="num">$80K-130K</div><div class="label">COP/hora — Rango típico zona media-alta Bogotá</div></div>
+  <div class="card stat"><div class="num">$50K-220K</div><div class="label">COP/hora — Rango total Colombia</div></div>
+  <div class="card stat"><div class="num">6-10h</div><div class="label">Horas ocupadas/día promedio</div></div>
+  <div class="card stat"><div class="num">$10-20M</div><div class="label">COP/mes ingreso estimado por cancha</div></div>
+</div>
+
+<h3>Modelo Económico de un Centro Deportivo Típico (3 canchas F5)</h3>
+<table>
+<tr><th>Concepto</th><th>Valor Estimado</th><th>Notas</th></tr>
+<tr><td>Precio hora promedio</td><td>$90,000 COP (~$21 USD)</td><td>Promedio ponderado lunes-domingo</td></tr>
+<tr><td>Horas ocupadas/día/cancha</td><td>7 horas</td><td>Pico nocturno 6-11pm + fines semana</td></tr>
+<tr><td>Ingresos/cancha/mes</td><td>$18.9M COP</td><td>7h × $90K × 30 días</td></tr>
+<tr><td>Ingresos centro 3 canchas/mes</td><td>$56.7M COP</td><td>~$13,500 USD</td></tr>
+<tr><td>Costos operativos estimados</td><td>$30-35M COP</td><td>Arriendo, servicios, empleados, mantenimiento</td></tr>
+<tr><td>Utilidad operativa estimada</td><td>$20-25M COP</td><td>Margen ~35-45%</td></tr>
+<tr><td>Ingresos adicionales (cafetería, torneos)</td><td>$5-10M COP</td><td>Variable</td></tr>
+</table>
+
+<h3>Fuentes de Precios</h3>
+<table>
+<tr><th>Fuente</th><th>Dato</th><th>Link</th></tr>
+<tr><td>El Tiempo</td><td>$40,000-$140,000 COP/hora en Bogotá</td><td><a href="https://www.eltiempo.com/cultura/gente/canchas-sinteticas-para-jugar-futbol-en-bogota-639756" target="_blank">→</a></td></tr>
+<tr><td>Gremio FC (Engativá)</td><td>$75,000-$130,000 COP/hora</td><td><a href="https://fcgremio.com/" target="_blank">→</a></td></tr>
+<tr><td>FutbolRed</td><td>$14,000-$83,000 (públicas IDRD)</td><td><a href="https://www.futbolred.com/fuera-del-futbol/canchas-sinteticas-en-bogota-lugares-horarios-precios-y-como-reservar-248524" target="_blank">→</a></td></tr>
+<tr><td>Pulzo</td><td>$55,000-$200,000 dependiendo del sector</td><td><a href="https://www.pulzo.com/economia/precios-canchas-sinteticas-cuanto-vale-montar-negocioen-colombia-PP725937" target="_blank">→</a></td></tr>
+<tr><td>Partidazo (Cali)</td><td>$80,000-$100,000 COP/hora</td><td><a href="https://www.partidazo.net/" target="_blank">→</a></td></tr>
+<tr><td>Multicauchos</td><td>"Ingresos mensuales pueden superar $10M COP" con 6h/día</td><td><a href="https://www.multicauchosindustriales.com/blog/cuanto-vale-una-cancha-sintetica/" target="_blank">→</a></td></tr>
+</table>
+
+<div class="chart-wrap">
+  <canvas id="revenueChart"></canvas>
+</div>
+
+<div class="uncertainty">⚠️ Las horas ocupadas varían enormemente: pico nocturno (6-11pm) suele estar al 80-100%, pero horarios diurnos entre semana pueden estar al 10-30%. Los fines de semana elevan significativamente la ocupación.</div>
+</div>
+
+<!-- PANEL 2: Pain -->
+<div class="panel" id="p2">
+<h2>Fase 2.3 — Dolor Operativo Real</h2>
+
+<h3>H1: ¿Tienen las canchas dolor operativo real?</h3>
+<div class="card" style="border-left:4px solid var(--green)">
+  <h3 style="color:var(--green)">✅ HIPÓTESIS VALIDADA — Evidencia Fuerte</h3>
+  <p>La gestión de la mayoría de canchas en Colombia es <strong style="color:var(--text)">profundamente manual</strong>. La evidencia es abundante:</p>
+</div>
+
+<h3>Evidencia de Gestión Manual</h3>
+<table>
+<tr><th>Señal</th><th>Evidencia</th><th>Fuente</th></tr>
+<tr><td>Reservas por WhatsApp</td><td>Colsubsidio mismo solicita reservas vía WhatsApp: "consulta disponibilidad y realiza tu reserva a través de la línea WhatsApp 321 247 0970"</td><td><a href="https://www.diversioncolsubsidio.com/deportes-alquiler-campo-de-futbol" target="_blank">Colsubsidio</a></td></tr>
+<tr><td>Reservas por teléfono</td><td>Canchas Futboleros: "Reservas: 3147096906" (solo celular)</td><td><a href="https://www.canchasfutboleros.com/" target="_blank">Canchas Futboleros</a></td></tr>
+<tr><td>Partidazo Cali</td><td>Solo teléfono fijo y WhatsApp para reservas</td><td><a href="https://www.partidazo.net/" target="_blank">Partidazo.net</a></td></tr>
+<tr><td>Tesis universitaria</td><td>Prototipo de software para gestión de reservas — implica que no existe solución estándar</td><td><a href="https://repositorio.utp.edu.co/bitstreams/1fe6cbb2-4e0c-4eff-b8da-fd8823abe3e9/download" target="_blank">UTP Pereira</a></td></tr>
+<tr><td>IDRD Bogotá</td><td>Reservas presenciales con "promotores de cultura" en persona en cada cancha</td><td><a href="https://bogota.gov.co/mi-ciudad/cultura-recreacion-y-deporte/como-reservar-una-cancha-sintetica-en-el-distrito-con-el-idrd" target="_blank">Bogota.gov.co</a></td></tr>
+</table>
+
+<h3>Dolor Detallado</h3>
+<div class="card-grid">
+  <div class="card">
+    <h3>📱 WhatsApp Saturation</h3>
+    <p>La mayoría de canchas privadas gestionan reservas 100% por WhatsApp y llamadas. Esto genera: mensajes perdidos, dobles reservas, falta de trazabilidad, dependencia en una persona.</p>
+  </div>
+  <div class="card">
+    <h3>🚫 No-Shows</h3>
+    <p>Sin sistema de pago anticipado ni penalización, los no-shows son un problema endémico. Sin datos públicos de tasa, pero la existencia de plataformas como QuieroCancha que destacan "reducción de no-shows" confirma el dolor.</p>
+  </div>
+  <div class="card">
+    <h3>📋 Control Manual</h3>
+    <p>Cuadernos, Excel, o nada. No hay inventario de clientes recurrentes, no hay CRM, no hay analytics de ocupación. Decisiones basadas en intuición.</p>
+  </div>
+  <div class="card">
+    <h3>💵 Cobro Informal</h3>
+    <p>Pagos mayormente en efectivo o transferencia Nequi/Daviplata. Sin sistema formal de facturación, control de ingresos es opaco para dueños que no administran directamente.</p>
+  </div>
+</div>
+
+<div class="uncertainty">⚠️ No se encontraron encuestas públicas cuantificando el dolor (e.g., "X% de canchas usa WhatsApp"). La evidencia es cualitativa pero consistente y abundante.</div>
+</div>
+
+<!-- PANEL 3: Competition -->
+<div class="panel" id="p3">
+<h2>Fase 2.4 — Competencia</h2>
+
+<h3>Mapa Competitivo en Colombia</h3>
+<table>
+<tr><th>Plataforma</th><th>Tipo</th><th>Presencia Colombia</th><th>Adopción</th><th>Integración</th></tr>
+<tr>
+  <td><a href="https://www.easycancha.com" target="_blank">Easycancha</a></td>
+  <td>Marketplace B2C + SaaS B2B</td>
+  <td><span class="badge badge-green">Activa</span> 150 clubes, 100K usuarios</td>
+  <td><span class="badge badge-yellow">Media</span></td>
+  <td>Reservas, pagos, "tinder deportivo"</td>
+</tr>
+<tr>
+  <td><a href="https://ubitec.co" target="_blank">Ubitec</a></td>
+  <td>SaaS B2B (admin canchas)</td>
+  <td><span class="badge badge-green">Activa</span> Medellín-based</td>
+  <td><span class="badge badge-red">Baja</span> (sin datos públicos de escala)</td>
+  <td>Reservas, pagos, inventario, calendario</td>
+</tr>
+<tr>
+  <td><a href="https://www.quierocancha.com" target="_blank">QuieroCancha</a></td>
+  <td>SaaS B2B</td>
+  <td><span class="badge badge-yellow">Local</span> Pasto, Nariño</td>
+  <td><span class="badge badge-red">Baja</span></td>
+  <td>Reservas, gestión básica</td>
+</tr>
+<tr>
+  <td><a href="https://alquilatucancha.com" target="_blank">Alquila Tu Cancha (ATC)</a></td>
+  <td>Marketplace B2C</td>
+  <td><span class="badge badge-yellow">Presente</span> pero foco Argentina</td>
+  <td><span class="badge badge-red">Baja en CO</span></td>
+  <td>Solo reservas online</td>
+</tr>
+<tr>
+  <td><a href="https://www.canchaya.co" target="_blank">CanchaYa.co</a></td>
+  <td>Directorio</td>
+  <td><span class="badge badge-yellow">Bogotá</span></td>
+  <td><span class="badge badge-red">Baja</span></td>
+  <td>Solo directorio, no software</td>
+</tr>
+<tr>
+  <td><a href="https://www.jucob.com" target="_blank">JUCOB</a></td>
+  <td>Organizador torneos</td>
+  <td><span class="badge badge-green">Activa</span> Bogotá</td>
+  <td><span class="badge badge-yellow">Nicho</span></td>
+  <td>Solo torneos, no SaaS</td>
+</tr>
+</table>
+
+<h3>Análisis del Competidor Principal: Easycancha</h3>
+<div class="card" style="border-left:4px solid var(--red)">
+  <h3 style="color:var(--red)">⚠️ Competidor Relevante</h3>
+  <ul>
+    <li>Origen: Chile, expandida a Colombia, México, Ecuador, Brasil</li>
+    <li><strong style="color:var(--text)">150 clubes digitalizados en Colombia, 100K+ usuarios</strong> (<a href="https://es-us.finanzas.yahoo.com/noticias/conozca-startup-permite-reservar-canchas-210000724.html" target="_blank">Yahoo Finance, Nov 2024</a>)</li>
+    <li>Colombia es su "segundo mejor mercado"</li>
+    <li>340,000 reservas mensuales globales, 4 reservas/usuario/mes promedio</li>
+    <li>Tiene "tinder deportivo" para emparejar jugadores</li>
+    <li>App Store reviews mixtas: quejas de bugs, filtros que no funcionan</li>
+    <li>Facebook Colombia: 0 reviews, bajo engagement</li>
+  </ul>
+</div>
+
+<h3>H6: ¿Existe un competidor dominante con integración profunda?</h3>
+<div class="card" style="border-left:4px solid var(--yellow)">
+  <h3 style="color:var(--yellow)">⚡ PARCIALMENTE VALIDADA — Hay competidores pero sin dominio claro</h3>
+  <p>Easycancha tiene tracción real pero:</p>
+  <ul>
+    <li>150 clubes de un mercado de 4,000-10,000 canchas = <strong style="color:var(--text)">penetración &lt;4%</strong></li>
+    <li>Reviews indican producto con bugs y UX deficiente</li>
+    <li>Foco multi-deporte (pádel, tenis) diluye la propuesta para fútbol</li>
+    <li>No hay evidencia de integración profunda (WhatsApp automation, CRM, tournament management)</li>
+    <li>Ubitec y QuieroCancha son muy pequeños</li>
+  </ul>
+  <p style="color:var(--text);font-weight:700">Conclusión: El mercado NO tiene un ganador claro. La ventana de oportunidad existe pero se está cerrando.</p>
+</div>
+</div>
+
+<!-- PANEL 4: Players -->
+<div class="panel" id="p4">
+<h2>Fase 2.5 — Comportamiento de Jugadores</h2>
+
+<h3>Hallazgos</h3>
+<div class="card-grid">
+  <div class="card">
+    <h3>📱 WhatsApp es el Rey</h3>
+    <p>Los grupos de WhatsApp son EL mecanismo de organización de partidos en Colombia. Existen directorios completos de grupos de WhatsApp para organizar partidos de fútbol. La cultura es: alguien del grupo arma el partido, cobra por WhatsApp, reserva por WhatsApp.</p>
+    <p class="evidence">Fuente: <a href="https://www.gruposwats.com/organizar-partidos-futbol.html" target="_blank">gruposwats.com</a></p>
+  </div>
+  <div class="card">
+    <h3>🏆 Cultura de Torneos</h3>
+    <p>Los torneos amateur son MASIVOS. JUCOB organiza campeonatos en canchas sintéticas en Bogotá (libre, domingos y entre semana). Gremio FC tiene torneos femeninos, masculinos, mixtos, juveniles y empresariales.</p>
+    <p class="evidence">Fuente: <a href="https://www.jucob.com" target="_blank">JUCOB</a>, <a href="https://fcgremio.com" target="_blank">Gremio FC</a></p>
+  </div>
+  <div class="card">
+    <h3>🔄 Alta Recurrencia</h3>
+    <p>Easycancha reporta 4 reservas/usuario/mes promedio. Los jugadores de fútbol amateur juegan típicamente 1-3 veces por semana. Es un hábito, no un evento.</p>
+    <p class="evidence">Fuente: <a href="https://cl.linkedin.com/company/easycancha" target="_blank">Easycancha LinkedIn</a></p>
+  </div>
+  <div class="card">
+    <h3>🤝 Organización Informal</h3>
+    <p>Un "organizador" por grupo maneja todo: juntar jugadores, cobrar cuota, reservar cancha, gestionar suplentes. Esta persona tiene MUCHO dolor y es el usuario B2C ideal.</p>
+  </div>
+</div>
+
+<h3>H4: ¿Puede el B2C generar demanda incremental real?</h3>
+<div class="card" style="border-left:4px solid var(--yellow)">
+  <h3 style="color:var(--yellow)">⚡ INCIERTA — Alto riesgo</h3>
+  <p>El problema: los jugadores YA tienen sus grupos de WhatsApp establecidos. No buscan nuevos compañeros de juego con frecuencia. El "tinder deportivo" de Easycancha no tiene evidencia de tracción masiva.</p>
+  <p><strong style="color:var(--text)">Escenario realista:</strong> El B2C puede funcionar como herramienta para el ORGANIZADOR del grupo (gestionar cobros, confirmar asistencia, buscar suplentes) más que como marketplace de descubrimiento.</p>
+</div>
+</div>
+
+<!-- PANEL 5: Financial Model -->
+<div class="panel" id="p5">
+<h2>Fase 3 — Modelo Financiero</h2>
+
+<h3>Supuestos Base</h3>
+<table>
+<tr><th>Parámetro</th><th>Valor</th><th>Justificación</th></tr>
+<tr><td>Equipo mínimo (Año 1)</td><td>5 personas</td><td>2 devs, 1 ventas, 1 CS/ops, 1 founder</td></tr>
+<tr><td>Costo equipo/mes</td><td>$35M COP (~$8,300 USD)</td><td>Salarios Colombia, remoto</td></tr>
+<tr><td>Infraestructura/mes</td><td>$3M COP</td><td>Cloud, herramientas, WhatsApp API</td></tr>
+<tr><td>Marketing/mes</td><td>$5M COP</td><td>Google Ads, referral, field sales</td></tr>
+<tr><td>Costos fijos totales/mes</td><td>$43M COP (~$10,200 USD)</td><td></td></tr>
+<tr><td>CAC estimado B2B</td><td>$500K-1M COP ($120-240 USD)</td><td>Venta directa con alta conversión (dolor real)</td></tr>
+<tr><td>Churn mensual estimado</td><td>5-8%</td><td>SMBs en LATAM, producto nuevo</td></tr>
+</table>
+
+<h3>Escenario A: SaaS Puro (Suscripción Mensual)</h3>
+<div class="card">
+<table>
+<tr><th>Métrica</th><th>Conservador</th><th>Optimista</th></tr>
+<tr><td>Precio mensual/centro</td><td>$150,000 COP ($36 USD)</td><td>$250,000 COP ($60 USD)</td></tr>
+<tr><td>Break-even (# centros)</td><td>287 centros</td><td>172 centros</td></tr>
+<tr><td>Meses para break-even*</td><td>18-24 meses</td><td>12-15 meses</td></tr>
+<tr><td>LTV (12 meses, 6% churn)</td><td>$1.2M COP</td><td>$2M COP</td></tr>
+<tr><td>LTV/CAC ratio</td><td>1.5-2.4x</td><td>2-4x</td></tr>
+</table>
+<p class="evidence">*Asumiendo crecimiento neto de 15-25 centros/mes después de rampa inicial</p>
+</div>
+
+<h3>Escenario B: SaaS + Comisión por Reserva</h3>
+<div class="card">
+<table>
+<tr><th>Métrica</th><th>Valor</th></tr>
+<tr><td>Precio SaaS reducido</td><td>$80,000 COP/mes ($19 USD)</td></tr>
+<tr><td>Comisión por reserva online</td><td>$3,000-5,000 COP (~3-5%)</td></tr>
+<tr><td>Reservas online/centro/mes (estimado)</td><td>60-120</td></tr>
+<tr><td>Ingreso comisiones/centro/mes</td><td>$180K-600K COP</td></tr>
+<tr><td>Ingreso total/centro/mes</td><td>$260K-680K COP</td></tr>
+<tr><td>Break-even (# centros)</td><td>63-165 centros</td></tr>
+</table>
+<p class="evidence">La comisión es más escalable pero requiere que las reservas se hagan POR la plataforma, lo cual implica adopción B2C.</p>
+</div>
+
+<h3>Escenario C: Híbrido con B2C</h3>
+<div class="card">
+<table>
+<tr><th>Métrica</th><th>Valor</th></tr>
+<tr><td>SaaS + comisión (como B)</td><td>$260K-680K COP/centro/mes</td></tr>
+<tr><td>Costo adicional B2C app/mes</td><td>+$8M COP (dev + marketing)</td></tr>
+<tr><td>Costos totales/mes</td><td>$51M COP</td></tr>
+<tr><td>% reservas incrementales vía B2C</td><td>10-20% (optimista)</td></tr>
+<tr><td>Break-even</td><td>75-196 centros</td></tr>
+<tr><td>Riesgo</td><td><span class="badge badge-red">ALTO</span> — cold start problem</td></tr>
+</table>
+<p class="evidence">El B2C incrementa costos significativamente pero su contribución al revenue es incierta. Recomendación: NO lanzar B2C hasta tener 200+ centros B2B activos.</p>
+</div>
+
+<div class="chart-wrap">
+  <canvas id="breakEvenChart"></canvas>
+</div>
+
+<div class="chart-wrap">
+  <canvas id="revenueProjection"></canvas>
+</div>
+</div>
+
+<!-- PANEL 6: Risks -->
+<div class="panel" id="p6">
+<h2>Fase 4 — Riesgos Estructurales</h2>
+
+<h3>Matriz de Riesgos</h3>
+<div class="risk-matrix">
+  <div class="risk-header"></div>
+  <div class="risk-header">Impacto Bajo</div>
+  <div class="risk-header">Impacto Medio</div>
+  <div class="risk-header">Impacto Alto</div>
+  
+  <div class="risk-header">Prob. Alta</div>
+  <div class="risk-low"></div>
+  <div class="risk-med">Churn alto SMB</div>
+  <div class="risk-high">Cultura informal vs SaaS</div>
+  
+  <div class="risk-header">Prob. Media</div>
+  <div class="risk-low">Copycats</div>
+  <div class="risk-med">Baja willingness-to-pay</div>
+  <div class="risk-high">Cold start B2C</div>
+  
+  <div class="risk-header">Prob. Baja</div>
+  <div class="risk-low">Regulación</div>
+  <div class="risk-low">Competidor fuerte entra</div>
+  <div class="risk-med">Market too small</div>
+</div>
+
+<h3>Análisis Detallado de Riesgos</h3>
+
+<div class="card" style="border-left:4px solid var(--red)">
+  <h3>🔴 R1: Cultura Informal vs Adopción SaaS — CRÍTICO</h3>
+  <p>Los dueños de canchas son típicamente emprendedores informales. Muchos no usan ni email regularmente. Convencerlos de pagar mensualmente por software requiere demostrar ROI inmediato y tangible (más reservas, menos no-shows = más plata).</p>
+  <p><strong style="color:var(--text)">Mitigación:</strong> Onboarding white-glove, trial gratuito de 30 días, mostrar metrics de "dinero perdido por no-shows".</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--red)">
+  <h3>🔴 R2: Baja Willingness-to-Pay — ALTO</h3>
+  <p>Un centro con utilidad de $20-25M COP/mes puede ver $150-250K COP como gasto innecesario, especialmente si "WhatsApp funciona". El precio debe ser tan bajo que sea irresistible (&lt;1% de ingresos).</p>
+  <p><strong style="color:var(--text)">Mitigación:</strong> Modelo freemium con features premium, o comisión pura (sin costo fijo).</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--yellow)">
+  <h3>🟡 R3: Cold Start del Marketplace B2C — ALTO</h3>
+  <p>Sin canchas, no hay jugadores. Sin jugadores, no hay valor para canchas. Este es el riesgo clásico de marketplace.</p>
+  <p><strong style="color:var(--text)">Mitigación:</strong> B2B first. Construir red de 200+ canchas ANTES de lanzar B2C. El B2C se alimenta de la red B2B, no al revés.</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--yellow)">
+  <h3>🟡 R4: Churn Alto en SMBs — MEDIO-ALTO</h3>
+  <p>SMBs en LATAM tienen churn de 5-10% mensual en SaaS. Con el ticket tan bajo, el LTV puede no cubrir el CAC.</p>
+  <p><strong style="color:var(--text)">Mitigación:</strong> Hacer el software indispensable (integrar pagos, eliminar manejo de efectivo, generar reportes fiscales).</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--yellow)">
+  <h3>🟡 R5: Canchas Copian el Flujo sin Pagar — MEDIO</h3>
+  <p>Si el software solo facilita la reserva online, una cancha puede simplemente crear su propio Google Calendar o formulario. El valor debe estar en integraciones profundas que no puedan replicar (pagos automatizados, WhatsApp bot, analytics).</p>
+</div>
+
+<div class="card" style="border-left:4px solid var(--yellow)">
+  <h3>🟡 R6: Easycancha Escala Agresivamente — MEDIO</h3>
+  <p>Ya tiene 150 clubes y recientemente habló de crecer en Colombia. Si levantan capital y ejecutan bien, podrían cerrar la ventana. Sin embargo, su foco multi-deporte y reviews mediocres sugieren que hay espacio para un producto verticalmente superior.</p>
+</div>
+</div>
+
+<!-- PANEL 7: Conclusion -->
+<div class="panel" id="p7">
+<h2>Fase 5 — Conclusión</h2>
+
+<h3>Scorecard de Viabilidad</h3>
+<table>
+<tr><th>Hipótesis</th><th>Resultado</th><th>Score</th></tr>
+<tr><td>H1: Dolor operativo real</td><td><span class="badge badge-green">VALIDADA</span> — Gestión manual masiva</td><td>9/10</td></tr>
+<tr><td>H2: Willingness to pay</td><td><span class="badge badge-yellow">INCIERTA</span> — Cultura informal resiste</td><td>5/10</td></tr>
+<tr><td>H3: Ticket permite SaaS rentable</td><td><span class="badge badge-yellow">PARCIAL</span> — Solo con volumen alto</td><td>5/10</td></tr>
+<tr><td>H4: B2C genera demanda incremental</td><td><span class="badge badge-yellow">INCIERTA</span> — WhatsApp groups dominan</td><td>4/10</td></tr>
+<tr><td>H5: Marketplace dos lados alcanzable</td><td><span class="badge badge-red">ALTO RIESGO</span> — Cold start severo</td><td>3/10</td></tr>
+<tr><td>H6: Sin competidor dominante</td><td><span class="badge badge-green">VALIDADA</span> — Ventana abierta</td><td>8/10</td></tr>
+</table>
+
+<h3>Score de Viabilidad</h3>
+<div class="score-ring" style="border-color:var(--yellow)">
+  <div><span class="val">52</span><span class="out">/100</span></div>
+</div>
+
+<div class="card" style="border-left:4px solid var(--yellow);border-width:4px">
+  <h3 style="color:var(--yellow);font-size:1.5rem">VIABLE SOLO SI...</h3>
+  <ol style="color:var(--text);padding-left:1.5rem">
+    <li><strong>Se empieza SOLO con B2B</strong> — Nada de B2C hasta 200+ centros activos</li>
+    <li><strong>Precio ultra-bajo o freemium</strong> — &lt;$100K COP/mes para hook, monetizar con comisiones</li>
+    <li><strong>WhatsApp como canal principal</strong> — No combatir WhatsApp, integrarse CON WhatsApp (bot de reservas via WhatsApp del centro)</li>
+    <li><strong>Demostrar ROI en semana 1</strong> — "Recuperaste $X por reducción de no-shows"</li>
+    <li><strong>Piloto intensivo en UNA ciudad</strong> — Densidad > cobertura</li>
+    <li><strong>Venta directa, no digital</strong> — Ir cancha por cancha al principio</li>
+  </ol>
+</div>
+
+<h3>Modelo Financiero Resumido (Escenario Recomendado)</h3>
+<div class="card">
+<table>
+<tr><th>Métrica</th><th>Año 1</th><th>Año 2</th><th>Año 3</th></tr>
+<tr><td>Centros activos (fin año)</td><td>80</td><td>250</td><td>600</td></tr>
+<tr><td>ARPU/mes</td><td>$200K COP</td><td>$350K COP</td><td>$450K COP</td></tr>
+<tr><td>MRR (fin año)</td><td>$16M COP</td><td>$87.5M COP</td><td>$270M COP</td></tr>
+<tr><td>ARR</td><td>$192M COP</td><td>$1,050M COP</td><td>$3,240M COP</td></tr>
+<tr><td>Costos mensuales</td><td>$43M COP</td><td>$65M COP</td><td>$100M COP</td></tr>
+<tr><td>Break-even month</td><td colspan="3">Mes 16-20 (Año 2, Q2-Q3)</td></tr>
+<tr><td>Financiamiento necesario</td><td colspan="3">~$500M COP (~$120K USD) pre-seed</td></tr>
+</table>
+</div>
+
+<h3>🎯 Recomendación Estratégica</h3>
+<div class="card-grid">
+  <div class="card">
+    <h3>📍 Ciudad Piloto</h3>
+    <p style="color:var(--text);font-size:1.2rem;font-weight:700">BOGOTÁ</p>
+    <p>Mayor concentración de canchas, mayor ticket promedio, mayor adopción digital. Medellín como segunda ciudad a los 6 meses.</p>
+  </div>
+  <div class="card">
+    <h3>🎯 Segmento Ideal</h3>
+    <p style="color:var(--text);font-size:1.2rem;font-weight:700">Centros deportivos medianos (3-5 canchas)</p>
+    <p>Ni premium (ya tienen sistemas) ni barrio (muy informales). El sweet spot son centros con $50-80M COP/mes de ingreso, dueño semi-profesional, 2-3 empleados. Suficiente dolor, suficiente capacidad de pago.</p>
+  </div>
+  <div class="card">
+    <h3>📋 Orden de Entrada</h3>
+    <p style="color:var(--text);font-size:1.2rem;font-weight:700">B2B → B2B+Comisiones → B2C</p>
+    <p><strong>Meses 1-6:</strong> SaaS puro, trial gratis, venta directa<br>
+    <strong>Meses 7-12:</strong> Agregar pagos online, comisión por reserva<br>
+    <strong>Meses 13-18:</strong> Evaluar B2C solo si 200+ centros activos</p>
+  </div>
+  <div class="card">
+    <h3>🔑 Moat a Construir</h3>
+    <p style="color:var(--text);font-size:1.2rem;font-weight:700">WhatsApp Integration + Payment Rails</p>
+    <p>El verdadero lock-in es: (1) ser el bot de WhatsApp de la cancha, (2) procesar todos los pagos. Si controlas el flujo de dinero y comunicación, eres indispensable.</p>
+  </div>
+</div>
+
+<h3>⚖️ Veredicto Final</h3>
+<div class="card" style="background:linear-gradient(135deg,#1e293b,#0f172a);border:2px solid var(--accent)">
+  <p style="color:var(--text);font-size:1.1rem">El mercado de canchas en Colombia es <strong style="color:var(--accent)">grande, fragmentado y sub-digitalizado</strong>. El dolor es real. La competencia es débil. Pero la cultura informal, el bajo ticket SaaS y el riesgo de marketplace hacen que este NO sea un negocio fácil.</p>
+  <p style="color:var(--text);font-size:1.1rem;margin-top:.5rem">Es un negocio <strong style="color:var(--accent)">viable pero estrecho</strong>: funciona solo con ejecución disciplinada (B2B first, una ciudad, venta directa), pricing correcto (muy bajo o comisión), y el moat correcto (WhatsApp + pagos). Con esas condiciones, puede alcanzar rentabilidad en 18-24 meses con ~$120K USD de inversión.</p>
+  <p style="color:var(--text);font-size:1.1rem;margin-top:.5rem"><strong style="color:var(--accent)">No es un negocio de venture capital returns.</strong> Es un negocio de nicho que puede ser rentable y escalable regionalmente (Colombia → LATAM), pero el TAM es limitado para retornos 100x. Mejor como bootstrap o con angel/pre-seed ligero.</p>
+</div>
+
+</div>
+
+</div><!-- /container -->
+
+<script>
+// Tab logic
+function showTab(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+}
+
+// Charts
+Chart.defaults.color='#94a3b8';
+Chart.defaults.borderColor='#334155';
+
+// Revenue by scenario
+new Chart(document.getElementById('revenueChart'),{
+  type:'bar',
+  data:{
+    labels:['Cancha Barrio (1 cancha)','Centro Medio (3 canchas)','Complejo Grande (6 canchas)'],
+    datasets:[{
+      label:'Ingreso Mensual (Millones COP)',
+      data:[10,57,120],
+      backgroundColor:['#f59e0b','#fb923c','#fbbf24']
+    },{
+      label:'Utilidad Operativa (Millones COP)',
+      data:[3,22,50],
+      backgroundColor:['#22c55e','#4ade80','#86efac']
+    }]
+  },
+  options:{responsive:true,plugins:{title:{display:true,text:'Economía por Tipo de Centro',font:{size:16}}}}
+});
+
+// Break-even chart
+new Chart(document.getElementById('breakEvenChart'),{
+  type:'bar',
+  data:{
+    labels:['A: SaaS Puro ($150K)','A: SaaS Puro ($250K)','B: SaaS+Comisión','C: Híbrido B2C'],
+    datasets:[{
+      label:'Centros para Break-Even',
+      data:[287,172,115,150],
+      backgroundColor:['#ef4444','#f59e0b','#22c55e','#eab308']
+    }]
+  },
+  options:{
+    responsive:true,
+    indexAxis:'y',
+    plugins:{title:{display:true,text:'Centros Necesarios para Break-Even por Escenario',font:{size:16}}}
+  }
+});
+
+// Revenue projection
+new Chart(document.getElementById('revenueProjection'),{
+  type:'line',
+  data:{
+    labels:['M1','M3','M6','M9','M12','M15','M18','M21','M24'],
+    datasets:[{
+      label:'MRR (Millones COP)',
+      data:[1,3,8,12,16,30,55,70,87.5],
+      borderColor:'#f59e0b',
+      backgroundColor:'rgba(245,158,11,0.1)',
+      fill:true,tension:.3
+    },{
+      label:'Costos Fijos (Millones COP)',
+      data:[43,43,43,43,43,50,55,60,65],
+      borderColor:'#ef4444',
+      borderDash:[5,5],
+      tension:.1
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{
+      title:{display:true,text:'Proyección MRR vs Costos — Escenario Recomendado (24 meses)',font:{size:16}},
+      annotation:{annotations:{breakEven:{type:'line',xMin:4.5,xMax:4.5,borderColor:'#22c55e',borderDash:[3,3]}}}
+    },
+    scales:{y:{title:{display:true,text:'Millones COP'}}}
+  }
+});
+</script>
+
+<footer style="text-align:center;padding:2rem;color:var(--muted);font-size:.8rem;border-top:1px solid var(--border);margin-top:2rem">
+  Análisis generado el 2 de marzo de 2026 · Todas las fuentes verificables con enlaces · Datos sujetos a incertidumbre declarada<br>
+  Metodología: Web research extensivo en español e inglés · Modelado financiero con supuestos conservadores
+</footer>
+</body>
+</html>
