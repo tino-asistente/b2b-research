@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research v2 — Full-Scale Market Research Plan</title>
+<style>
+  :root { --bg: #0a0a0f; --card: #12121a; --card2: #16161f; --border: #1e1e2e; --accent: #6366f1; --accent2: #22d3ee; --green: #22c55e; --red: #ef4444; --yellow: #eab308; --orange: #f97316; --text: #e2e8f0; --muted: #64748b; --dim: #94a3b8; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+  
+  /* Header */
+  .header { margin-bottom: 48px; }
+  .header h1 { font-size: 2.2rem; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .header h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .date { color: var(--muted); font-size: 0.95rem; }
+  .header .why { margin-top: 20px; background: var(--card); border-left: 3px solid var(--orange); border-radius: 0 12px 12px 0; padding: 16px 20px; }
+  .header .why strong { color: var(--orange); }
+  .header .why ul { margin-top: 8px; padding-left: 20px; color: var(--dim); }
+  .header .why li { margin-bottom: 4px; }
+
+  /* Section */
+  .section { margin-bottom: 48px; }
+  .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 6px; }
+  .section h2 { font-size: 1.5rem; margin-bottom: 6px; }
+  .section .desc { color: var(--muted); margin-bottom: 20px; }
+
+  /* Track cards */
+  .track { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+  .track-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .track-icon { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-size: 1.4rem; flex-shrink: 0; }
+  .track-icon.a { background: #6366f122; }
+  .track-icon.b { background: #22c55e22; }
+  .track-icon.c { background: #eab30822; }
+  .track h3 { font-size: 1.15rem; }
+  .track .goal { color: var(--dim); font-size: 0.9rem; margin-bottom: 16px; font-style: italic; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 0.88rem; }
+  th { text-align: left; padding: 10px 12px; background: var(--card2); color: var(--accent2); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  td { padding: 10px 12px; border-top: 1px solid var(--border); color: var(--dim); }
+  tr:hover td { background: #ffffff06; }
+  th:first-child, td:first-child { border-radius: 8px 0 0 8px; }
+  th:last-child, td:last-child { border-radius: 0 8px 8px 0; }
+  td strong { color: var(--text); font-weight: 500; }
+
+  /* Sub-sections inside tracks */
+  .sub { margin-top: 20px; }
+  .sub h4 { font-size: 0.95rem; color: var(--accent2); margin-bottom: 10px; }
+  .sub ul { padding-left: 20px; color: var(--dim); }
+  .sub li { margin-bottom: 6px; }
+  .sub li strong { color: var(--text); }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; }
+  .step { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+  .step-num { font-size: 0.75rem; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+  .step-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+  .step-desc { font-size: 0.82rem; color: var(--muted); }
+
+  /* Scoring */
+  .score-bar { display: flex; align-items: center; gap: 8px; }
+  .score-fill { height: 6px; border-radius: 3px; background: var(--accent); }
+  .score-num { font-size: 0.8rem; color: var(--muted); min-width: 20px; }
+
+  /* Tools & Budget */
+  .budget-total { display: inline-block; background: var(--accent); color: white; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 0.9rem; margin-top: 8px; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 2px; background: var(--border); }
+  .tl-item { position: relative; margin-bottom: 18px; }
+  .tl-item::before { content: ''; position: absolute; left: -24px; top: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); }
+  .tl-item.done::before { background: var(--green); border-color: var(--green); }
+  .tl-day { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+  .tl-title { font-weight: 600; font-size: 0.95rem; }
+  .tl-desc { font-size: 0.85rem; color: var(--muted); }
+
+  /* Checklist */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 10px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  .checklist .box { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 6px; flex-shrink: 0; }
+  .checklist .label { font-size: 0.92rem; }
+  .checklist .hint { font-size: 0.8rem; color: var(--muted); }
+
+  /* Success criteria */
+  .criteria { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+  .criterion { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .criterion .num { font-size: 1.8rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+  .criterion .q { font-weight: 600; font-size: 0.92rem; margin-bottom: 4px; }
+  .criterion .a { font-size: 0.82rem; color: var(--muted); }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; vertical-align: middle; margin-left: 6px; }
+  .badge-new { background: #6366f122; color: var(--accent); }
+
+  /* Footer */
+  .footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.6rem; }
+    .section h2 { font-size: 1.2rem; }
+    .steps { grid-template-columns: 1fr; }
+    .criteria { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🔬 <span>Research v2</span></h1>
+    <p class="date">Full-Scale Market Research — March 2026</p>
+    <div class="why">
+      <strong>⚠️ Why v2?</strong> Research v1 picked "Simple Helpdesk" as #1, but the data was shallow:
+      <ul>
+        <li>App store reviews ≠ B2B buyer sentiment</li>
+        <li>Reddit data was incomplete (scraping blocked)</li>
+        <li>Customer discovery was statistically insignificant (5 DMs, 1 reply)</li>
+        <li>No analysis of USA → Colombia opportunities</li>
+        <li>Decision was made on vibes, not volume</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TRACKS -->
+  <div class="section">
+    <div class="section-label">Research Tracks</div>
+    <h2>Three parallel investigations</h2>
+    <p class="desc">Each track produces a ranked list of opportunities with real data backing every score.</p>
+
+    <!-- TRACK A -->
+    <div class="track">
+      <div class="track-header">
+        <div class="track-icon a">📊</div>
+        <div>
+          <h3>Track A: Best Solo-Founder B2B/SaaS</h3>
+        </div>
+      </div>
+      <p class="goal">Find the #1 business opportunity for a solo founder targeting $5K–$30K MRR.</p>
+      
+      <div class="sub">
+        <h4>Categories to analyze (15)</h4>
+        <table>
+          <tr><th>Category</th><th>Why</th></tr>
+          <tr><td><strong>Helpdesk / Support</strong></td><td>v1 winner — needs real validation</td></tr>
+          <tr><td><strong>CRM for verticals</strong></td><td>Niche CRMs consistently underserved</td></tr>
+          <tr><td><strong>Field Service Management</strong></td><td>v1 runner-up, strong market</td></tr>
+          <tr><td><strong>Scheduling / Booking</strong></td><td>Low complexity, high self-serve</td></tr>
+          <tr><td><strong>Invoicing / Payments</strong></td><td>SMB pain, recurring revenue</td></tr>
+          <tr><td><strong>HR / People Ops for SMBs</strong></td><td>Compliance-driven, sticky</td></tr>
+          <tr><td><strong>Property Management</strong></td><td>Growing, fragmented</td></tr>
+          <tr><td><strong>Restaurant / Food Service</strong></td><td>Huge market, lots of pain</td></tr>
+          <tr><td><strong>Legal Practice Mgmt</strong></td><td>High willingness to pay</td></tr>
+          <tr><td><strong>Accounting / Bookkeeping</strong></td><td>Evergreen need</td></tr>
+          <tr><td><strong>E-commerce tools (niche)</strong></td><td>Shopify ecosystem opportunities</td></tr>
+          <tr><td><strong>Education / LMS</strong></td><td>Post-COVID growth</td></tr>
+          <tr><td><strong>Construction / Trades</strong></td><td>Big market, low-tech users</td></tr>
+          <tr><td><strong>Logistics / Last-mile</strong></td><td>Growing in LATAM especially</td></tr>
+          <tr><td><strong>Health & Wellness</strong></td><td>Clinics, gyms — vertical SaaS play</td></tr>
+        </table>
+      </div>
+
+      <div class="sub">
+        <h4>Data sources</h4>
+        <ul>
+          <li><strong>G2</strong> — 500-1,000 reviews per top product per category</li>
+          <li><strong>Capterra</strong> — 500+ reviews per product</li>
+          <li><strong>Trustpilot</strong> — 200-500 reviews per product</li>
+          <li><strong>Reddit</strong> — r/SaaS, r/smallbusiness, r/startups, r/entrepreneur, r/selfhosted + vertical subs</li>
+          <li><strong>Product Hunt</strong> — Recent launches, traction signals</li>
+          <li><strong>Twitter/X</strong> — Real-time complaints, feature requests</li>
+          <li><strong>App Store + Google Play</strong> — Refresh of 113K dataset</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <h4>Scoring model (35 points)</h4>
+        <table>
+          <tr><th>Criteria</th><th>Weight</th><th>How we measure</th></tr>
+          <tr><td><strong>Pain intensity</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:100%"></div><span class="score-num">/5</span></div>
+          </td><td>Volume + sentiment of complaints in reviews</td></tr>
+          <tr><td><strong>Competition gap</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:100%"></div><span class="score-num">/5</span></div>
+          </td><td>"Too expensive / too complex" signal in reviews</td></tr>
+          <tr><td><strong>Self-serve potential</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:100%"></div><span class="score-num">/5</span></div>
+          </td><td>Can customers onboard without sales calls?</td></tr>
+          <tr><td><strong>Solo-founder fit</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:100%"></div><span class="score-num">/5</span></div>
+          </td><td>Can 1 person build, launch, and maintain this?</td></tr>
+          <tr><td><strong>Market size</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:80%"></div><span class="score-num">/4</span></div>
+          </td><td>TAM accessible to solo founder</td></tr>
+          <tr><td><strong>Switching motivation</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:80%"></div><span class="score-num">/4</span></div>
+          </td><td>People actively looking to switch? (Reddit/reviews)</td></tr>
+          <tr><td><strong>Retention signal</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:80%"></div><span class="score-num">/4</span></div>
+          </td><td>High churn / low NPS of existing tools</td></tr>
+          <tr><td><strong>Pricing power</strong></td><td>
+            <div class="score-bar"><div class="score-fill" style="width:60%"></div><span class="score-num">/3</span></div>
+          </td><td>Can you charge $30-100/mo comfortably?</td></tr>
+        </table>
+      </div>
+      <p style="color:var(--muted);font-size:0.88rem;"><strong>Deliverable:</strong> Ranked top 10 opportunities with data backing each score.</p>
+    </div>
+
+    <!-- TRACK B -->
+    <div class="track">
+      <div class="track-header">
+        <div class="track-icon b">🎯</div>
+        <div>
+          <h3>Track B: GlowDesk Validation</h3>
+        </div>
+      </div>
+      <p class="goal">GO / NO-GO on GlowDesk specifically, with real review data.</p>
+
+      <div class="sub">
+        <h4>Key questions</h4>
+        <ul>
+          <li>What % of Zendesk/Freshdesk reviews mention <strong>pricing</strong> as primary pain? (need &gt;30%)</li>
+          <li>What features do SMBs (&lt;20 employees) <strong>actually use</strong> vs ignore?</li>
+          <li>What <strong>alternatives</strong> have people tried, and why did they stay/leave?</li>
+          <li>Is "flat pricing + AI included" a real <strong>differentiator</strong> or table stakes by now?</li>
+          <li>How many <strong>new helpdesk tools</strong> launched in 2024-2026? What happened to them?</li>
+        </ul>
+      </div>
+
+      <div class="sub">
+        <h4>Products to analyze (12)</h4>
+        <table>
+          <tr><th>Product</th><th>Why</th></tr>
+          <tr><td><strong>Zendesk</strong></td><td>Incumbent, most complaints</td></tr>
+          <tr><td><strong>Freshdesk</strong></td><td>Free tier competitor</td></tr>
+          <tr><td><strong>Help Scout</strong></td><td>Bootstrapped poster child</td></tr>
+          <tr><td><strong>Zoho Desk</strong></td><td>Cheap but bad UX reputation</td></tr>
+          <tr><td><strong>Intercom</strong></td><td>Expensive, feature-heavy</td></tr>
+          <tr><td><strong>Gorgias</strong></td><td>E-commerce niche (Shopify)</td></tr>
+          <tr><td><strong>Desk365</strong></td><td>Microsoft Teams niche</td></tr>
+          <tr><td><strong>Jira Service Mgmt</strong></td><td>Free &lt;10 users</td></tr>
+          <tr><td><strong>Crisp</strong></td><td>Newer entrant</td></tr>
+          <tr><td><strong>Tidio</strong></td><td>Newer entrant</td></tr>
+          <tr><td><strong>HelpCrunch</strong></td><td>Newer entrant</td></tr>
+          <tr><td><strong>PH launches 2024-26</strong></td><td>New competition scan</td></tr>
+        </table>
+      </div>
+      <p style="color:var(--muted);font-size:0.88rem;"><strong>Deliverable:</strong> GO/NO-GO report with quantified evidence.</p>
+    </div>
+
+    <!-- TRACK C -->
+    <div class="track">
+      <div class="track-header">
+        <div class="track-icon c">🌎</div>
+        <div>
+          <h3>Track C: USA → Colombia Arbitrage <span class="badge badge-new">NEW</span></h3>
+        </div>
+      </div>
+      <p class="goal">Find proven US business models that don't exist (or exist poorly) in Colombia.</p>
+      <p style="color:var(--dim);font-size:0.9rem;margin-bottom:16px;"><strong>Thesis:</strong> Colombia's tech ecosystem is 3-5 years behind the US. Models that are mature and proven in the US may have zero or weak competition in Colombia.</p>
+
+      <div class="sub">
+        <h4>Methodology</h4>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">STEP 1</div>
+            <div class="step-title">Map successes</div>
+            <div class="step-desc">What's already been copied: Rappi, Habi, Frubana, Laika, Addi, Treinta. Why it worked.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">STEP 2</div>
+            <div class="step-title">Find gaps</div>
+            <div class="step-desc">Scan 15+ US verticals for missing Colombian equivalents.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">STEP 3</div>
+            <div class="step-title">Validate gaps</div>
+            <div class="step-desc">Google search, app stores, Apps.co, Innpulsa, Reddit/Twitter Colombia.</div>
+          </div>
+          <div class="step">
+            <div class="step-num">STEP 4</div>
+            <div class="step-title">Score & rank</div>
+            <div class="step-desc">32-point scoring model with cultural fit, regulatory risk, capital needed.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub">
+        <h4>US verticals to scan for Colombia gaps</h4>
+        <table>
+          <tr><th>US Category</th><th>US Examples</th><th>Colombia Status</th></tr>
+          <tr><td><strong>Home services marketplace</strong></td><td>Thumbtack, Angi</td><td>Partial (some in Rappi)</td></tr>
+          <tr><td><strong>Property management SaaS</strong></td><td>Buildium, AppFolio</td><td>❓ Unknown</td></tr>
+          <tr><td><strong>HVAC / plumbing scheduling</strong></td><td>Housecall Pro, Jobber</td><td>🔴 Very unlikely</td></tr>
+          <tr><td><strong>Pet services platform</strong></td><td>Rover, Wag</td><td>Laika = products only</td></tr>
+          <tr><td><strong>Legal tech for SMBs</strong></td><td>Clio, LegalZoom</td><td>🔴 Very weak</td></tr>
+          <tr><td><strong>Dental/clinic management</strong></td><td>Dentrix, SimplePractice</td><td>❓ Unknown</td></tr>
+          <tr><td><strong>Auto repair shop mgmt</strong></td><td>Shop-Ware, Tekmetric</td><td>❓ Unknown</td></tr>
+          <tr><td><strong>Gym/fitness management</strong></td><td>Mindbody, Glofox</td><td>🟡 Some exist</td></tr>
+          <tr><td><strong>Cleaning services</strong></td><td>Homeaglow, Handy</td><td>🔴 Informal market</td></tr>
+          <tr><td><strong>Childcare management</strong></td><td>Brightwheel, HiMama</td><td>❓ Unknown</td></tr>
+          <tr><td><strong>Senior care / home care</strong></td><td>CareAcademy, Axxess</td><td>🔴 Very unlikely</td></tr>
+          <tr><td><strong>Tutoring marketplace</strong></td><td>Wyzant, Varsity Tutors</td><td>Superprof exists</td></tr>
+          <tr><td><strong>Insurance tech</strong></td><td>Lemonade model</td><td>🟡 Emerging</td></tr>
+          <tr><td><strong>Estate planning</strong></td><td>Trust & Will</td><td>🔴 Very unlikely</td></tr>
+          <tr><td><strong>Moving / relocation</strong></td><td>HireAHelper</td><td>🔴 Very unlikely</td></tr>
+        </table>
+      </div>
+
+      <div class="sub">
+        <h4>Scoring model (32 points)</h4>
+        <table>
+          <tr><th>Criteria</th><th>Weight</th><th>Description</th></tr>
+          <tr><td><strong>Colombia gap confirmed</strong></td><td><span class="score-num">/5</span></td><td>No local competitor or very weak one</td></tr>
+          <tr><td><strong>Solo-founder operable</strong></td><td><span class="score-num">/5</span></td><td>Can 1 person run this?</td></tr>
+          <tr><td><strong>US model proven</strong></td><td><span class="score-num">/4</span></td><td>Revenue, growth, retention in US</td></tr>
+          <tr><td><strong>Cultural fit</strong></td><td><span class="score-num">/4</span></td><td>Works for Colombian culture/habits?</td></tr>
+          <tr><td><strong>Market size Colombia</strong></td><td><span class="score-num">/4</span></td><td>Enough potential customers?</td></tr>
+          <tr><td><strong>Capital required</strong></td><td><span class="score-num">/4</span></td><td>Start with &lt;$5K?</td></tr>
+          <tr><td><strong>Regulatory risk</strong></td><td><span class="score-num">/3</span></td><td>Avoid heavy regulation</td></tr>
+          <tr><td><strong>Network effects</strong></td><td><span class="score-num">/3</span></td><td>Gets better with more users?</td></tr>
+        </table>
+      </div>
+
+      <div style="margin-top:16px;padding:12px 16px;background:#eab30811;border:1px solid #eab30833;border-radius:10px;">
+        <strong style="color:var(--yellow);">Filter rules:</strong>
+        <span style="color:var(--dim);font-size:0.88rem;">
+          ✅ Proven in USA (real revenue) · ✅ Missing in Colombia · ✅ Operable by 1 person · ✅ No heavy regulation · ❌ Reject if someone tried and failed (but research why)
+        </span>
+      </div>
+      <p style="color:var(--muted);font-size:0.88rem;margin-top:12px;"><strong>Deliverable:</strong> Ranked top 10 USA→Colombia opportunities with evidence.</p>
+    </div>
+  </div>
+
+  <!-- TOOLS & BUDGET -->
+  <div class="section">
+    <div class="section-label">Infrastructure</div>
+    <h2>Tools & Budget</h2>
+    <table>
+      <tr><th>Tool</th><th>Cost</th><th>Purpose</th></tr>
+      <tr><td><strong>Apify</strong> (Starter)</td><td>$49/mo</td><td>Core scraping: G2, Capterra, Trustpilot, Reddit, Twitter, Product Hunt</td></tr>
+      <tr><td><strong>Reddit API</strong></td><td>Free</td><td>Direct search + thread reading (10K req/mo)</td></tr>
+      <tr><td><strong>Google Trends</strong></td><td>Free</td><td>Demand comparison USA vs Colombia</td></tr>
+      <tr><td><strong>SimilarWeb</strong></td><td>Free</td><td>Traffic/growth trends for competitors</td></tr>
+      <tr><td><strong>Crunchbase</strong></td><td>$0-29/mo</td><td>Startup funding data, market mapping</td></tr>
+      <tr><td><strong>App Store scrapers</strong></td><td>Free (npm)</td><td>Refresh app review dataset</td></tr>
+      <tr><td><strong>Perplexity Pro</strong> (opt.)</td><td>$20/mo</td><td>Fast research with sourced answers</td></tr>
+    </table>
+    <div class="budget-total">Total: ~$50–100/mo (cancel after research)</div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section">
+    <div class="section-label">Execution</div>
+    <h2>Timeline</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-day">Day 1</div>
+        <div class="tl-title">Setup</div>
+        <div class="tl-desc">Create accounts, configure API keys, set up Apify actors and scrapers</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">Days 2–4</div>
+        <div class="tl-title">Scraping</div>
+        <div class="tl-desc">Run all scrapers: G2, Capterra, Trustpilot, Reddit, Twitter, Product Hunt across all categories</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">Days 5–6</div>
+        <div class="tl-title">Analysis — Track A</div>
+        <div class="tl-desc">Score all B2B/SaaS opportunities with real review data. Rank top 10.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">Day 6</div>
+        <div class="tl-title">Analysis — Track B</div>
+        <div class="tl-desc">GlowDesk GO/NO-GO with fresh reviews. Quantified evidence for each question.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">Days 7–8</div>
+        <div class="tl-title">Analysis — Track C</div>
+        <div class="tl-desc">USA→Colombia gap analysis. Validate each vertical, score opportunities.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">Day 9</div>
+        <div class="tl-title">Synthesis</div>
+        <div class="tl-desc">Build unified dashboard. Rank ALL opportunities across all 3 tracks.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-day">Day 10</div>
+        <div class="tl-title">Decision</div>
+        <div class="tl-desc">Present findings. Pick the winner. Define MVP and first 10 customers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS CRITERIA -->
+  <div class="section">
+    <div class="section-label">Definition of Done</div>
+    <h2>Success Criteria</h2>
+    <p class="desc">The research is done when we can answer all five:</p>
+    <div class="criteria">
+      <div class="criterion">
+        <div class="num">1</div>
+        <div class="q">What is the #1 opportunity?</div>
+        <div class="a">With data, not gut feeling</div>
+      </div>
+      <div class="criterion">
+        <div class="num">2</div>
+        <div class="q">Why this one over the others?</div>
+        <div class="a">Quantified scoring with sources</div>
+      </div>
+      <div class="criterion">
+        <div class="num">3</div>
+        <div class="q">What does the MVP look like?</div>
+        <div class="a">Based on what users actually want (from reviews)</div>
+      </div>
+      <div class="criterion">
+        <div class="num">4</div>
+        <div class="q">Who are the first 10 customers?</div>
+        <div class="a">Identified by name/profile from research</div>
+      </div>
+      <div class="criterion">
+        <div class="num">5</div>
+        <div class="q">Realistic path to $5K MRR?</div>
+        <div class="a">Timeline, channels, pricing validated</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREREQUISITES -->
+  <div class="section">
+    <div class="section-label">To get started</div>
+    <h2>Prerequisites</h2>
+    <ul class="checklist">
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="label">Create Apify account (Starter plan $49/mo)</div>
+          <div class="hint">→ apify.com</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="label">Create Reddit API app (free)</div>
+          <div class="hint">→ reddit.com/prefs/apps → type "script"</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="label">Crunchbase account (optional, $29/mo)</div>
+          <div class="hint">→ crunchbase.com — for Track C startup mapping</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="label">Share API keys with Tino</div>
+          <div class="hint">→ Tino configures everything and starts scraping</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    🦕 Research v2 Plan — Created March 5, 2026 by Tino<br>
+    <a href="../index.html" style="color:var(--accent);text-decoration:none;">← Back to Research Hub</a>
+  </div>
+
+</div>
+</body>
+</html>
