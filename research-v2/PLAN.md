@@ -159,6 +159,76 @@ For each potential gap:
 
 ---
 
+### Track D: Niche B2C — Underserved Consumer Segments 🎯
+
+**Goal**: Find a hyper-specific consumer niche that's poorly served by existing products/services, where a solo founder can build a loyal community + product.
+
+**Thesis**: B2C at scale is a death trap for solo founders (competing with VC-funded apps). But B2C for a *specific underserved niche* can be extremely profitable — small audience, high willingness to pay, low competition, strong word-of-mouth.
+
+**What makes a good niche B2C opportunity:**
+- Passionate community (they talk about it online, form groups)
+- Existing solutions are generic or non-existent
+- Willingness to pay for a tailored solution
+- Can start as content/community, monetize with product later
+- Not dominated by a well-funded player
+
+**Research approach**:
+
+#### Step 1: Identify underserved niches
+Scan for communities with unmet needs:
+- **Reddit**: Subreddits with high engagement + frequent "I wish there was..." posts
+- **Facebook Groups**: Large niche groups with active complaints
+- **App Store reviews**: 1-2 star reviews on niche apps ("this doesn't work for my use case")
+- **Twitter/X**: Niche hashtags, influencer complaints
+- **Amazon reviews**: Physical products with consistent complaints (opportunity for digital solution)
+
+#### Step 2: Categorize by vertical
+| Vertical | Example niches |
+|---|---|
+| Health & Wellness | Specific conditions, diets, fitness niches (e.g., PCOS, migraine tracking, calisthenics) |
+| Hobbies & Crafts | Niche hobbyists underserved by generic tools (aquariums, 3D printing, woodworking) |
+| Parenting | Specific parenting situations (special needs, homeschooling, single parents) |
+| Pets | Specific breeds, exotic pets, pet health conditions |
+| Education | Niche learning (specific instruments, languages, trades) |
+| Food & Diet | Specific dietary needs (celiac, PKU, FODMAP, ethnic cuisines) |
+| Personal Finance | Specific financial situations (freelancers, immigrants, gig workers) |
+| Sports & Fitness | Niche sports, amateur leagues, specific training methods |
+| Home & Living | Specific living situations (van life, tiny homes, expats, nomads) |
+| Relationships | Niche dating, specific communities, long-distance relationships |
+
+#### Step 3: Validate demand
+For each niche:
+- Community size (subreddit members, FB group size, hashtag volume)
+- Complaint frequency ("I wish...", "why isn't there...", "does anyone know...")
+- Existing solutions and their gaps
+- Willingness to pay signals (people already paying for workarounds)
+- Monetization model (subscription app, marketplace, content + product, community)
+
+#### Step 4: Score opportunities
+| Criteria | Weight | Description |
+|---|---|---|
+| Community passion | 5 | How engaged and vocal is the niche? |
+| Solution gap | 5 | Nothing good exists, or existing tools are generic |
+| Solo-founder fit | 5 | Can 1 person build and maintain this? |
+| Monetization clarity | 4 | Clear path to revenue (subscription, marketplace, etc.) |
+| Market size (niche) | 3 | Big enough for $5-30K MRR, small enough to avoid big players |
+| Defensibility | 4 | Community/brand moat, hard for generics to replicate |
+| Content/SEO potential | 3 | Can you attract users organically? |
+| Cross-sell potential | 3 | Room to expand into adjacent products? |
+| **Total** | **32** | |
+
+**Data sources**:
+- Reddit (subreddit analysis: size, growth, common complaints)
+- Facebook Groups (via search, size/engagement)
+- App Store / Google Play (niche app reviews, 1-2 stars)
+- Google Trends (niche search volume + growth)
+- Amazon reviews (physical product frustrations → digital opportunity)
+- Twitter/X (niche hashtags, influencer complaints)
+
+**Deliverable**: Ranked list of top 10 niche B2C opportunities with community data.
+
+---
+
 ## Tools & Budget
 
 | Tool | Cost | Purpose |
@@ -181,8 +251,9 @@ For each potential gap:
 | 5-6 | **Analysis A** | Score all B2B/SaaS opportunities with real data |
 | 6 | **Analysis B** | GlowDesk GO/NO-GO with fresh reviews |
 | 7-8 | **Analysis C** | USA→Colombia gap analysis |
-| 9 | **Synthesis** | Build unified dashboard, rank all opportunities across tracks |
-| 10 | **Decision** | Present findings, pick the winner, define next steps |
+| 8-9 | **Analysis D** | Niche B2C — scan Reddit/FB/App Store for underserved consumer niches |
+| 10-11 | **Synthesis** | Build unified dashboard, rank ALL opportunities across 4 tracks |
+| 12 | **Decision** | Present findings, pick the winner, define next steps |
 
 ## Success Criteria
 
