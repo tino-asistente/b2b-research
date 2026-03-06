@@ -432,21 +432,108 @@
 
   </div>
 
+  <!-- DATA SOURCES -->
+  <div class="section">
+    <div class="section-label">Intelligence Network</div>
+    <h2>All Data Sources (15+)</h2>
+    <p class="desc">Every source we'll tap, organized by what kind of signal it gives us.</p>
+
+    <div class="track" style="border-color:#6366f133;">
+      <h4 style="color:var(--accent);margin-bottom:12px;">📊 Software Reviews — Decision-maker sentiment</h4>
+      <table>
+        <tr><th>Source</th><th>Method</th><th>Cost</th><th>Volume</th><th>Tracks</th></tr>
+        <tr><td><strong>G2</strong></td><td>Apify</td><td>~$7/1K</td><td>~5,000 reviews</td><td>A, B</td></tr>
+        <tr><td><strong>Capterra</strong></td><td>Apify (multi-scraper)</td><td>Included</td><td>~5,000 reviews</td><td>A, B</td></tr>
+        <tr><td><strong>Trustpilot</strong></td><td>Apify</td><td>~$0.20/1K</td><td>~3,000 reviews</td><td>A, B</td></tr>
+        <tr><td><strong>Gartner / Software Advice</strong></td><td>Apify (multi-scraper)</td><td>Included</td><td>~2,000 reviews</td><td>A, B</td></tr>
+        <tr><td><strong>App Store + Play Store</strong></td><td>npm (free)</td><td>Free</td><td>Refresh 113K dataset</td><td>A, B, D</td></tr>
+      </table>
+    </div>
+
+    <div class="track" style="border-color:#22d3ee33;">
+      <h4 style="color:var(--accent2);margin-bottom:12px;">💬 Conversations — Real people, real frustrations</h4>
+      <table>
+        <tr><th>Source</th><th>Method</th><th>Cost</th><th>Volume</th><th>Tracks</th></tr>
+        <tr><td><strong>Reddit</strong></td><td>Apify + Reddit API</td><td>~$4/1K</td><td>~3,000 posts+comments</td><td>A, B, C, D</td></tr>
+        <tr><td><strong>Twitter / X</strong></td><td>Apify</td><td>~$3-5/1K</td><td>~2,000 tweets</td><td>A, B, D</td></tr>
+        <tr><td><strong>LinkedIn Posts</strong></td><td>Apify (no login)</td><td>~$3/1K</td><td>~1,000 posts</td><td>A, B</td></tr>
+        <tr><td><strong>Quora</strong></td><td>Apify</td><td>~$2-4/1K</td><td>~1,000 answers</td><td>A, D</td></tr>
+        <tr><td><strong>YouTube Comments</strong></td><td>Apify</td><td>~$1-3/1K</td><td>~2,000 comments</td><td>A, D</td></tr>
+        <tr><td><strong>Facebook Groups</strong></td><td>Apify</td><td>~$3-5/1K</td><td>~2,000 posts</td><td>D</td></tr>
+        <tr><td><strong>HackerNews</strong></td><td>API (free)</td><td>Free</td><td>"Show HN" + "Ask HN"</td><td>A, D</td></tr>
+      </table>
+    </div>
+
+    <div class="track" style="border-color:#22c55e33;">
+      <h4 style="color:var(--green);margin-bottom:12px;">🚀 Market & Competition — Who's building what</h4>
+      <table>
+        <tr><th>Source</th><th>Method</th><th>Cost</th><th>What we get</th><th>Tracks</th></tr>
+        <tr><td><strong>Product Hunt</strong></td><td>Apify</td><td>~$2-4</td><td>Launches 2024-2026, votes, traction</td><td>A, B, D</td></tr>
+        <tr><td><strong>Crunchbase</strong></td><td>Apify</td><td>~$5-10</td><td>Funding, revenue signals, market map</td><td>A, C</td></tr>
+        <tr><td><strong>Google Trends</strong></td><td>Apify</td><td>~$1-2</td><td>Demand USA vs Colombia, niche trends</td><td>C, D</td></tr>
+        <tr><td><strong>SimilarWeb</strong></td><td>Free tier</td><td>Free</td><td>Competitor traffic, growth signals</td><td>A, B</td></tr>
+        <tr><td><strong>Amazon Reviews</strong></td><td>Apify</td><td>~$3-5/1K</td><td>Physical product frustrations → digital opp</td><td>D</td></tr>
+        <tr><td><strong>IndieHackers</strong></td><td>Public scraping</td><td>Free</td><td>Revenue reports, solo-founder wins</td><td>A</td></tr>
+      </table>
+    </div>
+
+    <div class="track" style="border-color:#eab30833;">
+      <h4 style="color:var(--yellow);margin-bottom:12px;">🇨🇴 Colombia Specific — Track C deep-dive</h4>
+      <table>
+        <tr><th>Source</th><th>Method</th><th>Cost</th><th>What we get</th></tr>
+        <tr><td><strong>Google Play Colombia</strong></td><td>npm + country filter</td><td>Free</td><td>Colombian apps, Spanish reviews</td></tr>
+        <tr><td><strong>Apps.co / Innpulsa</strong></td><td>Web scraping</td><td>Free</td><td>Colombian startup database</td></tr>
+        <tr><td><strong>MercadoLibre</strong></td><td>Apify</td><td>~$3-5</td><td>Service categories, demand signals</td></tr>
+        <tr><td><strong>Google Maps / Places</strong></td><td>Apify</td><td>~$5-10</td><td>Business counts by vertical per city</td></tr>
+        <tr><td><strong>Reddit Colombia</strong></td><td>Reddit API</td><td>Free</td><td>r/Colombia, r/Bogota needs</td></tr>
+        <tr><td><strong>Yelp Colombia</strong></td><td>Apify</td><td>~$2-3</td><td>Local biz with bad reviews → SaaS opp</td></tr>
+      </table>
+    </div>
+
+    <div class="track" style="border-color:#a855f733;">
+      <h4 style="color:#a855f7;margin-bottom:12px;">🔍 Deep-Dive (Phase 2 — after initial scan)</h4>
+      <table>
+        <tr><th>Source</th><th>Method</th><th>Cost</th><th>What we get</th></tr>
+        <tr><td><strong>SEMrush / Ahrefs</strong></td><td>Free trial (7 days)</td><td>Free</td><td>Search volume: "X alternative", niche keywords</td></tr>
+        <tr><td><strong>BuiltWith / Wappalyzer</strong></td><td>Free tier</td><td>Free</td><td>How many sites use each tool → real market share</td></tr>
+      </table>
+      <p style="color:var(--muted);font-size:0.85rem;margin-top:8px;">These are used after Phase 1 to validate and deepen the top candidates only.</p>
+    </div>
+  </div>
+
   <!-- TOOLS & BUDGET -->
   <div class="section">
     <div class="section-label">Infrastructure</div>
     <h2>Tools & Budget</h2>
     <table>
       <tr><th>Tool</th><th>Cost</th><th>Purpose</th></tr>
-      <tr><td><strong>Apify</strong> (Starter)</td><td>$49/mo</td><td>Core scraping: G2, Capterra, Trustpilot, Reddit, Twitter, Product Hunt</td></tr>
-      <tr><td><strong>Reddit API</strong></td><td>Free</td><td>Direct search + thread reading (10K req/mo)</td></tr>
-      <tr><td><strong>Google Trends</strong></td><td>Free</td><td>Demand comparison USA vs Colombia</td></tr>
-      <tr><td><strong>SimilarWeb</strong></td><td>Free</td><td>Traffic/growth trends for competitors</td></tr>
-      <tr><td><strong>Crunchbase</strong></td><td>$0-29/mo</td><td>Startup funding data, market mapping</td></tr>
-      <tr><td><strong>App Store scrapers</strong></td><td>Free (npm)</td><td>Refresh app review dataset</td></tr>
-      <tr><td><strong>Perplexity Pro</strong> (opt.)</td><td>$20/mo</td><td>Fast research with sourced answers</td></tr>
+      <tr><td><strong>Apify</strong> (Starter)</td><td>$29/mo + pay as you go</td><td>Core scraping engine: 15+ actors for all sources above</td></tr>
+      <tr><td><strong>Apify overage</strong></td><td>~$50-80 estimated</td><td>G2, Capterra, Reddit, Twitter, LinkedIn, FB, YouTube, PH, Crunchbase, Google Maps, Amazon, etc.</td></tr>
+      <tr><td><strong>Reddit API</strong></td><td>Free</td><td>Direct search + thread reading (10K req/mo free)</td></tr>
+      <tr><td><strong>HackerNews API</strong></td><td>Free</td><td>"Show HN" and "Ask HN" posts</td></tr>
+      <tr><td><strong>App Store scrapers</strong></td><td>Free (npm)</td><td>Refresh 113K review dataset</td></tr>
+      <tr><td><strong>SEMrush free trial</strong></td><td>Free (7 days)</td><td>Search volume for niche keywords, "X alternative"</td></tr>
+      <tr><td><strong>SimilarWeb</strong></td><td>Free tier</td><td>Competitor traffic and growth trends</td></tr>
+      <tr><td><strong>BuiltWith</strong></td><td>Free tier</td><td>Technology market share (who uses what)</td></tr>
     </table>
-    <div class="budget-total">Total: ~$50–100/mo (cancel after research)</div>
+
+    <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;flex:1;min-width:200px;text-align:center;">
+        <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Apify Plan</div>
+        <div style="font-size:1.8rem;font-weight:800;color:var(--accent);margin:4px 0;">$29</div>
+        <div style="font-size:0.82rem;color:var(--dim);">/month (cancel after)</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;flex:1;min-width:200px;text-align:center;">
+        <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Scraping Overage</div>
+        <div style="font-size:1.8rem;font-weight:800;color:var(--orange);margin:4px 0;">~$50-80</div>
+        <div style="font-size:0.82rem;color:var(--dim);">one-time, pay as you go</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;flex:1;min-width:200px;text-align:center;">
+        <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Total Estimated</div>
+        <div style="font-size:1.8rem;font-weight:800;color:var(--green);margin:4px 0;">~$80-110</div>
+        <div style="font-size:0.82rem;color:var(--dim);">for 30K+ data points from 15+ sources</div>
+      </div>
+    </div>
   </div>
 
   <!-- TIMELINE -->
